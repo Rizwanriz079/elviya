@@ -1,26 +1,259 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  /* ELVYA Brand Colors */
+  --almond-gold: #D9A441;
+  --almond-gold-dark: #C4932B;
+  --soft-brown: #A6763B;
+  --cream: #FFF5E6;
+  --cream-dark: #F5E6D3;
+  --natural-green: #3D6A46;
+  --natural-green-light: #4A7D54;
+
+  /* Base Colors */
+  --background: #FFF5E6;
+  --foreground: #2D1F0E;
+  --muted: #8B7355;
+  --border: #D9C4A8;
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-almond-gold: var(--almond-gold);
+  --color-almond-gold-dark: var(--almond-gold-dark);
+  --color-soft-brown: var(--soft-brown);
+  --color-cream: var(--cream);
+  --color-cream-dark: var(--cream-dark);
+  --color-natural-green: var(--natural-green);
+  --color-natural-green-light: var(--natural-green-light);
+  --color-muted: var(--muted);
+  --color-border: var(--border);
+  --font-sans: var(--font-playfair), Georgia, serif;
+  --font-body: var(--font-lato), Arial, sans-serif;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
 }
 
 body {
-  background: var(--background);
+  background: var(--cream);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-body), Arial, Helvetica, sans-serif;
+  line-height: 1.6;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-sans), Georgia, serif;
+  line-height: 1.2;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--cream-dark);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--almond-gold);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--soft-brown);
+}
+
+/* Animation Classes */
+.fade-in {
+  animation: fadeIn 0.6s ease-out forwards;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.slide-in-left {
+  animation: slideInLeft 0.6s ease-out forwards;
+}
+
+@keyframes slideInLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.slide-in-right {
+  animation: slideInRight 0.6s ease-out forwards;
+}
+
+@keyframes slideInRight {
+  from {
+    opacity: 0;
+    transform: translateX(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* Gradient Background */
+.gradient-gold {
+  background: linear-gradient(135deg, var(--almond-gold) 0%, var(--soft-brown) 100%);
+}
+
+.gradient-natural {
+  background: linear-gradient(135deg, var(--natural-green) 0%, var(--natural-green-light) 100%);
+}
+
+/* Glass Effect */
+.glass {
+  background: rgba(255, 245, 230, 0.8);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(217, 164, 65, 0.2);
+}
+
+/* Button Hover Effects */
+.btn-primary {
+  background: var(--almond-gold);
+  color: white;
+  transition: all 0.3s ease;
+}
+
+.btn-primary:hover {
+  background: var(--almond-gold-dark);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(217, 164, 65, 0.4);
+}
+
+.btn-secondary {
+  background: transparent;
+  border: 2px solid var(--almond-gold);
+  color: var(--almond-gold);
+  transition: all 0.3s ease;
+}
+
+.btn-secondary:hover {
+  background: var(--almond-gold);
+  color: white;
+}
+
+.btn-whatsapp {
+  background: #25D366;
+  color: white;
+  transition: all 0.3s ease;
+}
+
+.btn-whatsapp:hover {
+  background: #128C7E;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(37, 211, 102, 0.4);
+}
+
+/* Card Styles */
+.card {
+  background: white;
+  border-radius: 16px;
+  box-shadow: 0 4px 20px rgba(166, 118, 59, 0.1);
+  transition: all 0.3s ease;
+}
+
+.card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 30px rgba(166, 118, 59, 0.15);
+}
+
+/* Section Divider */
+.section-divider {
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--almond-gold), transparent);
+  margin: 2rem 0;
+}
+
+/* Text Selection */
+::selection {
+  background: var(--almond-gold);
+  color: white;
+}
+
+/* Custom Animations for Product Images */
+.animate-float {
+  animation: float 3s ease-in-out infinite;
+}
+
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+.animate-pulse-slow {
+  animation: pulseSlow 4s ease-in-out infinite;
+}
+
+@keyframes pulseSlow {
+  0%, 100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.8;
+    transform: scale(1.02);
+  }
+}
+
+.animate-spin-slow {
+  animation: spinSlow 20s linear infinite;
+}
+
+@keyframes spinSlow {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.animate-bounce-slow {
+  animation: bounceSlow 2s ease-in-out infinite;
+}
+
+@keyframes bounceSlow {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-5px);
+  }
+}
+
+/* Image Circle Container */
+.circle-image-container {
+  position: relative;
+  border-radius: 50%;
+  overflow: hidden;
 }

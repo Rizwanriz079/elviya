@@ -1,0 +1,78 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model Admin {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  password  String
+  name      String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Product {
+  id          String   @id @default(cuid())
+  name        String
+  description String
+  price       Float
+  sizes       String   // JSON string for sizes array
+  ingredients String   // JSON string for ingredients array
+  howToUse    String   // JSON string for how to use array
+  benefits    String   // JSON string for benefits array
+  isActive    Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model Order {
+  id          String   @id @default(cuid())
+  customerName String
+  phone       String
+  email       String?
+  address     String
+  productId   String
+  productName String
+  size        String
+  quantity    Int      @default(1)
+  price       Float
+  status      String   @default("pending") // pending, confirmed, shipped, delivered
+  notes       String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model SiteSettings {
+  id            String  @id @default("settings")
+  brandName     String  @default("ELVYA")
+  tagline       String  @default("Pure Homemade Almond Oil")
+  phone         String  @default("+919999999999")
+  whatsapp      String  @default("919999999999")
+  email         String  @default("hello@elvya.com")
+  instagram     String  @default("https://instagram.com/elvya")
+  address       String  @default("Mumbai, Maharashtra, India")
+  aboutText     String?
+}
+
+model Certificate {
+  id          String   @id @default(cuid())
+  title       String
+  description String?
+  imageUrl    String
+  pdfUrl      String?
+  isActive    Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model LegalPage {
+  id        String   @id
+  title     String
+  content   String
+  updatedAt DateTime @updatedAt
+}
