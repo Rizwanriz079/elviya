@@ -165,7 +165,7 @@ export default function ProductPage() {
       <section className="py-16">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid lg:grid-cols-2 gap-12 items-start">
-            <div className="sticky top-24">
+            <div className="lg:sticky lg:top-24 lg:self-start">
               {/* Main product image with circular gradient - larger and lighter */}
               <div className="relative flex items-center justify-center min-h-[450px]">
                 {/* Animated circular gradient backgrounds - lighter colors */}
