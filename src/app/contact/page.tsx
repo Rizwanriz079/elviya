@@ -90,9 +90,16 @@ export default function ContactPage() {
                   <Clock className="w-6 h-6 text-[#D9A441]" />
                   <h3 className="text-xl font-bold text-[#2D1F0E]">Business Hours</h3>
                 </div>
-                <div className="space-y-2 text-[#8B7355]">
-                  <p>Monday - Saturday: 9:00 AM - 7:00 PM</p>
-                  <p>Sunday: 10:00 AM - 5:00 PM</p>
+                <div className="space-y-3 text-[#8B7355]">
+                  <div>
+                    <p className="font-semibold text-[#2D1F0E]">Monday - Friday</p>
+                    <p>9:00 AM - 6:00 PM</p>
+                    <p className="text-sm italic text-[#D9A441]">Available to take orders through WhatsApp</p>
+                  </div>
+                  <div>
+                    <p className="font-semibold text-[#2D1F0E]">Saturday & Sunday</p>
+                    <p className="text-red-600 font-medium">Holiday</p>
+                  </div>
                 </div>
               </div>
             </div>

@@ -7,7 +7,7 @@ export const BRAND = {
   phone: '+919207067522',
   whatsapp: '919207067522',
   instagram: 'https://instagram.com/elviaherbals',
-  address: 'India',
+  address: 'Kerala, India',
 };
 
 // Product Image

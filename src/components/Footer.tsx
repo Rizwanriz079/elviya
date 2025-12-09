@@ -113,7 +113,7 @@ export default function Footer() {
         </div>
 
         {/* Copyright */}
-        <div className="border-t border-[#3D1F0E] mt-12 pt-8 text-center">
+        <div className="mt-12 pt-8 text-center">
           <p className="text-[#8B7355]">
             &copy; {new Date().getFullYear()} Elvia Herbals. All rights reserved. Made with love in India.
           </p>

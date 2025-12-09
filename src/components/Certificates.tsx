@@ -115,52 +115,103 @@ export default function Certificates() {
         </div>
       </section>
 
-      {/* Lightbox Modal */}
+      {/* Redesigned Lightbox Modal */}
       {selectedCert && (
         <div
-          className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80"
+          className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/75 backdrop-blur-md animate-fadeIn"
           onClick={() => setSelectedCert(null)}
         >
           <div
-            className="relative max-w-4xl w-full bg-white rounded-2xl overflow-hidden"
+            className="relative max-w-6xl w-full bg-white rounded-3xl overflow-hidden shadow-2xl transform transition-all animate-scaleIn"
             onClick={(e) => e.stopPropagation()}
           >
-            <button
-              onClick={() => setSelectedCert(null)}
-              className="absolute top-4 right-4 z-10 w-10 h-10 bg-white rounded-full flex items-center justify-center shadow-lg hover:bg-gray-100 transition-colors"
-            >
-              <span className="text-2xl text-[#8B7355]">&times;</span>
-            </button>
-
-            <div className="grid md:grid-cols-2">
-              <div className="aspect-square relative bg-[#F5E6D3]">
-                {selectedCert.imageUrl && (
-                  <Image
-                    src={selectedCert.imageUrl}
-                    alt={selectedCert.title}
-                    fill
-                    className="object-contain p-4"
-                  />
-                )}
-              </div>
-              <div className="p-8 flex flex-col justify-center">
-                <div className="inline-flex items-center gap-2 text-[#D9A441] mb-4">
-                  <Award className="w-5 h-5" />
-                  <span className="text-sm font-medium">Certificate</span>
+            <div className="grid md:grid-cols-2 gap-0">
+              {/* Image Section - Left Side */}
+              <div className="relative bg-gradient-to-br from-[#FFF5E6] to-[#F5E6D3] p-12 flex items-center justify-center min-h-[500px] md:min-h-[700px]">
+                {/* Decorative Background Elements */}
+                <div className="absolute inset-0 overflow-hidden">
+                  <div className="absolute top-0 right-0 w-64 h-64 bg-[#D9A441]/5 rounded-full blur-3xl"></div>
+                  <div className="absolute bottom-0 left-0 w-48 h-48 bg-[#3D6A46]/5 rounded-full blur-3xl"></div>
                 </div>
-                <h3 className="text-2xl font-bold text-[#2D1F0E] mb-4">{selectedCert.title}</h3>
+
+                {/* Certificate Image */}
+                <div className="relative z-10 w-full max-w-lg">
+                  {selectedCert.imageUrl && (
+                    <div className="relative aspect-[3/4] shadow-2xl rounded-2xl overflow-hidden border-8 border-white/80 transform hover:scale-105 transition-transform duration-300">
+                      <Image
+                        src={selectedCert.imageUrl}
+                        alt={selectedCert.title}
+                        fill
+                        className="object-cover"
+                      />
+                      {/* Image Overlay */}
+                      <div className="absolute inset-0 ring-1 ring-inset ring-black/10"></div>
+                    </div>
+                  )}
+
+                  {/* Decorative Corner Accents */}
+                  <div className="absolute -top-4 -left-4 w-20 h-20 border-t-4 border-l-4 border-[#D9A441] rounded-tl-3xl"></div>
+                  <div className="absolute -bottom-4 -right-4 w-20 h-20 border-b-4 border-r-4 border-[#D9A441] rounded-br-3xl"></div>
+                </div>
+              </div>
+
+              {/* Content Section - Right Side */}
+              <div className="p-10 md:p-12 flex flex-col justify-center bg-white relative">
+                {/* Close Button - Top Right */}
+                <button
+                  onClick={() => setSelectedCert(null)}
+                  className="absolute top-8 right-8 w-10 h-10 flex items-center justify-center text-[#8B7355] hover:text-[#D9A441] transition-colors"
+                  aria-label="Close modal"
+                >
+                  <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                  </svg>
+                </button>
+
+                {/* Certificate Badge */}
+                <div className="inline-flex items-center gap-2 bg-gradient-to-r from-[#D9A441] to-[#C4932B] text-white px-5 py-2.5 rounded-full mb-6 w-fit shadow-md">
+                  <Award className="w-5 h-5" />
+                  <span className="text-sm font-bold tracking-wider uppercase">Certificate</span>
+                </div>
+
+                {/* Title */}
+                <h3 className="text-4xl md:text-5xl font-bold text-[#2D1F0E] mb-6 leading-tight">
+                  {selectedCert.title}
+                </h3>
+
+                {/* Description */}
                 {selectedCert.description && (
-                  <p className="text-[#8B7355] mb-6">{selectedCert.description}</p>
+                  <p className="text-[#8B7355] text-lg leading-relaxed mb-8">
+                    {selectedCert.description}
+                  </p>
                 )}
+
+                {/* Divider */}
+                <div className="relative h-px bg-[#D9A441]/20 mb-8">
+                  <div className="absolute inset-0 bg-gradient-to-r from-transparent via-[#D9A441] to-transparent"></div>
+                </div>
+
+                {/* Verified Badge */}
+                <div className="flex items-start gap-4 p-5 bg-gradient-to-br from-[#3D6A46]/5 to-[#3D6A46]/10 rounded-2xl mb-8 border border-[#3D6A46]/10">
+                  <div className="w-12 h-12 rounded-full bg-[#3D6A46] flex items-center justify-center flex-shrink-0 shadow-lg">
+                    <Award className="w-6 h-6 text-white" />
+                  </div>
+                  <div>
+                    <p className="text-base font-bold text-[#2D1F0E] mb-1">Verified & Authentic</p>
+                    <p className="text-sm text-[#8B7355]">This certificate has been verified for quality and authenticity</p>
+                  </div>
+                </div>
+
+                {/* Download Button */}
                 {selectedCert.pdfUrl && (
                   <a
                     href={selectedCert.pdfUrl}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-flex items-center gap-2 btn-primary px-6 py-3 rounded-xl w-fit"
+                    className="w-full inline-flex items-center justify-center gap-3 bg-gradient-to-r from-[#D9A441] to-[#C4932B] text-white px-8 py-4 rounded-xl font-bold text-lg shadow-lg hover:shadow-2xl hover:scale-[1.02] transition-all"
                   >
-                    <FileText className="w-5 h-5" />
-                    Download PDF
+                    <FileText className="w-6 h-6" />
+                    Download Certificate
                   </a>
                 )}
               </div>
