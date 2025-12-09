@@ -1,9 +1,10 @@
 'use client';
 
 import Link from 'next/link';
+import Image from 'next/image';
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { Menu, X, Leaf } from 'lucide-react';
+import { Menu, X } from 'lucide-react';
 
 export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -31,13 +32,19 @@ export default function Header() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-20">
           {/* Logo */}
-          <Link href="/" prefetch={true} className="flex items-center gap-2 group">
-            <div className="w-10 h-10 rounded-full gradient-gold flex items-center justify-center group-hover:scale-110 transition-transform">
-              <Leaf className="w-5 h-5 text-white" />
+          <Link href="/" prefetch={true} className="flex items-center gap-3 group">
+            <div className="relative w-12 h-12 rounded-full overflow-hidden shadow-md border-2 border-[#D9A441] group-hover:scale-110 group-hover:border-[#C4932B] transition-all">
+              <Image
+                src="/images/logo.jpg"
+                alt="Elvia Herbals Logo"
+                fill
+                className="object-cover"
+                priority
+              />
             </div>
             <div className="flex flex-col">
-              <span className="text-xl font-bold text-[#2D1F0E] leading-tight">Elvia</span>
-              <span className="text-xs text-[#3D6A46] font-medium -mt-1">HERBALS</span>
+              <span className="text-xl font-bold text-[#D9A441] leading-tight group-hover:text-[#C4932B] transition-colors">Elvia</span>
+              <span className="text-xs text-[#8B7355] font-medium -mt-1">HERBALS</span>
             </div>
           </Link>
 

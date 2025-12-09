@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { Droplets, Hand, Thermometer, Award, Sparkles, Heart, Shield, Leaf, Star, ArrowRight } from "lucide-react";
@@ -25,9 +25,23 @@ interface Product {
 
 export default function Home() {
   const [product, setProduct] = useState<Product | null>(null);
+  const [showScrollIndicator, setShowScrollIndicator] = useState(true);
+  const scrollIndicatorRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     fetchProduct();
+
+    // Hide scroll indicator on scroll
+    const handleScroll = () => {
+      if (window.scrollY > 100) {
+        setShowScrollIndicator(false);
+      } else {
+        setShowScrollIndicator(true);
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
   const fetchProduct = async () => {
@@ -62,8 +76,8 @@ export default function Home() {
     ? displayProduct.images[0]
     : "/images/product-main.jpg";
 
-  // Get the medium size (100ml) for display, fallback to first size
-  const displaySize = displayProduct.sizes.find(s => s.label === "100ml") || displayProduct.sizes[1] || displayProduct.sizes[0];
+  // Get the 60ml size for display, fallback to first size
+  const displaySize = displayProduct.sizes.find(s => s.label === "60ml") || displayProduct.sizes[0];
   const features = [
     { icon: <Droplets className="w-8 h-8" />, title: "100% Pure", description: "No chemicals, no preservatives. Just pure almond goodness." },
     { icon: <Hand className="w-8 h-8" />, title: "Handmade", description: "Crafted with care using traditional methods." },
@@ -80,6 +94,109 @@ export default function Home() {
 
   return (
     <div className="overflow-hidden">
+      {/* Cover Page with Logo - Light Theme */}
+      <section className="relative min-h-screen flex items-center justify-center bg-gradient-to-br from-[#FFF5E6] via-[#F5E6D3] to-[#EDD9B5] overflow-hidden">
+        {/* Decorative Background Elements */}
+        <div className="absolute inset-0">
+          <div className="absolute top-20 left-10 w-64 h-64 bg-[#D9A441]/10 rounded-full blur-3xl animate-pulse-slow"></div>
+          <div className="absolute bottom-20 right-10 w-96 h-96 bg-[#3D6A46]/10 rounded-full blur-3xl animate-pulse-slow" style={{ animationDelay: '1s' }}></div>
+          <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-[#D9A441]/5 rounded-full blur-3xl animate-spin-slow"></div>
+        </div>
+
+        {/* Main Content */}
+        <div className="relative z-10 max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+          {/* Logo - Large Size */}
+          <div className="mb-12 animate-scaleIn">
+            <div className="relative w-80 h-80 sm:w-96 sm:h-96 lg:w-[450px] lg:h-[450px] mx-auto">
+              <div className="absolute inset-0 bg-gradient-to-br from-[#D9A441]/20 to-[#3D6A46]/20 rounded-full blur-2xl animate-pulse-slow"></div>
+              <div className="relative w-full h-full rounded-full overflow-hidden shadow-2xl border-8 border-white/50 backdrop-blur">
+                <Image
+                  src="/images/logo.jpg"
+                  alt="Elvia Herbals Logo"
+                  fill
+                  className="object-cover"
+                  priority
+                />
+              </div>
+            </div>
+          </div>
+
+          {/* Brand Name */}
+          <h1 className="text-5xl sm:text-6xl lg:text-7xl font-bold mb-6 fade-in">
+            <span className="bg-gradient-to-r from-[#D9A441] via-[#C4932B] to-[#D9A441] bg-clip-text text-transparent">
+              Elvia Herbals
+            </span>
+          </h1>
+
+          {/* Tagline */}
+          <p className="text-2xl sm:text-3xl text-[#2D1F0E] font-semibold mb-4 fade-in" style={{ animationDelay: '0.2s' }}>
+            Pure Homemade Almond Oil
+          </p>
+
+          {/* Description */}
+          <p className="text-lg sm:text-xl text-[#8B7355] mb-12 max-w-2xl mx-auto fade-in" style={{ animationDelay: '0.4s' }}>
+            Made by Hand, With Love<br />
+            Experience the Natural Goodness in Every Drop
+          </p>
+
+          {/* Call to Action Buttons */}
+          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center fade-in" style={{ animationDelay: '0.6s' }}>
+            <WhatsAppButton
+              message="Hi Elvia Herbals! I want to order a 60ml bottle for Rs. 699."
+              className="px-8 py-4 text-lg shadow-xl hover:shadow-2xl"
+            >
+              Order 60ml for Rs. 699
+            </WhatsAppButton>
+            <Link
+              href="/product"
+              className="inline-flex items-center gap-2 px-8 py-4 rounded-xl font-semibold text-lg bg-white text-[#D9A441] shadow-xl hover:shadow-2xl hover:scale-105 transition-all border-2 border-[#D9A441]/20"
+            >
+              View Details <ArrowRight className="w-5 h-5" />
+            </Link>
+          </div>
+
+          {/* Trust Badges */}
+          <div className="mt-16 grid grid-cols-3 gap-6 sm:gap-8 max-w-3xl mx-auto fade-in" style={{ animationDelay: '0.8s' }}>
+            <div className="text-center">
+              <div className="w-16 h-16 sm:w-20 sm:h-20 mx-auto mb-3 rounded-full bg-white shadow-lg flex items-center justify-center">
+                <Shield className="w-8 h-8 sm:w-10 sm:h-10 text-[#3D6A46]" />
+              </div>
+              <p className="text-sm sm:text-base font-bold text-[#2D1F0E]">100% Pure</p>
+              <p className="text-xs sm:text-sm text-[#8B7355]">No Chemicals</p>
+            </div>
+            <div className="text-center">
+              <div className="w-16 h-16 sm:w-20 sm:h-20 mx-auto mb-3 rounded-full bg-white shadow-lg flex items-center justify-center">
+                <Thermometer className="w-8 h-8 sm:w-10 sm:h-10 text-[#D9A441]" />
+              </div>
+              <p className="text-sm sm:text-base font-bold text-[#2D1F0E]">Cold Pressed</p>
+              <p className="text-xs sm:text-sm text-[#8B7355]">Traditional Method</p>
+            </div>
+            <div className="text-center">
+              <div className="w-16 h-16 sm:w-20 sm:h-20 mx-auto mb-3 rounded-full bg-white shadow-lg flex items-center justify-center">
+                <Heart className="w-8 h-8 sm:w-10 sm:h-10 text-[#D9A441]" />
+              </div>
+              <p className="text-sm sm:text-base font-bold text-[#2D1F0E]">Handmade</p>
+              <p className="text-xs sm:text-sm text-[#8B7355]">With Love</p>
+            </div>
+          </div>
+
+          {/* Scroll Indicator - Auto-hide on scroll */}
+          {showScrollIndicator && (
+            <div
+              ref={scrollIndicatorRef}
+              className="absolute bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce transition-opacity duration-300"
+              style={{ opacity: showScrollIndicator ? 1 : 0 }}
+            >
+              <div className="flex flex-col items-center gap-2 text-[#8B7355]">
+                <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 14l-7 7m0 0l-7-7m7 7V3" />
+                </svg>
+              </div>
+            </div>
+          )}
+        </div>
+      </section>
+
       <section className="relative min-h-[90vh] flex items-center">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
           <div className="grid lg:grid-cols-2 gap-12 items-center">
@@ -197,9 +314,15 @@ export default function Home() {
                 </div>
               </div>
               <div className="text-center mt-6">
-                <h3 className="text-2xl font-bold text-[#2D1F0E] mb-2">{displaySize?.label || "100ml"} Bottle</h3>
-                <p className="text-3xl font-bold text-[#D9A441] mb-4">Rs.{displaySize?.price || 599}</p>
-                <WhatsAppButton message={`Hi Elvia Herbals! I want to order a ${displaySize?.label || "100ml"} bottle of ${displayProduct.name}.`} className="text-sm">Order Now</WhatsAppButton>
+                <h3 className="text-2xl font-bold text-[#2D1F0E] mb-2">60ml Bottle</h3>
+                <div className="flex items-center justify-center gap-3 mb-4">
+                  <p className="text-2xl font-bold text-[#8B7355] line-through">Rs.899</p>
+                  <p className="text-4xl font-bold text-[#D9A441]">Rs.699</p>
+                </div>
+                <div className="inline-block bg-[#3D6A46] text-white px-4 py-1 rounded-full text-sm font-bold mb-3">
+                  Save Rs.200
+                </div>
+                <WhatsAppButton message="Hi Elvia Herbals! I want to order a 60ml bottle for Rs. 699." className="text-sm">Order Now</WhatsAppButton>
               </div>
               <div className="absolute top-0 right-0 bg-[#3D6A46] text-white px-4 py-2 rounded-full font-bold shadow-lg z-20 animate-bounce-slow">Best Seller</div>
             </div>

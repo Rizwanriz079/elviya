@@ -21,9 +21,7 @@ export const PRODUCT = {
   currency: 'INR',
   currencySymbol: '₹',
   sizes: [
-    { id: '50ml', label: '50ml', price: 299, originalPrice: 399 },
-    { id: '100ml', label: '100ml', price: 599, originalPrice: 799 },
-    { id: '200ml', label: '200ml', price: 999, originalPrice: 1299 },
+    { id: '60ml', label: '60ml', price: 699, originalPrice: 899 },
   ],
   description: 'Our pure almond oil is cold-pressed from premium quality almonds, preserving all the natural nutrients and benefits. Made with traditional methods passed down through generations, each bottle contains the essence of pure, unadulterated almond goodness.',
   ingredients: ['100% Pure Almonds', 'No Preservatives', 'No Chemicals', 'No Additives'],

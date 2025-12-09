@@ -34,7 +34,7 @@ interface Product {
 export default function ProductPage() {
   const [products, setProducts] = useState<Product[]>([]);
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
-  const [selectedSize, setSelectedSize] = useState<ProductSize>(PRODUCT.sizes[1]);
+  const [selectedSize, setSelectedSize] = useState<ProductSize>(PRODUCT.sizes[0]);
   const [openFaq, setOpenFaq] = useState<number | null>(null);
   const [selectedImage, setSelectedImage] = useState(0);
   const [loading, setLoading] = useState(true);
@@ -62,9 +62,7 @@ export default function ProductPage() {
         // Select first product by default
         const firstProduct = allProducts[0];
         setSelectedProduct(firstProduct);
-        if (firstProduct.sizes && firstProduct.sizes.length > 1) {
-          setSelectedSize(firstProduct.sizes[1]);
-        } else if (firstProduct.sizes && firstProduct.sizes.length > 0) {
+        if (firstProduct.sizes && firstProduct.sizes.length > 0) {
           setSelectedSize(firstProduct.sizes[0]);
         }
       }
@@ -78,9 +76,7 @@ export default function ProductPage() {
   const handleSelectProduct = (product: Product) => {
     setSelectedProduct(product);
     setSelectedImage(0);
-    if (product.sizes && product.sizes.length > 1) {
-      setSelectedSize(product.sizes[1]);
-    } else if (product.sizes && product.sizes.length > 0) {
+    if (product.sizes && product.sizes.length > 0) {
       setSelectedSize(product.sizes[0]);
     }
   };
@@ -230,41 +226,40 @@ export default function ProductPage() {
                 <p className="text-lg text-[#8B7355]">{displayProduct.description}</p>
               </div>
 
+              {/* Size Display - Only 60ml */}
               <div className="space-y-4">
-                <h3 className="font-bold text-[#2D1F0E]">Select Size</h3>
-                <div className="flex flex-wrap gap-3">
-                  {displayProduct.sizes.map((size) => (
-                    <button
-                      key={size.id}
-                      onClick={() => setSelectedSize(size)}
-                      className={`px-6 py-3 rounded-xl border-2 transition-all ${
-                        selectedSize.id === size.id
-                          ? "border-[#D9A441] bg-[#D9A441]/10"
-                          : "border-[#D9C4A8] hover:border-[#D9A441]"
-                      }`}
-                    >
-                      <span className="block font-bold text-[#2D1F0E]">{size.label}</span>
-                      <span className="text-sm text-[#8B7355]">
-                        <span className="line-through mr-2">Rs.{size.originalPrice}</span>
-                        <span className="text-[#D9A441] font-bold">Rs.{size.price}</span>
-                      </span>
-                    </button>
-                  ))}
+                <div className="flex items-center gap-3">
+                  <h3 className="font-bold text-[#2D1F0E] text-xl">Size:</h3>
+                  <div className="inline-flex items-center gap-2 px-5 py-2 rounded-xl border-2 border-[#D9A441] bg-[#D9A441]/10">
+                    <span className="font-bold text-[#2D1F0E] text-lg">60ml</span>
+                  </div>
                 </div>
               </div>
 
-              <div className="flex items-center gap-4">
-                <div className="text-4xl font-bold text-[#D9A441]">Rs.{selectedSize.price}</div>
-                <div className="bg-[#3D6A46] text-white px-3 py-1 rounded-full text-sm font-medium">
-                  Save Rs.{selectedSize.originalPrice - selectedSize.price}
+              {/* Price with Offer */}
+              <div className="bg-gradient-to-r from-[#D9A441]/10 to-[#C4932B]/10 p-6 rounded-2xl border-2 border-[#D9A441]/30">
+                <div className="flex items-center justify-between mb-3">
+                  <div>
+                    <p className="text-sm text-[#8B7355] mb-1">Original Price</p>
+                    <p className="text-2xl font-bold text-[#8B7355] line-through">Rs.899</p>
+                  </div>
+                  <div className="text-right">
+                    <p className="text-sm text-[#3D6A46] font-semibold mb-1">Special Offer</p>
+                    <p className="text-4xl font-bold text-[#D9A441]">Rs.699</p>
+                  </div>
+                </div>
+                <div className="flex items-center justify-center gap-2 pt-3 border-t border-[#D9A441]/20">
+                  <span className="text-sm text-[#8B7355]">You Save:</span>
+                  <span className="bg-[#3D6A46] text-white px-4 py-1 rounded-full text-sm font-bold">Rs.200</span>
+                  <span className="text-[#3D6A46] font-bold text-sm">(22% OFF)</span>
                 </div>
               </div>
 
               <WhatsAppButton
-                message={createOrderMessage(displayProduct.name, selectedSize.label, selectedSize.price)}
+                message="Hi Elvia Herbals! I want to order a 60ml bottle of Pure Almond Oil for Rs. 699."
                 className="w-full py-4 text-lg"
               >
-                Buy Now on WhatsApp
+                Order 60ml for Rs. 699
               </WhatsAppButton>
 
               <div className="grid grid-cols-2 gap-4">
