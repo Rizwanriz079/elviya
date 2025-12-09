@@ -35,11 +35,16 @@
 
 * {
   box-sizing: border-box;
-  outline: none !important;
-  border: none;
 }
 
-footer * {
+/* Remove outlines in production only, keep for accessibility */
+*:focus-visible {
+  outline: 2px solid var(--almond-gold);
+  outline-offset: 2px;
+}
+
+/* Prevent unwanted borders in footer */
+footer > div > div {
   border: none !important;
   outline: none !important;
 }
