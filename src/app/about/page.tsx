@@ -22,7 +22,7 @@ export const metadata: Metadata = {
     url: "https://www.elviaherbals.com/about",
     images: [
       {
-        url: "https://www.elviaherbals.com/images/logo.jpg",
+        url: "/images/logo.jpg",
         width: 1200,
         height: 630,
         alt: "Elvia Herbals Logo - Kerala",
@@ -33,7 +33,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "About Elvia Herbals",
     description: "Our story of creating pure, handmade almond oil in Kerala",
-    images: ["https://www.elviaherbals.com/images/logo.jpg"],
+    images: ["/images/logo.jpg"],
   },
 };
 

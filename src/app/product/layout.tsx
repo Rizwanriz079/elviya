@@ -19,11 +19,11 @@ export const metadata: Metadata = {
   openGraph: {
     title: "Pure Almond Oil - Elvia Herbals | Free Shipping Kerala",
     description: "Buy pure, cold-pressed almond oil. 60ml for Rs. 699. Free shipping all over Kerala. Handmade with traditional methods.",
-    type: "product",
+    type: "website",
     url: "https://www.elviaherbals.com/product",
     images: [
       {
-        url: "https://www.elviaherbals.com/images/product-main.jpg",
+        url: "/images/product-main.jpg",
         width: 1200,
         height: 630,
         alt: "Elvia Herbals Pure Almond Oil - Handmade in Kerala",
@@ -34,7 +34,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "Pure Almond Oil - Elvia Herbals",
     description: "60ml for Rs. 699 | Free shipping Kerala",
-    images: ["https://www.elviaherbals.com/images/product-main.jpg"],
+    images: ["/images/product-main.jpg"],
   },
 };
 

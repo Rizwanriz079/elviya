@@ -46,7 +46,7 @@ export const metadata: Metadata = {
     url: "https://www.elviaherbals.com",
     images: [
       {
-        url: "https://www.elviaherbals.com/images/product-main.jpg",
+        url: "/images/product-main.jpg",
         width: 1200,
         height: 630,
         alt: "Elvia Herbals Pure Almond Oil - Handmade in Kerala",
@@ -57,7 +57,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "Elvia Herbals - Pure Homemade Almond Oil",
     description: "100% pure almond oil from Kerala. Free shipping all over Kerala!",
-    images: ["https://www.elviaherbals.com/images/product-main.jpg"],
+    images: ["/images/product-main.jpg"],
   },
 };
 

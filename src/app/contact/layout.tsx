@@ -19,7 +19,7 @@ export const metadata: Metadata = {
     url: "https://www.elviaherbals.com/contact",
     images: [
       {
-        url: "https://www.elviaherbals.com/images/logo.jpg",
+        url: "/images/logo.jpg",
         width: 1200,
         height: 630,
         alt: "Contact Elvia Herbals Kerala",
@@ -30,7 +30,7 @@ export const metadata: Metadata = {
     card: "summary",
     title: "Contact Elvia Herbals",
     description: "Order from Kerala | Free shipping",
-    images: ["https://www.elviaherbals.com/images/logo.jpg"],
+    images: ["/images/logo.jpg"],
   },
 };
 
