@@ -104,7 +104,7 @@ export default function Home() {
         </div>
 
         {/* Main Content */}
-        <div className="relative z-10 max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+        <div className="relative z-10 max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 pt-24 text-center">
           {/* Logo - Large Size */}
           <div className="mb-12 animate-scaleIn">
             <div className="relative w-80 h-80 sm:w-96 sm:h-96 lg:w-[450px] lg:h-[450px] mx-auto">
@@ -235,11 +235,11 @@ export default function Home() {
             <div className="relative slide-in-right">
               <div className="relative w-full max-w-xl mx-auto flex items-center justify-center min-h-[500px]">
                 {/* Animated circular gradient backgrounds - lighter colors */}
-                <div className="absolute w-[420px] h-[420px] sm:w-[480px] sm:h-[480px] rounded-full bg-gradient-to-br from-[#F5E6D3] via-[#EDD9B5] to-[#E5C99A] shadow-xl animate-pulse-slow" />
-                <div className="absolute w-[380px] h-[380px] sm:w-[440px] sm:h-[440px] rounded-full bg-gradient-to-tr from-[#EDD9B5]/80 to-[#D9A441]/40 animate-spin-slow" />
-                <div className="absolute w-[340px] h-[340px] sm:w-[400px] sm:h-[400px] rounded-full bg-gradient-to-bl from-[#FFF5E6]/90 to-[#E5C99A]/60" />
+                <div className="absolute w-[420px] h-[420px] sm:w-[480px] sm:h-[480px] rounded-2xl bg-gradient-to-br from-[#F5E6D3] via-[#EDD9B5] to-[#E5C99A] shadow-xl animate-pulse-slow" />
+                <div className="absolute w-[380px] h-[380px] sm:w-[440px] sm:h-[440px] rounded-2xl bg-gradient-to-tr from-[#EDD9B5]/80 to-[#D9A441]/40 animate-spin-slow" />
+                <div className="absolute w-[340px] h-[340px] sm:w-[400px] sm:h-[400px] rounded-2xl bg-gradient-to-bl from-[#FFF5E6]/90 to-[#E5C99A]/60" />
                 {/* Product image - larger and contained in circle */}
-                <div className="relative z-10 w-[320px] h-[320px] sm:w-[380px] sm:h-[380px] rounded-full overflow-hidden flex items-center justify-center bg-gradient-to-b from-white/20 to-transparent animate-float">
+                <div className="relative z-10 w-[320px] h-[320px] sm:w-[380px] sm:h-[380px] rounded-2xl overflow-hidden flex items-center justify-center bg-gradient-to-b from-white/20 to-transparent animate-float">
                   <Image
                     src={productImage}
                     alt={displayProduct.name}
@@ -300,10 +300,10 @@ export default function Home() {
             <div className="relative">
               <div className="relative flex items-center justify-center min-h-[350px]">
                 {/* Animated circular gradient backgrounds - lighter colors */}
-                <div className="absolute w-[320px] h-[320px] rounded-full bg-gradient-to-br from-[#F5E6D3] via-[#EDD9B5] to-[#E5C99A] shadow-lg animate-pulse-slow" />
-                <div className="absolute w-[280px] h-[280px] rounded-full bg-gradient-to-tr from-[#EDD9B5]/70 to-[#D9A441]/30" />
+                <div className="absolute w-[320px] h-[320px] rounded-lg bg-gradient-to-br from-[#F5E6D3] via-[#EDD9B5] to-[#E5C99A] shadow-lg animate-pulse-slow" />
+                <div className="absolute w-[280px] h-[280px] rounded-lg bg-gradient-to-tr from-[#EDD9B5]/70 to-[#D9A441]/30" />
                 {/* Product image in circle */}
-                <div className="relative z-10 w-[260px] h-[260px] rounded-full overflow-hidden flex items-center justify-center animate-float">
+                <div className="relative z-10 w-[260px] h-[260px] rounded-lg overflow-hidden flex items-center justify-center animate-float">
                   <Image
                     src={productImage}
                     alt={`${displayProduct.name} ${displaySize?.label || ""}`}

@@ -3,7 +3,7 @@ export const BRAND = {
   name: 'Elvia Herbals',
   tagline: 'Pure Homemade Almond Oil',
   description: 'Made by Hand, With Love',
-  email: 'hello@elviaherbals.com',
+  email: 'elviaherbals@gmail.com',
   phone: '+919207067522',
   whatsapp: '919207067522',
   instagram: 'https://instagram.com/elviaherbals',
