@@ -1,6 +1,41 @@
 import { Heart, Leaf, Award, Target, Eye } from "lucide-react";
 import WhatsAppButton from "@/components/WhatsAppButton";
 import Certificates from "@/components/Certificates";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "About Elvia Herbals | Kerala's Pure Homemade Almond Oil Brand",
+  description: "Learn about Elvia Herbals' journey in creating pure, handmade almond oil in Kerala using traditional methods. Discover our values of purity, care, and tradition. Free shipping across Kerala.",
+  keywords: [
+    "about Elvia Herbals",
+    "Kerala almond oil brand",
+    "traditional oil making Kerala",
+    "pure almond oil brand",
+    "cold pressed oil Kerala",
+    "homemade almond oil",
+    "Kerala natural products"
+  ],
+  openGraph: {
+    title: "About Elvia Herbals - Kerala's Pure Homemade Almond Oil",
+    description: "Learn about our journey in creating pure, handmade almond oil in Kerala using traditional methods.",
+    type: "website",
+    url: "https://www.elviaherbals.com/about",
+    images: [
+      {
+        url: "https://www.elviaherbals.com/images/logo.jpg",
+        width: 1200,
+        height: 630,
+        alt: "Elvia Herbals Logo - Kerala",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "About Elvia Herbals",
+    description: "Our story of creating pure, handmade almond oil in Kerala",
+    images: ["https://www.elviaherbals.com/images/logo.jpg"],
+  },
+};
 
 export default function AboutPage() {
   return (

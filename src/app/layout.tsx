@@ -4,6 +4,7 @@ import "./globals.css";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import WhatsAppButton from "@/components/WhatsAppButton";
+import { OrganizationSchema, WebsiteSchema } from "@/components/StructuredData";
 
 const playfair = Playfair_Display({
   variable: "--font-playfair",
@@ -19,16 +20,44 @@ const lato = Lato({
 });
 
 export const metadata: Metadata = {
-  title: "ELVYA - Pure Homemade Almond Oil | Natural Skincare & Haircare",
-  description: "Experience the natural goodness of 100% pure, cold-pressed, handmade almond oil. Perfect for skin, hair, and overall wellness. Made with love, no chemicals.",
-  keywords: ["almond oil", "pure almond oil", "homemade almond oil", "natural skincare", "hair oil", "cold pressed", "organic"],
-  authors: [{ name: "ELVYA" }],
+  title: "Elvia Herbals - Pure Homemade Almond Oil | Free Shipping Across Kerala",
+  description: "Elvia Herbals - 100% pure, cold-pressed, handmade almond oil from Kerala. Perfect for skin and hair care. Free shipping all over Kerala. Order your natural almond oil today!",
+  keywords: [
+    "almond oil Kerala",
+    "pure almond oil",
+    "homemade almond oil",
+    "Elvia Herbals",
+    "natural skincare Kerala",
+    "hair oil Kerala",
+    "cold pressed almond oil",
+    "organic almond oil",
+    "free shipping Kerala",
+    "almond oil delivery Kerala",
+    "handmade beauty products Kerala"
+  ],
+  authors: [{ name: "Elvia Herbals" }],
+  manifest: "/manifest.json",
   openGraph: {
-    title: "ELVYA - Pure Homemade Almond Oil",
-    description: "100% pure, cold-pressed, handmade almond oil for skin and hair",
+    title: "Elvia Herbals - Pure Homemade Almond Oil | Free Shipping Kerala",
+    description: "100% pure, cold-pressed, handmade almond oil from Kerala. Free shipping across Kerala. Natural skincare and haircare.",
     type: "website",
     locale: "en_IN",
-    siteName: "ELVYA",
+    siteName: "Elvia Herbals",
+    url: "https://www.elviaherbals.com",
+    images: [
+      {
+        url: "https://www.elviaherbals.com/images/product-main.jpg",
+        width: 1200,
+        height: 630,
+        alt: "Elvia Herbals Pure Almond Oil - Handmade in Kerala",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Elvia Herbals - Pure Homemade Almond Oil",
+    description: "100% pure almond oil from Kerala. Free shipping all over Kerala!",
+    images: ["https://www.elviaherbals.com/images/product-main.jpg"],
   },
 };
 
@@ -39,6 +68,10 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
+      <head>
+        <OrganizationSchema />
+        <WebsiteSchema />
+      </head>
       <body
         className={`${playfair.variable} ${lato.variable} antialiased`}
       >
