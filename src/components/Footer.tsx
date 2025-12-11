@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import { Leaf, Instagram, Mail, Phone, MapPin } from 'lucide-react';
+import { BRAND } from '@/lib/constants';
 
 export default function Footer() {
   return (
@@ -73,25 +74,25 @@ export default function Footer() {
             <ul className="space-y-3">
               <li className="flex items-center gap-3 text-[#D9C4A8]">
                 <Phone className="w-5 h-5 text-[#D9A441]" />
-                <a href="tel:+919207067522" className="hover:text-[#D9A441] transition-colors">
-                  +91 92070 67522
+                <a href={`tel:${BRAND.phone}`} className="hover:text-[#D9A441] transition-colors">
+                  {BRAND.phone}
                 </a>
               </li>
               <li className="flex items-center gap-3 text-[#D9C4A8]">
                 <Mail className="w-5 h-5 text-[#D9A441]" />
-                <a href="mailto:hello@elviaherbals.com" className="hover:text-[#D9A441] transition-colors">
-                  hello@elviaherbals.com
+                <a href={`mailto:${BRAND.email}`} className="hover:text-[#D9A441] transition-colors">
+                  {BRAND.email}
                 </a>
               </li>
               <li className="flex items-start gap-3 text-[#D9C4A8]">
                 <MapPin className="w-5 h-5 text-[#D9A441] flex-shrink-0 mt-1" />
-                <span>India</span>
+                <span>{BRAND.address}</span>
               </li>
             </ul>
             {/* Social Links */}
             <div className="flex gap-4 mt-6">
               <a
-                href="https://instagram.com/elviaherbals"
+                href={BRAND.instagram}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="w-10 h-10 rounded-full bg-[#3D1F0E] flex items-center justify-center hover:bg-[#D9A441] transition-colors"
@@ -99,7 +100,7 @@ export default function Footer() {
                 <Instagram className="w-5 h-5" />
               </a>
               <a
-                href="https://wa.me/919207067522"
+                href={`https://wa.me/${BRAND.whatsapp}`}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="w-10 h-10 rounded-full bg-[#3D1F0E] flex items-center justify-center hover:bg-[#25D366] transition-colors"
