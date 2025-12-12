@@ -21,22 +21,35 @@ const lato = Lato({
 
 export const metadata: Metadata = {
   title: "Elvia Herbals - Pure Homemade Almond Oil | Free Shipping Across Kerala",
-  description: "Elvia Herbals - 100% pure, cold-pressed, handmade almond oil from Kerala. Perfect for skin and hair care. Free shipping all over Kerala. Order your natural almond oil today!",
+  description: "Elvia Herbals (elviaherbals) - 100% pure, cold-pressed, handmade almond oil from Kerala. Perfect for skin and hair care. Free shipping all over Kerala. Order your natural almond oil today!",
   keywords: [
+    "Elvia Herbals",
+    "elviaherbals",
+    "elvia herbals",
     "almond oil Kerala",
     "pure almond oil",
     "homemade almond oil",
-    "Elvia Herbals",
     "natural skincare Kerala",
     "hair oil Kerala",
     "cold pressed almond oil",
     "organic almond oil",
     "free shipping Kerala",
     "almond oil delivery Kerala",
-    "handmade beauty products Kerala"
+    "handmade beauty products Kerala",
+    "homemade product Kerala"
   ],
   authors: [{ name: "Elvia Herbals" }],
   manifest: "/manifest.json",
+  icons: {
+    icon: [
+      { url: "/favicon.ico", sizes: "any" },
+      { url: "/icon.png", type: "image/png", sizes: "32x32" },
+      { url: "/icon.png", type: "image/png", sizes: "16x16" },
+    ],
+    apple: [
+      { url: "/apple-icon.png", sizes: "180x180", type: "image/png" },
+    ],
+  },
   openGraph: {
     title: "Elvia Herbals - Pure Homemade Almond Oil | Free Shipping Kerala",
     description: "100% pure, cold-pressed, handmade almond oil from Kerala. Free shipping across Kerala. Natural skincare and haircare.",
