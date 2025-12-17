@@ -142,8 +142,8 @@ export default function AboutPage() {
         </div>
       </section>
 
-      {/* Certificates Section */}
-      <Certificates />
+      {/* Certificates Section - Hidden */}
+      {/* <Certificates /> */}
 
       <section className="py-20 gradient-gold">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">

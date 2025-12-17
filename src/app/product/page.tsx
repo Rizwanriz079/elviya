@@ -9,8 +9,6 @@ import { createOrderMessage } from "@/lib/utils";
 
 const defaultProductImages = [
   "/images/product-main.jpg",
-  "/images/product-1.jpg",
-  "/images/product-2.jpg",
 ];
 
 interface ProductSize {
@@ -187,28 +185,6 @@ export default function ProductPage() {
                   <span className="text-sm font-bold text-[#D9A441]">Cold Pressed</span>
                 </div>
               </div>
-              {/* Thumbnail images */}
-              {productImages.length > 1 && (
-                <div className="flex gap-4 mt-4 justify-center">
-                  {productImages.map((img, i) => (
-                    <button
-                      key={i}
-                      onClick={() => setSelectedImage(i)}
-                      className={`w-20 h-20 bg-[#F5E6D3] rounded-xl shadow-sm cursor-pointer transition-all flex items-center justify-center overflow-hidden ${
-                        selectedImage === i ? "ring-2 ring-[#D9A441] ring-offset-2" : "hover:ring-2 hover:ring-[#D9A441]/50"
-                      }`}
-                    >
-                      <Image
-                        src={img}
-                        alt={`Product view ${i + 1}`}
-                        width={80}
-                        height={80}
-                        className="object-cover w-full h-full"
-                      />
-                    </button>
-                  ))}
-                </div>
-              )}
             </div>
 
             <div className="space-y-8">
