@@ -18,7 +18,7 @@ export function generateWhatsAppLink(phone: string, message: string): string {
 }
 
 export function createOrderMessage(productName: string, size: string, price: number): string {
-  return `Hi ELVYA! I would like to order:
+  return `Hi Elvia Herbals! I would like to order:
 
 Product: ${productName}
 Size: ${size}

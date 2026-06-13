@@ -6,7 +6,7 @@ export function OrganizationSchema() {
     "@context": "https://schema.org",
     "@type": "Organization",
     "name": BRAND.name,
-    "alternateName": "ELVYA",
+    "alternateName": "Elvia Herbals",
     "url": "https://www.elviaherbals.com",
     "logo": "https://www.elviaherbals.com/images/logo.jpg",
     "description": "Elvia Herbals - Kerala's pure homemade almond oil made with traditional cold-pressed methods. Free shipping across Kerala. Natural skincare and haircare products.",
@@ -201,7 +201,7 @@ export function BreadcrumbSchema({ items }: { items: { name: string; url: string
       "@type": "ListItem",
       "position": index + 1,
       "name": item.name,
-      "item": item.url.replace('www.elvya.in', 'www.elviaherbals.com'),
+      "item": item.url,
     })),
   };
 
@@ -219,7 +219,7 @@ export function WebsiteSchema() {
     "@context": "https://schema.org",
     "@type": "WebSite",
     "name": BRAND.name,
-    "alternateName": "ELVYA",
+    "alternateName": "Elvia Herbals",
     "url": "https://www.elviaherbals.com",
     "description": "Elvia Herbals - Pure Homemade Almond Oil from Kerala. Natural Skincare & Haircare. Free Shipping across Kerala.",
     "potentialAction": {

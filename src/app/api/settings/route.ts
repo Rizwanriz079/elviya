@@ -21,7 +21,7 @@ export async function GET() {
           email: "hello@elviaherbals.com",
           instagram: "https://instagram.com/elviaherbals",
           address: "Kerala, India",
-          aboutText: "ELVYA was born from a simple belief: that the best skincare comes from nature, made with love and traditional wisdom passed down through generations."
+          aboutText: "Elvia Herbals was born from a simple belief: that the best skincare comes from nature, made with love and traditional wisdom passed down through generations."
         }
       });
     }

@@ -503,7 +503,7 @@ export default function AdminDashboardPage() {
                 <Leaf className="w-5 h-5 text-white" />
               </div>
               <div>
-                <span className="text-xl font-bold text-[#A6763B]">ELVYA</span>
+                <span className="text-xl font-bold text-[#A6763B]">Elvia Herbals</span>
                 <span className="text-sm text-[#8B7355] ml-2">Admin</span>
               </div>
             </div>

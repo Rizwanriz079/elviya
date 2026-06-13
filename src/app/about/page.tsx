@@ -48,13 +48,13 @@ export default function AboutPage() {
                 Our Story
               </h1>
               <p className="text-lg text-[#8B7355] mb-6">
-                ELVYA was born from a simple belief: that the best skincare comes from nature, made with love and traditional wisdom passed down through generations.
+                Elvia Herbals was born from a simple belief: that the best skincare comes from nature, made with love and traditional wisdom passed down through generations.
               </p>
               <p className="text-lg text-[#8B7355] mb-6">
                 Our journey began in a small kitchen, where we started making pure almond oil for our family using a traditional wooden press (ghani). The results were so remarkable that friends and family started asking for more.
               </p>
               <p className="text-lg text-[#8B7355]">
-                Today, we continue to make every bottle of ELVYA almond oil with the same care and dedication, ensuring that you receive nothing but the purest, most nourishing oil for your skin and hair.
+                Today, we continue to make every bottle of Elvia Herbals almond oil with the same care and dedication, ensuring that you receive nothing but the purest, most nourishing oil for your skin and hair.
               </p>
             </div>
             <div className="relative">
@@ -76,7 +76,7 @@ export default function AboutPage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
             <h2 className="text-3xl sm:text-4xl font-bold text-[#2D1F0E] mb-4">Our Values</h2>
-            <p className="text-lg text-[#8B7355]">What makes ELVYA special</p>
+            <p className="text-lg text-[#8B7355]">What makes Elvia Herbals special</p>
           </div>
           <div className="grid md:grid-cols-3 gap-8">
             {[

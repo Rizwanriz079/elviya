@@ -49,7 +49,7 @@ model Order {
 
 model SiteSettings {
   id            String  @id @default("settings")
-  brandName     String  @default("ELVYA")
+  brandName     String  @default("Elvia Herbals")
   tagline       String  @default("Pure Homemade Almond Oil")
   phone         String  @default("+919999999999")
   whatsapp      String  @default("919999999999")

@@ -62,7 +62,7 @@ async function main() {
     update: {},
     create: {
       id: 'settings',
-      brandName: 'ELVYA',
+      brandName: 'Elvia Herbals',
       tagline: 'Pure Homemade Almond Oil',
       phone: '+919999999999',
       whatsapp: '919999999999',

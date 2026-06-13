@@ -13,7 +13,7 @@ export default function ContactPage() {
     e.preventDefault();
     setIsSubmitting(true);
     await new Promise((resolve) => setTimeout(resolve, 1000));
-    const whatsappMessage = `Hi ELVYA! My name is ${formData.name}. ${formData.message} You can reach me at ${formData.email} or ${formData.phone}.`;
+    const whatsappMessage = `Hi Elvia Herbals! My name is ${formData.name}. ${formData.message} You can reach me at ${formData.email} or ${formData.phone}.`;
     window.open(`https://wa.me/${BRAND.whatsapp}?text=${encodeURIComponent(whatsappMessage)}`, "_blank");
     setIsSubmitting(false);
     setFormData({ name: "", email: "", phone: "", message: "" });
@@ -70,7 +70,7 @@ export default function ContactPage() {
                     </div>
                     <div>
                       <p className="font-bold text-[#2D1F0E]">Instagram</p>
-                      <p>@elvya</p>
+                      <p>@elviaherbals</p>
                     </div>
                   </a>
                   <div className="flex items-center gap-4 text-[#8B7355]">
@@ -169,7 +169,7 @@ export default function ContactPage() {
           <h2 className="text-3xl font-bold text-white mb-6">Prefer WhatsApp?</h2>
           <p className="text-xl text-white/90 mb-8">Chat with us directly for quick responses</p>
           <WhatsAppButton
-            message="Hi ELVYA! I have a question."
+            message="Hi Elvia Herbals! I have a question."
             className="bg-white text-[#D9A441] hover:bg-[#FFF5E6]"
           >
             Start WhatsApp Chat

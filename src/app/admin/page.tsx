@@ -46,7 +46,7 @@ export default function AdminLoginPage() {
             <div className="w-12 h-12 rounded-full gradient-gold flex items-center justify-center">
               <Leaf className="w-6 h-6 text-white" />
             </div>
-            <span className="text-3xl font-bold text-[#A6763B]">ELVYA</span>
+            <span className="text-3xl font-bold text-[#A6763B]">Elvia Herbals</span>
           </div>
           <h1 className="text-2xl font-bold text-[#2D1F0E]">Admin Dashboard</h1>
           <p className="text-[#8B7355]">Sign in to manage your products</p>
@@ -72,7 +72,7 @@ export default function AdminLoginPage() {
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   className="w-full pl-12 pr-4 py-3 rounded-xl border border-[#D9C4A8] focus:border-[#D9A441] focus:ring-1 focus:ring-[#D9A441] outline-none transition-colors bg-white"
-                  placeholder="admin@elvya.com"
+                  placeholder="admin@elviaherbals.com"
                 />
               </div>
             </div>
@@ -105,7 +105,7 @@ export default function AdminLoginPage() {
         </div>
 
         <p className="text-center text-sm text-[#8B7355] mt-6">
-          Default credentials: admin@elvya.com / elvya123
+          Default credentials: admin@elviaherbals.com / elvia123
         </p>
       </div>
     </div>
