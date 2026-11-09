@@ -64,7 +64,7 @@ export default function Header() {
 
           {/* WhatsApp Button - Desktop */}
           <a
-            href="https://wa.me/919207067522?text=Hi%20Elvia%20Herbals!%20I'm%20interested%20in%20your%20pure%20almond%20oil."
+            href="https://wa.me/919207067522?text=Hi%20Elvia%20Herbals!%20I'm%20interested%20in%20your%20products."
             target="_blank"
             rel="noopener noreferrer"
             className="hidden md:flex items-center gap-2 btn-whatsapp px-5 py-2.5 rounded-full font-medium"
@@ -105,7 +105,7 @@ export default function Header() {
               </Link>
             ))}
             <a
-              href="https://wa.me/919207067522?text=Hi%20Elvia%20Herbals!%20I'm%20interested%20in%20your%20pure%20almond%20oil."
+              href="https://wa.me/919207067522?text=Hi%20Elvia%20Herbals!%20I'm%20interested%20in%20your%20products."
               target="_blank"
               rel="noopener noreferrer"
               className="mx-6 mt-4 flex items-center justify-center gap-2 btn-whatsapp px-5 py-3 rounded-full font-medium"

@@ -2,7 +2,7 @@ import { Metadata } from "next";
 
 export const metadata: Metadata = {
   title: "Privacy Policy - Elvia Herbals | Data Protection",
-  description: "Read Elvia Herbals' privacy policy to understand how we collect, use, and protect your personal information when you order our pure almond oil products.",
+  description: "Read Elvia Herbals' privacy policy to understand how we collect, use, and protect your personal information when you order our products.",
   keywords: ["privacy policy", "Elvia Herbals privacy", "data protection", "customer information"],
   openGraph: {
     title: "Privacy Policy - Elvia Herbals",

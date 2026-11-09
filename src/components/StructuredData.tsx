@@ -1,5 +1,7 @@
 import Script from "next/script";
-import { BRAND, PRODUCT } from "@/lib/constants";
+import { BRAND, PRODUCTS } from "@/lib/constants";
+
+const NEEM = PRODUCTS.find((p) => p.id === "neem-oil")!;
 
 export function OrganizationSchema() {
   const schema = {
@@ -9,7 +11,7 @@ export function OrganizationSchema() {
     "alternateName": "Elvia Herbals",
     "url": "https://www.elviaherbals.com",
     "logo": "https://www.elviaherbals.com/images/logo.jpg",
-    "description": "Elvia Herbals - Kerala's pure homemade almond oil made with traditional cold-pressed methods. Free shipping across Kerala. Natural skincare and haircare products.",
+    "description": "Elvia Herbals - Kerala's pure homemade herbal oils made with traditional methods. Natural skincare and haircare products.",
     "email": BRAND.email,
     "telephone": BRAND.phone,
     "address": {
@@ -47,13 +49,9 @@ export function ProductSchema() {
   const schema = {
     "@context": "https://schema.org",
     "@type": "Product",
-    "name": PRODUCT.name,
-    "description": `${PRODUCT.description} Free shipping all over Kerala.`,
-    "image": [
-      "https://www.elviaherbals.com/images/product-main.jpg",
-      "https://www.elviaherbals.com/images/product-1.jpg",
-      "https://www.elviaherbals.com/images/product-2.jpg",
-    ],
+    "name": `${NEEM.name} ${NEEM.size}`,
+    "description": NEEM.description,
+    "image": [`https://www.elviaherbals.com${NEEM.image}`],
     "brand": {
       "@type": "Brand",
       "name": BRAND.name,
@@ -62,14 +60,13 @@ export function ProductSchema() {
       "@type": "Offer",
       "url": "https://www.elviaherbals.com/product",
       "priceCurrency": "INR",
-      "price": "699",
-      "priceValidUntil": "2025-12-31",
+      "price": String(NEEM.price),
       "availability": "https://schema.org/InStock",
       "shippingDetails": {
         "@type": "OfferShippingDetails",
         "shippingRate": {
           "@type": "MonetaryAmount",
-          "value": "0",
+          "value": String(NEEM.deliveryCharge),
           "currency": "INR"
         },
         "shippingDestination": {
@@ -90,41 +87,6 @@ export function ProductSchema() {
         "name": BRAND.name,
       },
     },
-    "aggregateRating": {
-      "@type": "AggregateRating",
-      "ratingValue": "5",
-      "reviewCount": "50",
-    },
-    "review": [
-      {
-        "@type": "Review",
-        "author": {
-          "@type": "Person",
-          "name": "Priya Sharma",
-        },
-        "datePublished": "2024-11-15",
-        "reviewBody": "The best almond oil I have ever used! My skin feels so soft and my hair has never looked better. Truly homemade quality.",
-        "reviewRating": {
-          "@type": "Rating",
-          "ratingValue": "5",
-          "bestRating": "5",
-        },
-      },
-      {
-        "@type": "Review",
-        "author": {
-          "@type": "Person",
-          "name": "Anita Patel",
-        },
-        "datePublished": "2024-10-20",
-        "reviewBody": "I switched to Elvia Herbals almond oil 3 months ago and the difference is amazing. Pure, natural, and worth every penny!",
-        "reviewRating": {
-          "@type": "Rating",
-          "ratingValue": "5",
-          "bestRating": "5",
-        },
-      },
-    ],
   };
 
   return (
@@ -146,7 +108,7 @@ export function LocalBusinessSchema() {
     "url": "https://www.elviaherbals.com",
     "telephone": BRAND.phone,
     "email": BRAND.email,
-    "description": "Kerala's pure homemade almond oil brand. Free shipping across Kerala.",
+    "description": "Kerala's pure homemade herbal oil brand. Delivery across Kerala.",
     "address": {
       "@type": "PostalAddress",
       "addressCountry": "IN",
@@ -221,7 +183,7 @@ export function WebsiteSchema() {
     "name": BRAND.name,
     "alternateName": "Elvia Herbals",
     "url": "https://www.elviaherbals.com",
-    "description": "Elvia Herbals - Pure Homemade Almond Oil from Kerala. Natural Skincare & Haircare. Free Shipping across Kerala.",
+    "description": "Elvia Herbals - Pure Homemade Herbal Oils from Kerala. Natural Skincare & Haircare. Delivery across Kerala.",
     "potentialAction": {
       "@type": "SearchAction",
       "target": {

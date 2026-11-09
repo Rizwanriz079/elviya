@@ -19,7 +19,7 @@ export default function Footer() {
               </div>
             </div>
             <p className="text-[#D9C4A8] leading-relaxed">
-              Pure homemade almond oil, crafted with love and traditional methods.
+              Pure homemade herbal oils, crafted with love and traditional methods.
               Experience the natural goodness in every drop.
             </p>
           </div>

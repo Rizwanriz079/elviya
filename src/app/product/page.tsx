@@ -2,241 +2,188 @@
 
 import { useState, useEffect } from "react";
 import Image from "next/image";
-import { Sparkles, Heart, Shield, Leaf, Check, Star, ChevronDown, ChevronUp, Package } from "lucide-react";
+import { Sparkles, Heart, Shield, Leaf, Check, Star, ChevronDown, ChevronUp, Package, Truck, Clock } from "lucide-react";
 import WhatsAppButton from "@/components/WhatsAppButton";
-import { PRODUCT, TESTIMONIALS } from "@/lib/constants";
-import { createOrderMessage } from "@/lib/utils";
+import ProductShowcase from "@/components/ProductShowcase";
+import { PRODUCTS, TESTIMONIALS, orderMessage } from "@/lib/constants";
 
-const defaultProductImages = [
-  "/images/product-main.jpg",
+const BENEFIT_ICONS = [
+  <Sparkles key="s" className="w-8 h-8" />,
+  <Heart key="h" className="w-8 h-8" />,
+  <Shield key="sh" className="w-8 h-8" />,
+  <Leaf key="l" className="w-8 h-8" />,
 ];
 
-interface ProductSize {
-  id: string;
-  label: string;
-  price: number;
-  originalPrice: number;
-}
-
-interface Product {
-  id: string;
-  name: string;
-  description: string;
-  price: number;
-  sizes: ProductSize[];
-  ingredients: string[];
-  howToUse: string[];
-  images?: string[];
-}
-
 export default function ProductPage() {
-  const [products, setProducts] = useState<Product[]>([]);
-  const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
-  const [selectedSize, setSelectedSize] = useState<ProductSize>(PRODUCT.sizes[0]);
+  const [selectedId, setSelectedId] = useState(PRODUCTS[0].id);
   const [openFaq, setOpenFaq] = useState<number | null>(null);
-  const [selectedImage, setSelectedImage] = useState(0);
-  const [loading, setLoading] = useState(true);
 
+  // Allow linking straight to a product, e.g. /product?item=almond-oil
   useEffect(() => {
-    fetchProducts();
+    const item = new URLSearchParams(window.location.search).get("item");
+    if (item && PRODUCTS.some((p) => p.id === item)) setSelectedId(item);
   }, []);
 
-  const fetchProducts = async () => {
-    try {
-      const res = await fetch("/api/products");
-      const data = await res.json();
-      if (data.products && data.products.length > 0) {
-        const allProducts: Product[] = data.products.map((p: Record<string, unknown>) => ({
-          id: p.id as string,
-          name: p.name as string,
-          description: p.description as string,
-          price: p.price as number,
-          sizes: typeof p.sizes === "string" ? JSON.parse(p.sizes as string) : p.sizes,
-          ingredients: typeof p.ingredients === "string" ? JSON.parse(p.ingredients as string) : p.ingredients,
-          howToUse: typeof p.howToUse === "string" ? JSON.parse(p.howToUse as string) : p.howToUse,
-          images: (p.images as string[]) || [],
-        }));
-        setProducts(allProducts);
-        // Select first product by default
-        const firstProduct = allProducts[0];
-        setSelectedProduct(firstProduct);
-        if (firstProduct.sizes && firstProduct.sizes.length > 0) {
-          setSelectedSize(firstProduct.sizes[0]);
-        }
-      }
-    } catch (error) {
-      console.error("Error fetching products:", error);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const handleSelectProduct = (product: Product) => {
-    setSelectedProduct(product);
-    setSelectedImage(0);
-    if (product.sizes && product.sizes.length > 0) {
-      setSelectedSize(product.sizes[0]);
-    }
-  };
-
-  const faqs = [
-    { q: "How is the almond oil made?", a: "Our almond oil is cold-pressed using traditional wooden press (ghani) method. This preserves all the natural nutrients and ensures the oil remains pure and unrefined." },
-    { q: "Is this oil suitable for all skin types?", a: "Yes! Pure almond oil is gentle and suitable for all skin types including sensitive skin. It is non-comedogenic and absorbs well without leaving a greasy residue." },
-    { q: "How should I store the oil?", a: "Store in a cool, dry place away from direct sunlight. The oil has a shelf life of 12 months from the date of manufacturing." },
-    { q: "Can I use this for cooking?", a: "While our almond oil is 100% pure and edible, it is primarily formulated for topical use on skin and hair. For cooking, we recommend using oils specifically meant for culinary purposes." },
-  ];
-
-  // Use product from database or fallback to static data
-  const displayProduct = selectedProduct || {
-    name: PRODUCT.name,
-    description: PRODUCT.description,
-    sizes: PRODUCT.sizes,
-    ingredients: PRODUCT.ingredients,
-    howToUse: PRODUCT.howToUse,
-    images: [],
-  };
-
-  const productImages = displayProduct.images && displayProduct.images.length > 0
-    ? displayProduct.images
-    : defaultProductImages;
+  const product = PRODUCTS.find((p) => p.id === selectedId) ?? PRODUCTS[0];
+  const total = product.price + product.deliveryCharge;
+  const freeShipping = product.deliveryCharge === 0;
+  const faqs = product.faqs;
 
   return (
     <div className="min-h-screen bg-[#FFF5E6]">
-      {/* Product Selector - shown when multiple products exist */}
-      {products.length > 1 && (
-        <section className="py-8 bg-white border-b border-[#F5E6D3]">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="flex items-center gap-3 mb-4">
-              <Package className="w-5 h-5 text-[#D9A441]" />
-              <h2 className="text-lg font-bold text-[#2D1F0E]">Our Products</h2>
-            </div>
-            <div className="flex gap-4 overflow-x-auto pb-2">
-              {products.map((product) => {
-                const productImg = product.images && product.images.length > 0
-                  ? product.images[0]
-                  : defaultProductImages[0];
-                const isSelected = selectedProduct?.id === product.id;
-                return (
-                  <button
-                    key={product.id}
-                    onClick={() => handleSelectProduct(product)}
-                    className={`flex-shrink-0 flex items-center gap-3 p-3 rounded-xl border-2 transition-all ${
-                      isSelected
-                        ? "border-[#D9A441] bg-[#D9A441]/10"
-                        : "border-[#F5E6D3] hover:border-[#D9A441]/50 bg-white"
-                    }`}
-                  >
-                    <div className="w-16 h-16 rounded-lg overflow-hidden bg-[#F5E6D3] flex-shrink-0">
-                      <Image
-                        src={productImg}
-                        alt={product.name}
-                        width={64}
-                        height={64}
-                        className="object-cover w-full h-full"
-                      />
-                    </div>
-                    <div className="text-left">
-                      <p className={`font-bold text-sm ${isSelected ? "text-[#D9A441]" : "text-[#2D1F0E]"}`}>
-                        {product.name}
-                      </p>
-                      <p className="text-xs text-[#8B7355]">
-                        From Rs.{product.sizes[0]?.price || product.price}
-                      </p>
-                    </div>
-                    {isSelected && (
-                      <div className="w-5 h-5 rounded-full bg-[#D9A441] flex items-center justify-center ml-2">
-                        <Check className="w-3 h-3 text-white" />
-                      </div>
-                    )}
-                  </button>
-                );
-              })}
-            </div>
+      {/* Product Selector */}
+      <section className="py-8 bg-white border-b border-[#F5E6D3]">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex items-center gap-3 mb-4">
+            <Package className="w-5 h-5 text-[#D9A441]" />
+            <h2 className="text-lg font-bold text-[#2D1F0E]">Our Products</h2>
           </div>
-        </section>
-      )}
+          <div className="flex gap-4 overflow-x-auto pb-2">
+            {PRODUCTS.map((p) => {
+              const isSelected = p.id === product.id;
+              return (
+                <button
+                  key={p.id}
+                  onClick={() => { setSelectedId(p.id); setOpenFaq(null); }}
+                  className={`flex-shrink-0 flex items-center gap-3 p-3 rounded-xl border-2 transition-all ${
+                    isSelected
+                      ? "border-[#D9A441] bg-[#D9A441]/10"
+                      : "border-[#F5E6D3] hover:border-[#D9A441]/50 bg-white"
+                  }`}
+                >
+                  <div className="w-16 h-16 rounded-lg overflow-hidden bg-[#F5E6D3] flex-shrink-0">
+                    <Image src={p.image} alt={p.name} width={64} height={64} className={`object-cover w-full h-full ${p.inStock ? "" : "grayscale opacity-70"}`} />
+                  </div>
+                  <div className="text-left">
+                    <p className={`font-bold text-sm ${isSelected ? "text-[#D9A441]" : "text-[#2D1F0E]"}`}>{p.name} <span className="font-normal text-[#8B7355]">{p.size}</span></p>
+                    {p.inStock ? (
+                      <p className="text-xs text-[#8B7355]">Rs.{p.price}</p>
+                    ) : (
+                      <p className="text-xs font-semibold text-red-700">Out of stock</p>
+                    )}
+                  </div>
+                  {isSelected && (
+                    <div className="w-5 h-5 rounded-full bg-[#D9A441] flex items-center justify-center ml-2">
+                      <Check className="w-3 h-3 text-white" />
+                    </div>
+                  )}
+                </button>
+              );
+            })}
+          </div>
+        </div>
+      </section>
 
       <section className="py-16">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid lg:grid-cols-2 gap-12 items-start">
             <div className="lg:sticky lg:top-24 lg:self-start">
-              {/* Main product image with circular gradient - larger and lighter */}
-              <div className="relative flex items-center justify-center min-h-[450px]">
-                {/* Animated circular gradient backgrounds - lighter colors */}
-                <div className="absolute w-[380px] h-[380px] sm:w-[420px] sm:h-[420px] rounded-full bg-gradient-to-br from-[#F5E6D3] via-[#EDD9B5] to-[#E5C99A] shadow-xl animate-pulse-slow" />
-                <div className="absolute w-[340px] h-[340px] sm:w-[380px] sm:h-[380px] rounded-full bg-gradient-to-tr from-[#EDD9B5]/80 to-[#D9A441]/40 animate-spin-slow" />
-                <div className="absolute w-[300px] h-[300px] sm:w-[340px] sm:h-[340px] rounded-full bg-gradient-to-bl from-[#FFF5E6]/90 to-[#E5C99A]/60" />
-                {/* Product image - larger and contained in circle */}
-                <div className="relative z-10 w-[280px] h-[280px] sm:w-[320px] sm:h-[320px] rounded-full overflow-hidden flex items-center justify-center bg-gradient-to-b from-white/20 to-transparent animate-float">
-                  <Image
-                    src={productImages[selectedImage] || defaultProductImages[0]}
-                    alt={displayProduct.name}
-                    width={320}
-                    height={320}
-                    className="object-cover w-full h-full"
-                    priority
-                  />
+              {product.id === "neem-oil" ? (
+                <ProductShowcase
+                  image={product.image}
+                  alt={`Elvia Herbals ${product.name} ${product.size}`}
+                  badgeTop={product.badges[0]}
+                  badgeBottom={product.badges[1]}
+                  priority
+                />
+              ) : (
+                /* Static (non-animated) display for other products */
+                <div className="relative flex items-center justify-center min-h-[450px]">
+                  <div className="absolute w-[340px] h-[340px] sm:w-[400px] sm:h-[400px] rounded-full bg-gradient-to-br from-[#F5E6D3] via-[#EDD9B5] to-[#E5C99A]" />
+                  <div className="relative z-10 w-[280px] h-[280px] sm:w-[330px] sm:h-[330px] rounded-full overflow-hidden border-8 border-white/70 shadow-xl">
+                    <Image
+                      src={product.image}
+                      alt={`${product.name} ${product.size}`}
+                      fill
+                      sizes="330px"
+                      className={`object-cover ${product.inStock ? "" : "grayscale opacity-80"}`}
+                      priority
+                    />
+                  </div>
+                  {!product.inStock && (
+                    <div className="absolute top-6 right-6 z-20 bg-red-700 text-white px-4 py-2 rounded-full text-sm font-bold shadow-lg">
+                      Out of Stock
+                    </div>
+                  )}
                 </div>
-                {/* Floating badges */}
-                <div className="absolute top-4 right-8 bg-white rounded-full px-4 py-2 shadow-lg z-20 animate-bounce-slow">
-                  <span className="text-sm font-bold text-[#3D6A46]">100% Pure</span>
-                </div>
-                <div className="absolute bottom-16 -left-2 bg-white rounded-full px-4 py-2 shadow-lg z-20 animate-bounce-slow" style={{ animationDelay: '0.5s' }}>
-                  <span className="text-sm font-bold text-[#D9A441]">Cold Pressed</span>
-                </div>
-              </div>
+              )}
             </div>
 
             <div className="space-y-8">
               <div>
-                <div className="inline-flex items-center gap-2 bg-[#3D6A46]/10 text-[#3D6A46] px-3 py-1 rounded-full text-sm font-medium mb-4">
-                  <Check className="w-4 h-4" /> In Stock
-                </div>
-                <h1 className="text-4xl font-bold text-[#2D1F0E] mb-2">{displayProduct.name}</h1>
+                {product.inStock ? (
+                  <div className="inline-flex items-center gap-2 bg-[#3D6A46]/10 text-[#3D6A46] px-3 py-1 rounded-full text-sm font-medium mb-4">
+                    <Check className="w-4 h-4" /> In Stock
+                  </div>
+                ) : (
+                  <div className="inline-flex items-center gap-2 bg-red-50 text-red-700 px-3 py-1 rounded-full text-sm font-medium mb-4">
+                    <Clock className="w-4 h-4" /> Out of Stock
+                  </div>
+                )}
+                <h1 className="text-4xl font-bold text-[#2D1F0E] mb-2">{product.name}</h1>
                 <div className="flex items-center gap-2 mb-4">
                   <div className="flex gap-0.5">
                     {[...Array(5)].map((_, i) => (<Star key={i} className="w-5 h-5 fill-[#D9A441] text-[#D9A441]" />))}
                   </div>
-                  <span className="text-[#8B7355]">(50+ Reviews)</span>
                 </div>
-                <p className="text-lg text-[#8B7355]">{displayProduct.description}</p>
+                <p className="text-lg text-[#8B7355]">{product.description}</p>
               </div>
 
-              {/* Size Display - Only 60ml */}
-              <div className="space-y-4">
-                <div className="flex items-center gap-3">
-                  <h3 className="font-bold text-[#2D1F0E] text-xl">Size:</h3>
-                  <div className="inline-flex items-center gap-2 px-5 py-2 rounded-xl border-2 border-[#D9A441] bg-[#D9A441]/10">
-                    <span className="font-bold text-[#2D1F0E] text-lg">60ml</span>
-                  </div>
+              <div className="flex items-center gap-3">
+                <h3 className="font-bold text-[#2D1F0E] text-xl">Size:</h3>
+                <div className="inline-flex items-center gap-2 px-5 py-2 rounded-xl border-2 border-[#D9A441] bg-[#D9A441]/10">
+                  <span className="font-bold text-[#2D1F0E] text-lg">{product.size}</span>
                 </div>
               </div>
 
-              {/* Price with Offer */}
-              <div className="bg-gradient-to-r from-[#D9A441]/10 to-[#C4932B]/10 p-6 rounded-2xl border-2 border-[#D9A441]/30">
-                <div className="flex items-center justify-between mb-3">
-                  <div>
-                    <p className="text-sm text-[#8B7355] mb-1">Original Price</p>
-                    <p className="text-2xl font-bold text-[#8B7355] line-through">Rs.899</p>
+              {product.inStock ? (
+                <>
+                  {/* Price breakdown */}
+                  <div className="bg-gradient-to-r from-[#D9A441]/10 to-[#C4932B]/10 p-6 rounded-2xl border-2 border-[#D9A441]/30 space-y-3">
+                    <div className="flex items-center justify-between">
+                      <span className="text-[#8B7355]">Price ({product.size})</span>
+                      <span className="text-right">
+                        {product.originalPrice && (
+                          <span className="text-[#8B7355] line-through mr-2">Rs.{product.originalPrice}</span>
+                        )}
+                        <span className="text-3xl font-bold text-[#D9A441]">Rs.{product.price}</span>
+                      </span>
+                    </div>
+                    <div className="flex items-center justify-between text-[#8B7355]">
+                      <span className="inline-flex items-center gap-2"><Truck className="w-4 h-4" /> Delivery charge (Kerala)</span>
+                      {freeShipping ? (
+                        <span className="font-bold text-[#3D6A46]">FREE</span>
+                      ) : (
+                        <span className="font-semibold">+ Rs.{product.deliveryCharge}</span>
+                      )}
+                    </div>
+                    <div className="flex items-center justify-between pt-3 border-t border-[#D9A441]/20">
+                      <span className="font-bold text-[#2D1F0E]">Total</span>
+                      <span className="text-2xl font-bold text-[#2D1F0E]">Rs.{total}</span>
+                    </div>
                   </div>
-                  <div className="text-right">
-                    <p className="text-sm text-[#3D6A46] font-semibold mb-1">Special Offer</p>
-                    <p className="text-4xl font-bold text-[#D9A441]">Rs.699</p>
-                  </div>
-                </div>
-                <div className="flex items-center justify-center gap-2 pt-3 border-t border-[#D9A441]/20">
-                  <span className="text-sm text-[#8B7355]">You Save:</span>
-                  <span className="bg-[#3D6A46] text-white px-4 py-1 rounded-full text-sm font-bold">Rs.200</span>
-                  <span className="text-[#3D6A46] font-bold text-sm">(22% OFF)</span>
-                </div>
-              </div>
 
-              <WhatsAppButton
-                message="Hi Elvia Herbals! I want to order a 60ml bottle of Pure Almond Oil for Rs. 699."
-                className="w-full py-4 text-lg"
-              >
-                Order 60ml for Rs. 699
-              </WhatsAppButton>
+                  <WhatsAppButton message={orderMessage(product)} className="w-full py-4 text-lg">
+                    Order {product.size} for Rs.{total} {freeShipping ? "(free shipping)" : "(incl. delivery)"}
+                  </WhatsAppButton>
+                </>
+              ) : (
+                <>
+                  <div className="p-6 rounded-2xl border-2 border-red-200 bg-red-50">
+                    <p className="text-xl font-bold text-red-700 mb-1">Out of Stock</p>
+                    {freeShipping && (
+                      <p className="inline-flex items-center gap-2 text-[#3D6A46] font-semibold mb-2"><Truck className="w-4 h-4" /> Free shipping across Kerala when it&apos;s back</p>
+                    )}
+                    <p className="text-[#8B7355]">We will restock soon. Message us on WhatsApp and we&apos;ll let you know when it&apos;s back.</p>
+                  </div>
+                  <WhatsAppButton
+                    message={`Hi Elvia Herbals! Please let me know when ${product.name} (${product.size}) is back in stock.`}
+                    className="w-full py-4 text-lg"
+                  >
+                    Notify me when back in stock
+                  </WhatsAppButton>
+                </>
+              )}
 
               <div className="grid grid-cols-2 gap-4">
                 <div className="flex items-center gap-3 p-4 bg-white rounded-xl">
@@ -249,7 +196,7 @@ export default function ProductPage() {
                 <div className="flex items-center gap-3 p-4 bg-white rounded-xl">
                   <Leaf className="w-8 h-8 text-[#3D6A46]" />
                   <div>
-                    <p className="font-bold text-[#2D1F0E]">Cold Pressed</p>
+                    <p className="font-bold text-[#2D1F0E]">Handmade</p>
                     <p className="text-sm text-[#8B7355]">Traditional method</p>
                   </div>
                 </div>
@@ -258,7 +205,7 @@ export default function ProductPage() {
               <div className="space-y-4">
                 <h3 className="text-xl font-bold text-[#2D1F0E]">Ingredients</h3>
                 <div className="flex flex-wrap gap-2">
-                  {displayProduct.ingredients.map((ingredient, index) => (
+                  {product.ingredients.map((ingredient, index) => (
                     <span key={index} className="px-4 py-2 bg-white rounded-full text-[#8B7355] text-sm">
                       {ingredient}
                     </span>
@@ -269,7 +216,7 @@ export default function ProductPage() {
               <div className="space-y-4">
                 <h3 className="text-xl font-bold text-[#2D1F0E]">How to Use</h3>
                 <ul className="space-y-3">
-                  {displayProduct.howToUse.map((step, index) => (
+                  {product.howToUse.map((step, index) => (
                     <li key={index} className="flex gap-3">
                       <span className="w-6 h-6 rounded-full bg-[#D9A441] text-white flex items-center justify-center text-sm flex-shrink-0">{index + 1}</span>
                       <span className="text-[#8B7355]">{step}</span>
@@ -286,14 +233,9 @@ export default function ProductPage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <h2 className="text-3xl font-bold text-[#2D1F0E] text-center mb-12">Benefits</h2>
           <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-8">
-            {[
-              { icon: <Sparkles className="w-8 h-8" />, title: "Glowing Skin", desc: "Natural moisturizer for radiant skin" },
-              { icon: <Heart className="w-8 h-8" />, title: "Hair Care", desc: "Strengthens and nourishes hair" },
-              { icon: <Shield className="w-8 h-8" />, title: "Anti-Aging", desc: "Rich in Vitamin E antioxidants" },
-              { icon: <Leaf className="w-8 h-8" />, title: "Natural", desc: "No chemicals or preservatives" },
-            ].map((benefit, index) => (
+            {product.benefits.map((benefit, index) => (
               <div key={index} className="text-center p-6">
-                <div className="w-16 h-16 mx-auto mb-4 rounded-full gradient-gold flex items-center justify-center text-white">{benefit.icon}</div>
+                <div className="w-16 h-16 mx-auto mb-4 rounded-full gradient-gold flex items-center justify-center text-white">{BENEFIT_ICONS[index % BENEFIT_ICONS.length]}</div>
                 <h3 className="font-bold text-[#2D1F0E] mb-2">{benefit.title}</h3>
                 <p className="text-[#8B7355] text-sm">{benefit.desc}</p>
               </div>
@@ -324,6 +266,8 @@ export default function ProductPage() {
         </div>
       </section>
 
+      {/* Existing reviews are for Almond Oil, so only show them there */}
+      {product.id === "almond-oil" && (
       <section className="py-16 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <h2 className="text-3xl font-bold text-[#2D1F0E] text-center mb-12">Customer Reviews</h2>
@@ -343,6 +287,7 @@ export default function ProductPage() {
           </div>
         </div>
       </section>
+      )}
     </div>
   );
 }

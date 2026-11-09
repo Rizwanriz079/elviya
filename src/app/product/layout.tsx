@@ -2,8 +2,8 @@ import { Metadata } from "next";
 import { ProductSchema, BreadcrumbSchema } from "@/components/StructuredData";
 
 export const metadata: Metadata = {
-  title: "Buy Pure Almond Oil - Elvia Herbals | Free Shipping Kerala | Rs. 699",
-  description: "Buy Elvia Herbals pure, cold-pressed, handmade almond oil for skin and hair care. 100% natural with traditional methods. 60ml for Rs. 699 (22% OFF). Free shipping all over Kerala!",
+  title: "Buy Neem Oil 100ml - Elvia Herbals | Rs. 269 | Kerala",
+  description: "Buy Elvia Herbals Neem Oil, handmade with virgin coconut oil and neem for healthy hair, a clean scalp and clear skin. 100ml for Rs. 269 + Rs. 50 delivery within Kerala.",
   keywords: [
     "buy almond oil Kerala",
     "almond oil online Kerala",
@@ -14,11 +14,13 @@ export const metadata: Metadata = {
     "natural almond oil",
     "vitamin e oil",
     "homemade almond oil Kerala",
-    "free shipping Kerala"
+    "neem oil Kerala",
+    "buy neem oil online",
+    "neem oil for hair and skin"
   ],
   openGraph: {
-    title: "Pure Almond Oil - Elvia Herbals | Free Shipping Kerala",
-    description: "Buy pure, cold-pressed almond oil. 60ml for Rs. 699. Free shipping all over Kerala. Handmade with traditional methods.",
+    title: "Neem Oil 100ml - Elvia Herbals",
+    description: "Handmade Neem Oil with virgin coconut oil and neem. 100ml for Rs. 269. Delivery across Kerala.",
     type: "website",
     url: "https://www.elviaherbals.com/product",
     images: [
@@ -26,14 +28,14 @@ export const metadata: Metadata = {
         url: "/images/product-main.jpg",
         width: 1200,
         height: 630,
-        alt: "Elvia Herbals Pure Almond Oil - Handmade in Kerala",
+        alt: "Elvia Herbals Neem Oil 100ml",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Pure Almond Oil - Elvia Herbals",
-    description: "60ml for Rs. 699 | Free shipping Kerala",
+    title: "Neem Oil 100ml - Elvia Herbals",
+    description: "100ml for Rs. 269 | Delivery across Kerala",
     images: ["/images/product-main.jpg"],
   },
 };

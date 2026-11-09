@@ -4,8 +4,8 @@ import Certificates from "@/components/Certificates";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "About Elvia Herbals | Kerala's Pure Homemade Almond Oil Brand",
-  description: "Learn about Elvia Herbals' journey in creating pure, handmade almond oil in Kerala using traditional methods. Discover our values of purity, care, and tradition. Free shipping across Kerala.",
+  title: "About Elvia Herbals | Kerala's Homemade Herbal Oil Brand",
+  description: "Learn about Elvia Herbals' journey in creating pure, handmade herbal oils in Kerala using traditional methods. Discover our values of purity, care, and tradition. Delivery across Kerala.",
   keywords: [
     "about Elvia Herbals",
     "Kerala almond oil brand",
@@ -16,8 +16,8 @@ export const metadata: Metadata = {
     "Kerala natural products"
   ],
   openGraph: {
-    title: "About Elvia Herbals - Kerala's Pure Homemade Almond Oil",
-    description: "Learn about our journey in creating pure, handmade almond oil in Kerala using traditional methods.",
+    title: "About Elvia Herbals - Kerala's Homemade Herbal Oils",
+    description: "Learn about our journey in creating pure, handmade herbal oils in Kerala using traditional methods.",
     type: "website",
     url: "https://www.elviaherbals.com/about",
     images: [
@@ -32,7 +32,7 @@ export const metadata: Metadata = {
   twitter: {
     card: "summary_large_image",
     title: "About Elvia Herbals",
-    description: "Our story of creating pure, handmade almond oil in Kerala",
+    description: "Our story of creating pure, handmade herbal oils in Kerala",
     images: ["/images/logo.jpg"],
   },
 };
@@ -54,7 +54,7 @@ export default function AboutPage() {
                 Our journey began in a small kitchen, where we started making pure almond oil for our family using a traditional wooden press (ghani). The results were so remarkable that friends and family started asking for more.
               </p>
               <p className="text-lg text-[#8B7355]">
-                Today, we continue to make every bottle of Elvia Herbals almond oil with the same care and dedication, ensuring that you receive nothing but the purest, most nourishing oil for your skin and hair.
+                Today, we make every bottle of Elvia Herbals oil, from our Neem Oil with virgin coconut oil to our Almond Oil, with the same care and dedication, ensuring that you receive nothing but the purest, most nourishing oil for your skin and hair.
               </p>
             </div>
             <div className="relative">
@@ -80,7 +80,7 @@ export default function AboutPage() {
           </div>
           <div className="grid md:grid-cols-3 gap-8">
             {[
-              { icon: <Leaf className="w-10 h-10" />, title: "Purity", desc: "100% pure, cold-pressed almond oil with no chemicals, preservatives, or additives." },
+              { icon: <Leaf className="w-10 h-10" />, title: "Purity", desc: "Pure, natural ingredients with no chemicals, preservatives, or additives." },
               { icon: <Heart className="w-10 h-10" />, title: "Care", desc: "Every bottle is made with love and attention to detail, ensuring the highest quality." },
               { icon: <Award className="w-10 h-10" />, title: "Tradition", desc: "We use time-tested traditional methods that have been passed down through generations." },
             ].map((value, index) => (
@@ -98,13 +98,13 @@ export default function AboutPage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
             <h2 className="text-3xl sm:text-4xl font-bold text-[#2D1F0E] mb-4">Our Process</h2>
-            <p className="text-lg text-[#8B7355]">How we make our pure almond oil</p>
+            <p className="text-lg text-[#8B7355]">How we make our herbal oils</p>
           </div>
           <div className="grid md:grid-cols-4 gap-8">
             {[
-              { step: "1", title: "Selection", desc: "We handpick the finest California almonds" },
-              { step: "2", title: "Preparation", desc: "Almonds are cleaned and prepared carefully" },
-              { step: "3", title: "Cold Pressing", desc: "Traditional wooden press extracts pure oil" },
+              { step: "1", title: "Selection", desc: "We choose quality natural ingredients" },
+              { step: "2", title: "Preparation", desc: "Ingredients are cleaned and prepared carefully" },
+              { step: "3", title: "Handmade", desc: "Made in small batches using traditional methods" },
               { step: "4", title: "Packaging", desc: "Bottled fresh and delivered to you" },
             ].map((item, index) => (
               <div key={index} className="text-center">
@@ -126,7 +126,7 @@ export default function AboutPage() {
               </div>
               <h3 className="text-2xl font-bold text-[#2D1F0E] mb-4">Our Mission</h3>
               <p className="text-[#8B7355]">
-                To provide families with pure, natural, and chemical-free almond oil that nourishes skin and hair while supporting traditional methods of oil extraction.
+                To provide families with pure, natural, and chemical-free herbal oils that nourish skin and hair while keeping traditional methods alive.
               </p>
             </div>
             <div className="card p-8">
@@ -148,7 +148,7 @@ export default function AboutPage() {
       <section className="py-20 gradient-gold">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <h2 className="text-3xl sm:text-4xl font-bold text-white mb-6">Join the Elvia Herbals Family</h2>
-          <p className="text-xl text-white/90 mb-8">Experience the difference of pure, handmade almond oil</p>
+          <p className="text-xl text-white/90 mb-8">Experience the difference of pure, handmade herbal oils</p>
           <WhatsAppButton
             message="Hi Elvia Herbals! I would love to learn more about your products."
             className="bg-white text-[#D9A441] hover:bg-[#FFF5E6]"

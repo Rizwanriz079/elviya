@@ -23,7 +23,7 @@ const defaultContent = `<p class="text-[#8B7355]">Last updated: December 2024</p
 <section>
   <h2 class="text-xl font-bold text-[#2D1F0E] mb-4">2. Products</h2>
   <p class="text-[#8B7355]">
-    All products sold by Elvia Herbals are 100% pure, cold-pressed almond oil. We make every effort to
+    All products sold by Elvia Herbals are natural, handmade herbal oils. We make every effort to
     accurately display product colors and images, but actual products may vary slightly. Product
     availability and prices are subject to change without notice.
   </p>
@@ -45,7 +45,7 @@ const defaultContent = `<p class="text-[#8B7355]">Last updated: December 2024</p
   <h2 class="text-xl font-bold text-[#2D1F0E] mb-4">4. Shipping and Delivery</h2>
   <p class="text-[#8B7355]">
     We deliver across India. Delivery times vary by location and typically take 3-7 business days.
-    Shipping charges may apply based on your location and order value.
+    Within Kerala, Almond Oil ships free and Neem Oil has a Rs. 50 delivery charge, which is shown when you order. For orders outside Kerala, please contact us for delivery charges.
   </p>
 </section>
 

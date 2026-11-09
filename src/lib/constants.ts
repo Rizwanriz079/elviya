@@ -1,7 +1,7 @@
 // Brand Configuration
 export const BRAND = {
   name: 'Elvia Herbals',
-  tagline: 'Pure Homemade Almond Oil',
+  tagline: 'Pure Homemade Herbal Oils',
   description: 'Made by Hand, With Love',
   email: 'elviaherbals@gmail.com',
   phone: '+919207067522',
@@ -54,6 +54,101 @@ export const PRODUCT = {
   ],
 };
 
+// Shipping
+export const SHIPPING = {
+  kerala: 50, // Default delivery charge within Kerala (Rs.); a product can override it with `deliveryCharge`
+};
+
+// Product Catalog (shown on the product page and homepage)
+export interface CatalogProduct {
+  id: string;
+  name: string;
+  size: string;
+  price: number;
+  originalPrice?: number;
+  inStock: boolean;
+  /** Delivery charge within Kerala in Rs. 0 = free shipping. */
+  deliveryCharge: number;
+  image: string;
+  badges: [string, string];
+  description: string;
+  ingredients: string[];
+  howToUse: string[];
+  benefits: { title: string; desc: string }[];
+  faqs: { q: string; a: string }[];
+}
+
+export const PRODUCTS: CatalogProduct[] = [
+  {
+    id: 'neem-oil',
+    name: 'Neem Oil',
+    size: '100ml',
+    price: 269,
+    inStock: true,
+    deliveryCharge: SHIPPING.kerala,
+    image: '/images/neem-oil.png',
+    badges: ['100% Pure', 'Hair & Skin Care'],
+    benefits: [
+      { title: 'Healthy Scalp', desc: 'Neem helps keep the scalp clean and fresh' },
+      { title: 'Hair Care', desc: 'Virgin coconut oil nourishes and softens hair' },
+      { title: 'Clear Skin', desc: 'Traditionally used for clean, healthy skin' },
+      { title: 'Natural', desc: 'No chemicals or preservatives' },
+    ],
+    description: 'Elvia Herbals Neem Oil is handmade with pure virgin coconut oil and fresh neem, combining neem\'s powerful cleansing properties with the deep nourishment of virgin coconut oil. A trusted traditional remedy for healthy hair, a clean scalp and clear skin.',
+    ingredients: ['Virgin Coconut Oil', 'Neem', 'No Preservatives', 'No Chemicals'],
+    howToUse: [
+      'For Hair: Warm a little oil and massage gently into the scalp. Leave for 30 minutes to 1 hour, then wash with a mild shampoo.',
+      'For Skin: Apply a few drops to clean skin or the affected area and massage gently.',
+      'Do a patch test before first use. For external use only.',
+    ],
+    faqs: [
+      { q: 'What is it made from?', a: 'Our Neem Oil is made with just two natural ingredients: pure virgin coconut oil and neem. No preservatives or chemicals are added.' },
+      { q: 'What is neem oil good for?', a: 'Neem is traditionally used to keep the scalp clean, reduce dandruff, and support clear, healthy skin, while virgin coconut oil deeply nourishes hair and skin.' },
+      { q: 'Does it have a strong smell?', a: 'It has a natural, earthy neem aroma softened by virgin coconut oil. This is a sign that it is made with real neem and no added fragrance.' },
+      { q: 'How should I store the oil?', a: 'Store in a cool, dry place away from direct sunlight. Keep the cap tightly closed after use.' },
+      { q: 'What is the delivery charge?', a: `Delivery within Kerala costs Rs.${SHIPPING.kerala}, added to the product price when you order.` },
+    ],
+  },
+  {
+    id: 'almond-oil',
+    name: 'Pure Almond Oil',
+    size: '60ml',
+    price: 699,
+    originalPrice: 899,
+    inStock: false,
+    deliveryCharge: 0, // Free shipping
+    image: '/images/product-main.jpg',
+    badges: ['100% Pure', 'Cold Pressed'],
+    benefits: [
+      { title: 'Glowing Skin', desc: 'Natural moisturizer for radiant skin' },
+      { title: 'Hair Care', desc: 'Strengthens and nourishes hair' },
+      { title: 'Anti-Aging', desc: 'Rich in Vitamin E antioxidants' },
+      { title: 'Natural', desc: 'No chemicals or preservatives' },
+    ],
+    description: PRODUCT.description,
+    ingredients: PRODUCT.ingredients,
+    howToUse: PRODUCT.howToUse,
+    faqs: [
+      { q: 'How is the almond oil made?', a: 'Our almond oil is cold-pressed using traditional wooden press (ghani) method. This preserves all the natural nutrients and ensures the oil remains pure and unrefined.' },
+      { q: 'Is this oil suitable for all skin types?', a: 'Yes! Pure almond oil is gentle and suitable for all skin types including sensitive skin. It is non-comedogenic and absorbs well without leaving a greasy residue.' },
+      { q: 'How should I store the oil?', a: 'Store in a cool, dry place away from direct sunlight. The oil has a shelf life of 12 months from the date of manufacturing.' },
+      { q: 'Is shipping free?', a: 'Yes! Almond Oil comes with free shipping across Kerala.' },
+      { q: 'When will it be back in stock?', a: 'Almond Oil is currently out of stock. We will restock soon. Message us on WhatsApp to be notified.' },
+    ],
+  },
+];
+
+export function orderMessage(p: CatalogProduct): string {
+  const total = p.price + p.deliveryCharge;
+  const delivery = p.deliveryCharge > 0 ? `Rs.${p.deliveryCharge}` : 'FREE';
+  return `Hi Elvia Herbals! I want to order:
+
+Product: ${p.name} (${p.size})
+Price: Rs.${p.price}
+Delivery (Kerala): ${delivery}
+Total: Rs.${total}`;
+}
+
 // Testimonials
 export const TESTIMONIALS = [
   {
@@ -99,6 +194,6 @@ export const FEATURES = [
   {
     icon: 'award',
     title: 'Premium Quality',
-    description: 'Made from the finest California almonds.',
+    description: 'Made with carefully selected natural ingredients.',
   },
 ];

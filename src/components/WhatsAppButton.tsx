@@ -9,7 +9,7 @@ interface WhatsAppButtonProps {
 }
 
 export default function WhatsAppButton({
-  message = "Hi Elvia Herbals! I'm interested in your pure almond oil.",
+  message = "Hi Elvia Herbals! I'm interested in your products.",
   phone = "919207067522",
   className = "",
   children,

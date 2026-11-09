@@ -2,7 +2,7 @@ import { Metadata } from "next";
 
 export const metadata: Metadata = {
   title: "Terms & Conditions - Elvia Herbals | Legal Terms",
-  description: "Read Elvia Herbals' terms and conditions for ordering our pure almond oil products. Learn about orders, payments, shipping, returns, and refunds.",
+  description: "Read Elvia Herbals' terms and conditions for ordering our products. Learn about orders, payments, shipping, returns, and refunds.",
   keywords: ["terms and conditions", "Elvia Herbals terms", "return policy", "shipping policy"],
   openGraph: {
     title: "Terms & Conditions - Elvia Herbals",

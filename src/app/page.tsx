@@ -5,32 +5,17 @@ import Link from "next/link";
 import Image from "next/image";
 import { Droplets, Hand, Thermometer, Award, Sparkles, Heart, Shield, Leaf, Star, ArrowRight } from "lucide-react";
 import WhatsAppButton from "@/components/WhatsAppButton";
-import { TESTIMONIALS, PRODUCT } from "@/lib/constants";
+import ProductShowcase from "@/components/ProductShowcase";
+import { TESTIMONIALS, PRODUCTS, orderMessage } from "@/lib/constants";
 
-interface ProductSize {
-  id: string;
-  label: string;
-  price: number;
-  originalPrice: number;
-}
-
-interface Product {
-  id: string;
-  name: string;
-  description: string;
-  price: number;
-  sizes: ProductSize[];
-  images?: string[];
-}
+const NEEM = PRODUCTS.find((p) => p.id === "neem-oil")!;
+const ALMOND = PRODUCTS.find((p) => p.id === "almond-oil")!;
 
 export default function Home() {
-  const [product, setProduct] = useState<Product | null>(null);
   const [showScrollIndicator, setShowScrollIndicator] = useState(true);
   const scrollIndicatorRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    fetchProduct();
-
     // Hide scroll indicator on scroll
     const handleScroll = () => {
       if (window.scrollY > 100) {
@@ -44,45 +29,11 @@ export default function Home() {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  const fetchProduct = async () => {
-    try {
-      const res = await fetch("/api/products");
-      const data = await res.json();
-      if (data.products && data.products.length > 0) {
-        const p = data.products[0];
-        setProduct({
-          id: p.id,
-          name: p.name,
-          description: p.description,
-          price: p.price,
-          sizes: typeof p.sizes === "string" ? JSON.parse(p.sizes) : p.sizes,
-          images: p.images || [],
-        });
-      }
-    } catch (error) {
-      console.error("Error fetching product:", error);
-    }
-  };
-
-  // Use product from database or fallback to static data
-  const displayProduct = product || {
-    name: PRODUCT.name,
-    description: PRODUCT.description,
-    sizes: PRODUCT.sizes,
-    images: [],
-  };
-
-  const productImage = displayProduct.images && displayProduct.images.length > 0
-    ? displayProduct.images[0]
-    : "/images/product-main.jpg";
-
-  // Get the 60ml size for display, fallback to first size
-  const displaySize = displayProduct.sizes.find(s => s.label === "60ml") || displayProduct.sizes[0];
   const features = [
-    { icon: <Droplets className="w-8 h-8" />, title: "100% Pure", description: "No chemicals, no preservatives. Just pure almond goodness." },
+    { icon: <Droplets className="w-8 h-8" />, title: "100% Pure", description: "No chemicals, no preservatives. Just pure natural goodness." },
     { icon: <Hand className="w-8 h-8" />, title: "Handmade", description: "Crafted with care using traditional methods." },
-    { icon: <Thermometer className="w-8 h-8" />, title: "Cold Pressed", description: "Low temperature extraction preserves all nutrients." },
-    { icon: <Award className="w-8 h-8" />, title: "Premium Quality", description: "Made from the finest California almonds." },
+    { icon: <Thermometer className="w-8 h-8" />, title: "Small Batches", description: "Made fresh in small batches for the best quality." },
+    { icon: <Award className="w-8 h-8" />, title: "Premium Quality", description: "Made with carefully selected natural ingredients." },
   ];
 
   const benefits = [
@@ -95,7 +46,7 @@ export default function Home() {
   return (
     <div className="overflow-hidden">
       {/* Cover Page with Logo - Light Theme */}
-      <section className="relative min-h-screen flex items-center justify-center bg-gradient-to-br from-[#FFF5E6] via-[#F5E6D3] to-[#EDD9B5] overflow-hidden">
+      <section className="relative flex items-center justify-center bg-gradient-to-br from-[#FFF5E6] via-[#F5E6D3] to-[#EDD9B5] overflow-hidden">
         {/* Decorative Background Elements */}
         <div className="absolute inset-0">
           <div className="absolute top-20 left-10 w-64 h-64 bg-[#D9A441]/10 rounded-full blur-3xl animate-pulse-slow"></div>
@@ -104,9 +55,9 @@ export default function Home() {
         </div>
 
         {/* Main Content */}
-        <div className="relative z-10 max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 pt-24 text-center">
+        <div className="relative z-10 max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 pt-8 sm:pt-10 pb-16 text-center">
           {/* Logo - Large Size */}
-          <div className="mb-12 animate-scaleIn">
+          <div className="mb-10 animate-scaleIn">
             <div className="relative w-80 h-80 sm:w-96 sm:h-96 lg:w-[450px] lg:h-[450px] mx-auto">
               <div className="absolute inset-0 bg-gradient-to-br from-[#D9A441]/20 to-[#3D6A46]/20 rounded-full blur-2xl animate-pulse-slow"></div>
               <div className="relative w-full h-full rounded-full overflow-hidden shadow-2xl border-8 border-white/50 backdrop-blur">
@@ -122,7 +73,7 @@ export default function Home() {
           </div>
 
           {/* Brand Name */}
-          <h1 className="text-5xl sm:text-6xl lg:text-7xl font-bold mb-6 fade-in">
+          <h1 className="text-5xl sm:text-6xl lg:text-7xl font-bold mb-4 fade-in">
             <span className="bg-gradient-to-r from-[#D9A441] via-[#C4932B] to-[#D9A441] bg-clip-text text-transparent">
               Elvia Herbals
             </span>
@@ -130,7 +81,7 @@ export default function Home() {
 
           {/* Tagline */}
           <p className="text-2xl sm:text-3xl text-[#2D1F0E] font-semibold mb-4 fade-in" style={{ animationDelay: '0.2s' }}>
-            Pure Homemade Almond Oil
+            Pure Homemade Herbal Oils
           </p>
 
           {/* Description */}
@@ -142,10 +93,10 @@ export default function Home() {
           {/* Call to Action Buttons */}
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center fade-in" style={{ animationDelay: '0.6s' }}>
             <WhatsAppButton
-              message="Hi Elvia Herbals! I want to order a 60ml bottle for Rs. 699."
+              message={orderMessage(NEEM)}
               className="px-8 py-4 text-lg shadow-xl hover:shadow-2xl"
             >
-              Order 60ml for Rs. 699
+              Get It Now – Rs.{NEEM.price}
             </WhatsAppButton>
             <Link
               href="/product"
@@ -154,6 +105,8 @@ export default function Home() {
               View Details <ArrowRight className="w-5 h-5" />
             </Link>
           </div>
+
+          <p className="mt-4 text-sm text-[#8B7355]">Almond Oil is out of stock, restocking soon</p>
 
           {/* Trust Badges */}
           <div className="mt-16 grid grid-cols-3 gap-6 sm:gap-8 max-w-3xl mx-auto fade-in" style={{ animationDelay: '0.8s' }}>
@@ -168,8 +121,8 @@ export default function Home() {
               <div className="w-16 h-16 sm:w-20 sm:h-20 mx-auto mb-3 rounded-full bg-white shadow-lg flex items-center justify-center">
                 <Thermometer className="w-8 h-8 sm:w-10 sm:h-10 text-[#D9A441]" />
               </div>
-              <p className="text-sm sm:text-base font-bold text-[#2D1F0E]">Cold Pressed</p>
-              <p className="text-xs sm:text-sm text-[#8B7355]">Traditional Method</p>
+              <p className="text-sm sm:text-base font-bold text-[#2D1F0E]">Natural</p>
+              <p className="text-xs sm:text-sm text-[#8B7355]">Herbal Ingredients</p>
             </div>
             <div className="text-center">
               <div className="w-16 h-16 sm:w-20 sm:h-20 mx-auto mb-3 rounded-full bg-white shadow-lg flex items-center justify-center">
@@ -203,17 +156,20 @@ export default function Home() {
             <div className="space-y-8 fade-in">
               <div className="inline-flex items-center gap-2 bg-white/80 px-4 py-2 rounded-full shadow-sm">
                 <span className="w-2 h-2 bg-[#3D6A46] rounded-full animate-pulse" />
-                <span className="text-sm font-medium text-[#3D6A46]">100% Natural and Handmade</span>
+                <span className="text-sm font-medium text-[#3D6A46]">New · In Stock</span>
               </div>
               <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-[#2D1F0E] leading-tight">
-                {displayProduct.name || "Pure Homemade"} <span className="text-[#D9A441]">Almond Oil</span>
+                Pure <span className="text-[#3D6A46]">Neem Oil</span> <span className="text-2xl sm:text-3xl text-[#8B7355]">{NEEM.size}</span>
               </h1>
               <p className="text-xl text-[#8B7355] max-w-lg">
-                Made by Hand, With Love. Experience the natural goodness of cold-pressed almond oil for radiant skin and lustrous hair.
+                {NEEM.description}
+              </p>
+              <p className="text-lg text-[#2D1F0E]">
+                <span className="text-3xl font-bold text-[#3D6A46]">Rs.{NEEM.price}</span>
               </p>
               <div className="flex flex-wrap gap-4">
-                <WhatsAppButton message="Hi Elvia Herbals! I am interested in buying your pure almond oil.">Buy Now on WhatsApp</WhatsAppButton>
-                <Link href="/product" className="inline-flex items-center gap-2 btn-secondary px-6 py-3 rounded-full font-medium">
+                <WhatsAppButton message={orderMessage(NEEM)}>Grab Yours – Rs.{NEEM.price}</WhatsAppButton>
+                <Link href="/product?item=neem-oil" className="inline-flex items-center gap-2 btn-secondary px-6 py-3 rounded-full font-medium">
                   View Product <ArrowRight className="w-5 h-5" />
                 </Link>
               </div>
@@ -224,7 +180,7 @@ export default function Home() {
                 </div>
                 <div className="flex items-center gap-2 text-[#8B7355]">
                   <div className="w-10 h-10 rounded-full bg-[#F5E6D3] flex items-center justify-center"><Leaf className="w-5 h-5 text-[#3D6A46]" /></div>
-                  <span className="text-sm font-medium">Cold Pressed</span>
+                  <span className="text-sm font-medium">Virgin Coconut Oil</span>
                 </div>
                 <div className="flex items-center gap-2 text-[#8B7355]">
                   <div className="w-10 h-10 rounded-full bg-[#F5E6D3] flex items-center justify-center"><Heart className="w-5 h-5 text-[#D9A441]" /></div>
@@ -233,29 +189,13 @@ export default function Home() {
               </div>
             </div>
             <div className="relative slide-in-right">
-              <div className="relative w-full max-w-xl mx-auto flex items-center justify-center min-h-[500px]">
-                {/* Animated circular gradient backgrounds - lighter colors */}
-                <div className="absolute w-[420px] h-[420px] sm:w-[480px] sm:h-[480px] rounded-2xl bg-gradient-to-br from-[#F5E6D3] via-[#EDD9B5] to-[#E5C99A] shadow-xl animate-pulse-slow" />
-                <div className="absolute w-[380px] h-[380px] sm:w-[440px] sm:h-[440px] rounded-2xl bg-gradient-to-tr from-[#EDD9B5]/80 to-[#D9A441]/40 animate-spin-slow" />
-                <div className="absolute w-[340px] h-[340px] sm:w-[400px] sm:h-[400px] rounded-2xl bg-gradient-to-bl from-[#FFF5E6]/90 to-[#E5C99A]/60" />
-                {/* Product image - larger and contained in circle */}
-                <div className="relative z-10 w-[320px] h-[320px] sm:w-[380px] sm:h-[380px] rounded-2xl overflow-hidden flex items-center justify-center bg-gradient-to-b from-white/20 to-transparent animate-float">
-                  <Image
-                    src={productImage}
-                    alt={displayProduct.name}
-                    width={380}
-                    height={380}
-                    className="object-cover w-full h-full"
-                    priority
-                  />
-                </div>
-                <div className="absolute top-8 right-4 bg-white rounded-full px-4 py-2 shadow-lg z-20 animate-bounce-slow">
-                  <span className="text-sm font-bold text-[#3D6A46]">100% Pure</span>
-                </div>
-                <div className="absolute bottom-20 -left-2 bg-white rounded-full px-4 py-2 shadow-lg z-20 animate-bounce-slow" style={{ animationDelay: '0.5s' }}>
-                  <span className="text-sm font-bold text-[#D9A441]">Cold Pressed</span>
-                </div>
-              </div>
+              <ProductShowcase
+                image={NEEM.image}
+                alt={`Elvia Herbals ${NEEM.name} ${NEEM.size}`}
+                badgeTop="100% Pure"
+                badgeBottom="Hair & Skin Care"
+                priority
+              />
             </div>
           </div>
         </div>
@@ -265,7 +205,7 @@ export default function Home() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
             <h2 className="text-3xl sm:text-4xl font-bold text-[#2D1F0E] mb-4">Why Choose <span className="text-[#D9A441]">Elvia Herbals</span>?</h2>
-            <p className="text-lg text-[#8B7355] max-w-2xl mx-auto">We take pride in crafting the purest almond oil using traditional methods</p>
+            <p className="text-lg text-[#8B7355] max-w-2xl mx-auto">We take pride in crafting pure herbal oils using traditional methods</p>
           </div>
           <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-8">
             {features.map((feature, index) => (
@@ -305,26 +245,25 @@ export default function Home() {
                 {/* Product image in circle */}
                 <div className="relative z-10 w-[260px] h-[260px] rounded-lg overflow-hidden flex items-center justify-center animate-float">
                   <Image
-                    src={productImage}
-                    alt={`${displayProduct.name} ${displaySize?.label || ""}`}
+                    src={ALMOND.image}
+                    alt={`${ALMOND.name} ${ALMOND.size}`}
                     width={260}
                     height={260}
-                    className="object-cover w-full h-full"
+                    className="object-cover w-full h-full grayscale opacity-80"
                   />
                 </div>
               </div>
               <div className="text-center mt-6">
-                <h3 className="text-2xl font-bold text-[#2D1F0E] mb-2">60ml Bottle</h3>
-                <div className="flex items-center justify-center gap-3 mb-4">
-                  <p className="text-2xl font-bold text-[#8B7355] line-through">Rs.899</p>
-                  <p className="text-4xl font-bold text-[#D9A441]">Rs.699</p>
-                </div>
-                <div className="inline-block bg-[#3D6A46] text-white px-4 py-1 rounded-full text-sm font-bold mb-3">
-                  Save Rs.200
-                </div>
-                <WhatsAppButton message="Hi Elvia Herbals! I want to order a 60ml bottle for Rs. 699." className="text-sm">Order Now</WhatsAppButton>
+                <h3 className="text-2xl font-bold text-[#2D1F0E] mb-2">{ALMOND.name} {ALMOND.size}</h3>
+                <p className="text-lg font-bold text-red-700 mb-1">Out of Stock</p>
+                <p className="text-[#8B7355] mb-3">We will restock soon.</p>
+                {ALMOND.deliveryCharge === 0 && (
+                  <p className="inline-block bg-[#3D6A46] text-white px-4 py-1 rounded-full text-sm font-bold mb-4">Free Shipping</p>
+                )}
+                <div />
+                <WhatsAppButton message={`Hi Elvia Herbals! Please let me know when ${ALMOND.name} (${ALMOND.size}) is back in stock.`} className="text-sm">Notify Me When Available</WhatsAppButton>
               </div>
-              <div className="absolute top-0 right-0 bg-[#3D6A46] text-white px-4 py-2 rounded-full font-bold shadow-lg z-20 animate-bounce-slow">Best Seller</div>
+              <div className="absolute top-0 right-0 bg-red-700 text-white px-4 py-2 rounded-full font-bold shadow-lg z-20">Out of Stock</div>
             </div>
           </div>
         </div>
@@ -356,9 +295,9 @@ export default function Home() {
       <section className="py-20 gradient-gold">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <h2 className="text-3xl sm:text-4xl font-bold text-white mb-6">Ready to Experience Pure Goodness?</h2>
-          <p className="text-xl text-white/90 mb-8">Order now and get your bottle of pure, handmade almond oil delivered to your doorstep.</p>
+          <p className="text-xl text-white/90 mb-8">Order our 100% pure Neem Oil now and get it delivered to your doorstep.</p>
           <div className="flex flex-wrap justify-center gap-4">
-            <WhatsAppButton message="Hi Elvia Herbals! I would like to place an order for your pure almond oil." className="bg-white text-[#D9A441] hover:bg-[#FFF5E6] hover:text-[#A6763B]">Order on WhatsApp</WhatsAppButton>
+            <WhatsAppButton message={orderMessage(NEEM)} className="bg-white text-[#D9A441] hover:bg-[#FFF5E6] hover:text-[#A6763B]">Get Yours Today</WhatsAppButton>
             <Link href="/product" className="inline-flex items-center gap-2 bg-transparent border-2 border-white text-white px-6 py-3 rounded-full font-medium hover:bg-white hover:text-[#D9A441] transition-colors">
               View All Products <ArrowRight className="w-5 h-5" />
             </Link>

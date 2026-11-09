@@ -2,8 +2,8 @@ import { Metadata } from "next";
 import { LocalBusinessSchema, BreadcrumbSchema } from "@/components/StructuredData";
 
 export const metadata: Metadata = {
-  title: "Contact Elvia Herbals Kerala | Order Almond Oil - Free Shipping",
-  description: "Contact Elvia Herbals for orders and inquiries about pure almond oil. WhatsApp, phone, email, Instagram. Business hours: Mon-Fri 9 AM - 6 PM. Free shipping all over Kerala!",
+  title: "Contact Elvia Herbals Kerala | Order Herbal Oils on WhatsApp",
+  description: "Contact Elvia Herbals for orders and inquiries about our herbal oils. WhatsApp, phone, email, Instagram. Business hours: Mon-Fri 9 AM - 6 PM. Delivery across Kerala.",
   keywords: [
     "contact Elvia Herbals",
     "buy almond oil Kerala",
@@ -13,8 +13,8 @@ export const metadata: Metadata = {
     "Kerala almond oil delivery"
   ],
   openGraph: {
-    title: "Contact Elvia Herbals - Kerala's Pure Almond Oil",
-    description: "Order pure almond oil from Kerala. Free shipping across Kerala. WhatsApp, phone, and email available.",
+    title: "Contact Elvia Herbals - Kerala's Handmade Herbal Oils",
+    description: "Order handmade herbal oils from Kerala. WhatsApp, phone, and email available.",
     type: "website",
     url: "https://www.elviaherbals.com/contact",
     images: [
@@ -29,7 +29,7 @@ export const metadata: Metadata = {
   twitter: {
     card: "summary",
     title: "Contact Elvia Herbals",
-    description: "Order from Kerala | Free shipping",
+    description: "Order from Kerala | Delivery across Kerala",
     images: ["/images/logo.jpg"],
   },
 };
