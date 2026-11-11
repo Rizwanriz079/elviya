@@ -2,8 +2,9 @@ import { Metadata } from "next";
 import { LocalBusinessSchema, BreadcrumbSchema } from "@/components/StructuredData";
 
 export const metadata: Metadata = {
-  title: "Contact Elvia Herbals Kerala | Order Herbal Oils on WhatsApp",
-  description: "Contact Elvia Herbals for orders and inquiries about our herbal oils. WhatsApp, phone, email, Instagram. Business hours: Mon-Fri 9 AM - 6 PM. Delivery across Kerala.",
+  title: "Contact Us | Order Neem Oil on WhatsApp",
+  alternates: { canonical: "/contact" },
+  description: "Contact Elvia Herbals for orders and inquiries about our herbal oils. WhatsApp, phone, email, Instagram. Business hours: Mon-Fri 9 AM - 6 PM. Delivery across India.",
   keywords: [
     "contact Elvia Herbals",
     "buy almond oil Kerala",
@@ -29,7 +30,7 @@ export const metadata: Metadata = {
   twitter: {
     card: "summary",
     title: "Contact Elvia Herbals",
-    description: "Order from Kerala | Delivery across Kerala",
+    description: "Delivery across India",
     images: ["/images/logo.jpg"],
   },
 };

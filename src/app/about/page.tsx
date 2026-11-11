@@ -4,8 +4,9 @@ import Certificates from "@/components/Certificates";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "About Elvia Herbals | Kerala's Homemade Herbal Oil Brand",
-  description: "Learn about Elvia Herbals' journey in creating pure, handmade herbal oils in Kerala using traditional methods. Discover our values of purity, care, and tradition. Delivery across Kerala.",
+  title: "About Us | Kerala's Homemade Herbal Oil Brand",
+  alternates: { canonical: "/about" },
+  description: "Learn about Elvia Herbals' journey in creating pure, handmade herbal oils in Kerala using traditional methods. Discover our values of purity, care, and tradition. Delivery across India.",
   keywords: [
     "about Elvia Herbals",
     "Kerala almond oil brand",

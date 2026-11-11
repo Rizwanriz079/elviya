@@ -1,7 +1,8 @@
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Terms & Conditions - Elvia Herbals | Legal Terms",
+  title: "Terms & Conditions",
+  alternates: { canonical: "/terms" },
   description: "Read Elvia Herbals' terms and conditions for ordering our products. Learn about orders, payments, shipping, returns, and refunds.",
   keywords: ["terms and conditions", "Elvia Herbals terms", "return policy", "shipping policy"],
   openGraph: {

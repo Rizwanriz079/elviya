@@ -1,4 +1,4 @@
-# Elvia Herbals - Pure Homemade Almond Oil from Kerala
+# Elvia Herbals - Pure Homemade Herbal Oils from Kerala
 # https://www.elviaherbals.com
 
 User-agent: *

@@ -6,7 +6,8 @@ export const BRAND = {
   email: 'elviaherbals@gmail.com',
   phone: '+919207067522',
   whatsapp: '919207067522',
-  instagram: 'https://instagram.com/elviaherbals',
+  instagram: 'https://www.instagram.com/elviaherbals/',
+  instagramHandle: '@elviaherbals',
   address: 'Kerala, India',
 };
 
@@ -59,6 +60,22 @@ export const SHIPPING = {
   kerala: 50, // Default delivery charge within Kerala (Rs.); a product can override it with `deliveryCharge`
 };
 
+/** We deliver within India only. Kerala has a fixed charge; elsewhere in India it depends on the location and is confirmed on WhatsApp. */
+export type DeliveryZone = 'kerala' | 'india';
+
+export const DELIVERY_ZONES: { id: DeliveryZone; label: string; short: string }[] = [
+  { id: 'kerala', label: 'Kerala', short: 'Kerala' },
+  { id: 'india', label: 'Rest of India', short: 'India' },
+];
+
+/** One line used in page text and meta descriptions. */
+export const DELIVERY_AREAS = 'Delivery across India';
+
+/** Delivery charge in Rs. for a zone, or null when it depends on the exact location. */
+export function deliveryFor(p: CatalogProduct, zone: DeliveryZone): number | null {
+  return zone === 'kerala' ? p.deliveryCharge : null;
+}
+
 // Product Catalog (shown on the product page and homepage)
 export interface CatalogProduct {
   id: string;
@@ -67,7 +84,7 @@ export interface CatalogProduct {
   price: number;
   originalPrice?: number;
   inStock: boolean;
-  /** Delivery charge within Kerala in Rs. 0 = free shipping. */
+  /** Delivery charge within Kerala in Rs. 0 = free shipping in Kerala. Other locations are quoted on WhatsApp. */
   deliveryCharge: number;
   image: string;
   badges: [string, string];
@@ -106,7 +123,7 @@ export const PRODUCTS: CatalogProduct[] = [
       { q: 'What is neem oil good for?', a: 'Neem is traditionally used to keep the scalp clean, reduce dandruff, and support clear, healthy skin, while virgin coconut oil deeply nourishes hair and skin.' },
       { q: 'Does it have a strong smell?', a: 'It has a natural, earthy neem aroma softened by virgin coconut oil. This is a sign that it is made with real neem and no added fragrance.' },
       { q: 'How should I store the oil?', a: 'Store in a cool, dry place away from direct sunlight. Keep the cap tightly closed after use.' },
-      { q: 'What is the delivery charge?', a: `Delivery within Kerala costs Rs.${SHIPPING.kerala}, added to the product price when you order.` },
+      { q: 'Do you deliver outside Kerala?', a: `Yes, we deliver across India. Delivery within Kerala costs Rs.${SHIPPING.kerala}. For other states the charge depends on your city / pincode, and we confirm it on WhatsApp before you pay. We currently do not ship outside India.` },
     ],
   },
   {
@@ -132,21 +149,36 @@ export const PRODUCTS: CatalogProduct[] = [
       { q: 'How is the almond oil made?', a: 'Our almond oil is cold-pressed using traditional wooden press (ghani) method. This preserves all the natural nutrients and ensures the oil remains pure and unrefined.' },
       { q: 'Is this oil suitable for all skin types?', a: 'Yes! Pure almond oil is gentle and suitable for all skin types including sensitive skin. It is non-comedogenic and absorbs well without leaving a greasy residue.' },
       { q: 'How should I store the oil?', a: 'Store in a cool, dry place away from direct sunlight. The oil has a shelf life of 12 months from the date of manufacturing.' },
-      { q: 'Is shipping free?', a: 'Yes! Almond Oil comes with free shipping across Kerala.' },
+      { q: 'Is shipping free?', a: 'Almond Oil ships free within Kerala. We also deliver to the rest of India; there the delivery charge depends on your location and is confirmed on WhatsApp.' },
       { q: 'When will it be back in stock?', a: 'Almond Oil is currently out of stock. We will restock soon. Message us on WhatsApp to be notified.' },
     ],
   },
 ];
 
-export function orderMessage(p: CatalogProduct): string {
-  const total = p.price + p.deliveryCharge;
-  const delivery = p.deliveryCharge > 0 ? `Rs.${p.deliveryCharge}` : 'FREE';
-  return `Hi Elvia Herbals! I want to order:
+/** WhatsApp order text. Without a zone (e.g. ordering from the homepage) it asks the customer for their location. */
+export function orderMessage(p: CatalogProduct, zone?: DeliveryZone): string {
+  const header = `Hi Elvia Herbals! I want to order:
 
 Product: ${p.name} (${p.size})
-Price: Rs.${p.price}
-Delivery (Kerala): ${delivery}
-Total: Rs.${total}`;
+Price: Rs.${p.price}`;
+  if (!zone) {
+    return `${header}
+
+My city / pincode: `;
+  }
+  const charge = deliveryFor(p, zone);
+  const zoneLabel = DELIVERY_ZONES.find((z) => z.id === zone)!.label;
+  if (charge === null) {
+    return `${header}
+Deliver to: ${zoneLabel}
+Delivery charge: please confirm for my location
+
+My city / pincode: `;
+  }
+  return `${header}
+Deliver to: ${zoneLabel}
+Delivery: ${charge > 0 ? `Rs.${charge}` : 'FREE'}
+Total: Rs.${p.price + charge}`;
 }
 
 // Testimonials

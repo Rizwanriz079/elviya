@@ -6,7 +6,7 @@ import Image from "next/image";
 import { Droplets, Hand, Thermometer, Award, Sparkles, Heart, Shield, Leaf, Star, ArrowRight } from "lucide-react";
 import WhatsAppButton from "@/components/WhatsAppButton";
 import ProductShowcase from "@/components/ProductShowcase";
-import { TESTIMONIALS, PRODUCTS, orderMessage } from "@/lib/constants";
+import { TESTIMONIALS, PRODUCTS, DELIVERY_AREAS, orderMessage } from "@/lib/constants";
 
 const NEEM = PRODUCTS.find((p) => p.id === "neem-oil")!;
 const ALMOND = PRODUCTS.find((p) => p.id === "almond-oil")!;
@@ -106,7 +106,8 @@ export default function Home() {
             </Link>
           </div>
 
-          <p className="mt-4 text-sm text-[#8B7355]">Almond Oil is out of stock, restocking soon</p>
+          <p className="mt-4 text-sm font-semibold text-[#3D6A46]">{DELIVERY_AREAS}</p>
+          <p className="mt-1 text-sm text-[#8B7355]"><Link href={`/product/${ALMOND.id}`} className="underline underline-offset-2 hover:text-[#D9A441]">Almond Oil</Link> is out of stock, restocking soon</p>
 
           {/* Trust Badges */}
           <div className="mt-16 grid grid-cols-3 gap-6 sm:gap-8 max-w-3xl mx-auto fade-in" style={{ animationDelay: '0.8s' }}>
@@ -158,9 +159,9 @@ export default function Home() {
                 <span className="w-2 h-2 bg-[#3D6A46] rounded-full animate-pulse" />
                 <span className="text-sm font-medium text-[#3D6A46]">New · In Stock</span>
               </div>
-              <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-[#2D1F0E] leading-tight">
+              <h2 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-[#2D1F0E] leading-tight">
                 Pure <span className="text-[#3D6A46]">Neem Oil</span> <span className="text-2xl sm:text-3xl text-[#8B7355]">{NEEM.size}</span>
-              </h1>
+              </h2>
               <p className="text-xl text-[#8B7355] max-w-lg">
                 {NEEM.description}
               </p>
@@ -169,7 +170,7 @@ export default function Home() {
               </p>
               <div className="flex flex-wrap gap-4">
                 <WhatsAppButton message={orderMessage(NEEM)}>Grab Yours – Rs.{NEEM.price}</WhatsAppButton>
-                <Link href="/product?item=neem-oil" className="inline-flex items-center gap-2 btn-secondary px-6 py-3 rounded-full font-medium">
+                <Link href="/product" className="inline-flex items-center gap-2 btn-secondary px-6 py-3 rounded-full font-medium">
                   View Product <ArrowRight className="w-5 h-5" />
                 </Link>
               </div>
@@ -257,11 +258,8 @@ export default function Home() {
                 <h3 className="text-2xl font-bold text-[#2D1F0E] mb-2">{ALMOND.name} {ALMOND.size}</h3>
                 <p className="text-lg font-bold text-red-700 mb-1">Out of Stock</p>
                 <p className="text-[#8B7355] mb-3">We will restock soon.</p>
-                {ALMOND.deliveryCharge === 0 && (
-                  <p className="inline-block bg-[#3D6A46] text-white px-4 py-1 rounded-full text-sm font-bold mb-4">Free Shipping</p>
-                )}
-                <div />
                 <WhatsAppButton message={`Hi Elvia Herbals! Please let me know when ${ALMOND.name} (${ALMOND.size}) is back in stock.`} className="text-sm">Notify Me When Available</WhatsAppButton>
+                <p className="mt-3"><Link href={`/product/${ALMOND.id}`} className="text-sm text-[#8B7355] underline underline-offset-2 hover:text-[#D9A441]">View Almond Oil details</Link></p>
               </div>
               <div className="absolute top-0 right-0 bg-red-700 text-white px-4 py-2 rounded-full font-bold shadow-lg z-20">Out of Stock</div>
             </div>
@@ -295,7 +293,7 @@ export default function Home() {
       <section className="py-20 gradient-gold">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <h2 className="text-3xl sm:text-4xl font-bold text-white mb-6">Ready to Experience Pure Goodness?</h2>
-          <p className="text-xl text-white/90 mb-8">Order our 100% pure Neem Oil now and get it delivered to your doorstep.</p>
+          <p className="text-xl text-white/90 mb-8">Order our 100% pure Neem Oil now and get it delivered to your doorstep, anywhere in India.</p>
           <div className="flex flex-wrap justify-center gap-4">
             <WhatsAppButton message={orderMessage(NEEM)} className="bg-white text-[#D9A441] hover:bg-[#FFF5E6] hover:text-[#A6763B]">Get Yours Today</WhatsAppButton>
             <Link href="/product" className="inline-flex items-center gap-2 bg-transparent border-2 border-white text-white px-6 py-3 rounded-full font-medium hover:bg-white hover:text-[#D9A441] transition-colors">

@@ -64,13 +64,13 @@ export default function ContactPage() {
                       <p>{BRAND.email}</p>
                     </div>
                   </a>
-                  <a href={BRAND.instagram} target="_blank" rel="noopener noreferrer" className="flex items-center gap-4 text-[#8B7355] hover:text-[#D9A441] transition-colors">
+                  <a href={BRAND.instagram} target="_blank" rel="me noopener noreferrer" className="flex items-center gap-4 text-[#8B7355] hover:text-[#D9A441] transition-colors">
                     <div className="w-12 h-12 rounded-full bg-[#E1306C]/10 flex items-center justify-center">
                       <Instagram className="w-6 h-6 text-[#E1306C]" />
                     </div>
                     <div>
                       <p className="font-bold text-[#2D1F0E]">Instagram</p>
-                      <p>@elviaherbals</p>
+                      <p>{BRAND.instagramHandle}</p>
                     </div>
                   </a>
                   <div className="flex items-center gap-4 text-[#8B7355]">
