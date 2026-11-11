@@ -39,7 +39,7 @@ export default function ProductView({ productId }: { productId: string }) {
   const faqs = product.faqs;
 
   return (
-    <div className="min-h-screen bg-[#FFF5E6]">
+    <div className="min-h-screen bg-[#FFF5E6] overflow-x-clip">
       {/* Product Selector */}
       <section className="py-8 bg-white border-b border-[#F5E6D3]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">

@@ -24,7 +24,6 @@ export default function Header() {
     });
     router.prefetch('/privacy');
     router.prefetch('/terms');
-    router.prefetch('/admin');
   }, [router]);
 
   return (
@@ -38,6 +37,7 @@ export default function Header() {
                 src="/images/logo.jpg"
                 alt="Elvia Herbals Logo"
                 fill
+                sizes="48px"
                 className="object-cover"
                 priority
               />
@@ -78,6 +78,8 @@ export default function Header() {
           {/* Mobile Menu Button */}
           <button
             onClick={() => setIsMenuOpen(!isMenuOpen)}
+            aria-label={isMenuOpen ? "Close menu" : "Open menu"}
+            aria-expanded={isMenuOpen}
             className="md:hidden p-2 rounded-lg hover:bg-[#F5E6D3] transition-colors"
           >
             {isMenuOpen ? (

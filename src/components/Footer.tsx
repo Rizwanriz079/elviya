@@ -27,24 +27,24 @@ export default function Footer() {
           {/* Quick Links */}
           <div>
             <h3 className="text-lg font-semibold text-[#D9A441] mb-4">Quick Links</h3>
-            <ul className="space-y-3">
+            <ul className="space-y-1">
               <li>
-                <Link href="/" className="text-[#D9C4A8] hover:text-[#D9A441] transition-colors">
+                <Link href="/" className="inline-block py-1.5 text-[#D9C4A8] hover:text-[#D9A441] transition-colors">
                   Home
                 </Link>
               </li>
               <li>
-                <Link href="/product" className="text-[#D9C4A8] hover:text-[#D9A441] transition-colors">
+                <Link href="/product" className="inline-block py-1.5 text-[#D9C4A8] hover:text-[#D9A441] transition-colors">
                   Product
                 </Link>
               </li>
               <li>
-                <Link href="/about" className="text-[#D9C4A8] hover:text-[#D9A441] transition-colors">
+                <Link href="/about" className="inline-block py-1.5 text-[#D9C4A8] hover:text-[#D9A441] transition-colors">
                   About Us
                 </Link>
               </li>
               <li>
-                <Link href="/contact" className="text-[#D9C4A8] hover:text-[#D9A441] transition-colors">
+                <Link href="/contact" className="inline-block py-1.5 text-[#D9C4A8] hover:text-[#D9A441] transition-colors">
                   Contact
                 </Link>
               </li>
@@ -54,14 +54,14 @@ export default function Footer() {
           {/* Legal */}
           <div>
             <h3 className="text-lg font-semibold text-[#D9A441] mb-4">Legal</h3>
-            <ul className="space-y-3">
+            <ul className="space-y-1">
               <li>
-                <Link href="/privacy" className="text-[#D9C4A8] hover:text-[#D9A441] transition-colors">
+                <Link href="/privacy" className="inline-block py-1.5 text-[#D9C4A8] hover:text-[#D9A441] transition-colors">
                   Privacy Policy
                 </Link>
               </li>
               <li>
-                <Link href="/terms" className="text-[#D9C4A8] hover:text-[#D9A441] transition-colors">
+                <Link href="/terms" className="inline-block py-1.5 text-[#D9C4A8] hover:text-[#D9A441] transition-colors">
                   Terms & Conditions
                 </Link>
               </li>
@@ -71,16 +71,16 @@ export default function Footer() {
           {/* Contact */}
           <div>
             <h3 className="text-lg font-semibold text-[#D9A441] mb-4">Contact Us</h3>
-            <ul className="space-y-3">
+            <ul className="space-y-1">
               <li className="flex items-center gap-3 text-[#D9C4A8]">
                 <Phone className="w-5 h-5 text-[#D9A441]" />
-                <a href={`tel:${BRAND.phone}`} className="hover:text-[#D9A441] transition-colors">
+                <a href={`tel:${BRAND.phone}`} className="inline-block py-1.5 hover:text-[#D9A441] transition-colors">
                   {BRAND.phone}
                 </a>
               </li>
               <li className="flex items-center gap-3 text-[#D9C4A8]">
                 <Mail className="w-5 h-5 text-[#D9A441]" />
-                <a href={`mailto:${BRAND.email}`} className="hover:text-[#D9A441] transition-colors">
+                <a href={`mailto:${BRAND.email}`} className="inline-block py-1.5 break-all hover:text-[#D9A441] transition-colors">
                   {BRAND.email}
                 </a>
               </li>

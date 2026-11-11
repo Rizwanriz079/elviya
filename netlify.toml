@@ -8,6 +8,5 @@
 [build.environment]
   NODE_VERSION = "20"
 
-# Disable automatic Prisma detection since we handle it manually
 [build.processing]
   skip_processing = false
