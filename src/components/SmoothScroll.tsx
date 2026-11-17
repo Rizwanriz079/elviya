@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import Lenis from 'lenis';
 import { motion, useScroll, useSpring } from 'framer-motion';
 
@@ -13,7 +13,6 @@ export default function SmoothScroll({ children }: { children: React.ReactNode }
   });
 
   useEffect(() => {
-    // Check if user prefers reduced motion
     const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     if (prefersReducedMotion) return;
 
@@ -34,7 +33,6 @@ export default function SmoothScroll({ children }: { children: React.ReactNode }
     }
     rafId = requestAnimationFrame(raf);
 
-    // Pause on tab hidden for optimal performance
     const handleVisibilityChange = () => {
       if (document.hidden) {
         lenis.stop();

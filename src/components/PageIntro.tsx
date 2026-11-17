@@ -1,29 +1,35 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 
 export default function PageIntro() {
   const [show, setShow] = useState(false);
 
+  const handleComplete = useCallback(() => {
+    sessionStorage.setItem('elvia_intro_shown', 'true');
+    setShow(false);
+  }, []);
+
   useEffect(() => {
-    // Only show once per session
     const hasSeenIntro = sessionStorage.getItem('elvia_intro_shown');
     const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
     if (!hasSeenIntro && !prefersReducedMotion) {
-      setShow(true);
+      const showTimer = setTimeout(() => {
+        setShow(true);
+      }, 0);
+
       const timer = setTimeout(() => {
         handleComplete();
       }, 1900);
-      return () => clearTimeout(timer);
-    }
-  }, []);
 
-  const handleComplete = () => {
-    sessionStorage.setItem('elvia_intro_shown', 'true');
-    setShow(false);
-  };
+      return () => {
+        clearTimeout(showTimer);
+        clearTimeout(timer);
+      };
+    }
+  }, [handleComplete]);
 
   return (
     <AnimatePresence>
@@ -37,7 +43,6 @@ export default function PageIntro() {
           }}
           className="fixed inset-0 z-[99999] bg-[#1E3F27] flex flex-col items-center justify-center overflow-hidden px-6 text-white"
         >
-          {/* Subtle botanical background aura */}
           <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(76,140,74,0.35)_0%,transparent_70%)] pointer-events-none" />
 
           {/* Skip Button */}
@@ -56,7 +61,6 @@ export default function PageIntro() {
               fill="none"
               xmlns="http://www.w3.org/2000/svg"
             >
-              {/* Leaf Stem & Outline Stroke */}
               <motion.path
                 d="M50 10 C30 25 20 50 25 75 C28 85 40 92 50 92 C60 92 72 85 75 75 C80 50 70 25 50 10 Z"
                 stroke="#C9973A"
@@ -67,7 +71,6 @@ export default function PageIntro() {
                 animate={{ pathLength: 1, opacity: 1 }}
                 transition={{ duration: 0.9, ease: 'easeInOut' }}
               />
-              {/* Central Spine */}
               <motion.path
                 d="M50 20 V88"
                 stroke="#4C8C4A"
@@ -77,7 +80,6 @@ export default function PageIntro() {
                 animate={{ pathLength: 1 }}
                 transition={{ duration: 0.7, delay: 0.3, ease: 'easeOut' }}
               />
-              {/* Side Veins */}
               <motion.path
                 d="M50 40 L65 32 M50 55 L35 48 M50 70 L65 62"
                 stroke="#E0B35C"

@@ -10,26 +10,25 @@ export default function FinalCtaSection() {
 
   return (
     <section className="py-24 relative overflow-hidden bg-gradient-to-br from-[#1E3F27] via-[#2F5D3A] to-[#162F1D] text-[#FDF6EC]">
-      {/* Botanical Decorative Glow & Leaf SVGs */}
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(201,151,58,0.3)_0%,transparent_60%)] pointer-events-none" />
 
       <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10 space-y-8">
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
+          initial={{ opacity: 0, y: 15 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#E8EFE3]/15 border border-[#C9973A]/40 text-[#E0B35C] text-xs font-semibold uppercase tracking-wider backdrop-blur-sm"
         >
           <Sparkles className="w-3.5 h-3.5" />
-          Pure Homemade Goodness
+          Pure Homemade Herbal Oils
         </motion.div>
 
         <h2 className="font-serif text-3xl sm:text-5xl md:text-6xl font-bold tracking-tight text-[#FDF6EC] max-w-3xl mx-auto leading-tight">
-          Ready to Experience Pure Botanical Care?
+          Ready to Experience Pure Goodness?
         </h2>
 
         <p className="text-base sm:text-xl text-[#E8EFE3]/85 max-w-2xl mx-auto font-light leading-relaxed">
-          Made fresh in small batches in Kerala with cold-pressed virgin coconut oil and organic neem. Order directly with us on WhatsApp for safe express delivery across India.
+          Made by hand in small batches in Kerala with pure virgin coconut oil and fresh neem. Delivery across India.
         </p>
 
         {/* Action Buttons */}
@@ -38,6 +37,7 @@ export default function FinalCtaSection() {
             href={getWhatsAppOrderUrl(neem, 'kerala')}
             target="_blank"
             rel="noopener noreferrer"
+            data-cursor="order"
             className="btn-shine inline-flex items-center justify-center gap-3 bg-[#25D366] hover:bg-[#1EBE5D] text-white px-9 py-4 rounded-full font-bold shadow-xl shadow-[#25D366]/30 transition-all hover:scale-105 active:scale-95 text-base w-full sm:w-auto"
           >
             <svg className="w-5 h-5 fill-current" viewBox="0 0 24 24">
@@ -48,6 +48,7 @@ export default function FinalCtaSection() {
 
           <Link
             href="/product"
+            data-cursor="view"
             className="inline-flex items-center justify-center gap-2 px-8 py-4 rounded-full border-2 border-[#E0B35C] text-[#E0B35C] hover:bg-[#E0B35C] hover:text-[#1E3F27] font-semibold transition-all duration-300 text-base w-full sm:w-auto"
           >
             <span>View All Products</span>
@@ -56,7 +57,7 @@ export default function FinalCtaSection() {
         </div>
 
         <p className="text-xs text-[#E8EFE3]/60 pt-4">
-          Safe Express Delivery across India • Kerala Flat ₹50 • Payment via UPI or Bank Transfer
+          Delivery across India • Kerala flat ₹50
         </p>
       </div>
     </section>

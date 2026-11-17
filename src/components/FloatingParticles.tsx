@@ -14,20 +14,34 @@ interface Particle {
   rotate: number;
 }
 
+const INITIAL_PARTICLES: Particle[] = [
+  { id: 1, type: 'leaf', x: 8, y: 18, size: 28, duration: 18, delay: 0, rotate: 25 },
+  { id: 2, type: 'petal', x: 88, y: 28, size: 22, duration: 22, delay: 2, rotate: -40 },
+  { id: 3, type: 'dust', x: 30, y: 45, size: 7, duration: 14, delay: 1, rotate: 0 },
+  { id: 4, type: 'leaf', x: 92, y: 65, size: 26, duration: 20, delay: 4, rotate: 60 },
+  { id: 5, type: 'dust', x: 75, y: 80, size: 8, duration: 16, delay: 3, rotate: 0 },
+  { id: 6, type: 'petal', x: 14, y: 75, size: 20, duration: 24, delay: 5, rotate: -15 },
+  { id: 7, type: 'dust', x: 50, y: 15, size: 6, duration: 15, delay: 2, rotate: 0 },
+  { id: 8, type: 'leaf', x: 45, y: 90, size: 24, duration: 19, delay: 6, rotate: 110 },
+];
+
 export default function FloatingParticles() {
-  const [particles, setParticles] = useState<Particle[]>([]);
   const [isDesktop, setIsDesktop] = useState(false);
   const [isVisible, setIsVisible] = useState(true);
 
   useEffect(() => {
-    // Only activate on desktop devices
+    const timer = setTimeout(() => {
+      const match = window.innerWidth >= 1024 && window.matchMedia('(pointer: fine)').matches;
+      const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      setIsDesktop(match && !reducedMotion);
+    }, 0);
+
     const checkDesktop = () => {
       const match = window.innerWidth >= 1024 && window.matchMedia('(pointer: fine)').matches;
       const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
       setIsDesktop(match && !reducedMotion);
     };
 
-    checkDesktop();
     window.addEventListener('resize', checkDesktop);
 
     const handleVisibility = () => {
@@ -35,20 +49,8 @@ export default function FloatingParticles() {
     };
     document.addEventListener('visibilitychange', handleVisibility);
 
-    // Generate lightweight botanical particles
-    const items: Particle[] = [
-      { id: 1, type: 'leaf', x: 8, y: 18, size: 28, duration: 18, delay: 0, rotate: 25 },
-      { id: 2, type: 'petal', x: 88, y: 28, size: 22, duration: 22, delay: 2, rotate: -40 },
-      { id: 3, type: 'dust', x: 30, y: 45, size: 7, duration: 14, delay: 1, rotate: 0 },
-      { id: 4, type: 'leaf', x: 92, y: 65, size: 26, duration: 20, delay: 4, rotate: 60 },
-      { id: 5, type: 'dust', x: 75, y: 80, size: 8, duration: 16, delay: 3, rotate: 0 },
-      { id: 6, type: 'petal', x: 14, y: 75, size: 20, duration: 24, delay: 5, rotate: -15 },
-      { id: 7, type: 'dust', x: 50, y: 15, size: 6, duration: 15, delay: 2, rotate: 0 },
-      { id: 8, type: 'leaf', x: 45, y: 90, size: 24, duration: 19, delay: 6, rotate: 110 },
-    ];
-    setParticles(items);
-
     return () => {
+      clearTimeout(timer);
       window.removeEventListener('resize', checkDesktop);
       document.removeEventListener('visibilitychange', handleVisibility);
     };
@@ -58,7 +60,7 @@ export default function FloatingParticles() {
 
   return (
     <div className="fixed inset-0 pointer-events-none z-[1] overflow-hidden">
-      {particles.map((p) => (
+      {INITIAL_PARTICLES.map((p) => (
         <motion.div
           key={p.id}
           className="absolute"

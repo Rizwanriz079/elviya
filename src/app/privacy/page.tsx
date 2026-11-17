@@ -1,4 +1,4 @@
-import { Shield, Sparkles } from "lucide-react";
+import { Shield } from "lucide-react";
 import PageTransition from "@/components/PageTransition";
 
 const defaultContent = `

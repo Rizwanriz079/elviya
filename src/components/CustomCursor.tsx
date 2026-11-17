@@ -5,84 +5,130 @@ import { motion, useMotionValue, useSpring } from 'framer-motion';
 
 export default function CustomCursor() {
   const [enabled, setEnabled] = useState(false);
+  const [cursorLabel, setCursorLabel] = useState<string | null>(null);
   const [isHovered, setIsHovered] = useState(false);
-  const [isClicked, setIsClicked] = useState(false);
+  const [isInput, setIsInput] = useState(false);
 
   const cursorX = useMotionValue(-100);
   const cursorY = useMotionValue(-100);
 
-  const springConfig = { damping: 24, stiffness: 280, mass: 0.5 };
-  const smoothX = useSpring(cursorX, springConfig);
-  const smoothY = useSpring(cursorY, springConfig);
+  // Dot spring physics
+  const dotSpring = { damping: 30, stiffness: 450, mass: 0.2 };
+  const dotX = useSpring(cursorX, dotSpring);
+  const dotY = useSpring(cursorY, dotSpring);
+
+  // Ring spring physics
+  const ringSpring = { damping: 24, stiffness: 220, mass: 0.6 };
+  const ringX = useSpring(cursorX, ringSpring);
+  const ringY = useSpring(cursorY, ringSpring);
 
   useEffect(() => {
-    // Only enable on desktop pointer devices
-    const isFinePointer = window.matchMedia('(pointer: fine)').matches;
-    const isReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    if (!isFinePointer || isReducedMotion) {
-      setEnabled(false);
-      return;
-    }
-    setEnabled(true);
+    const timer = setTimeout(() => {
+      const isFinePointer = window.matchMedia('(pointer: fine)').matches;
+      const isReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      setEnabled(isFinePointer && !isReducedMotion);
+    }, 0);
 
     const moveCursor = (e: MouseEvent) => {
       cursorX.set(e.clientX);
       cursorY.set(e.clientY);
     };
 
-    const handleMouseDown = () => setIsClicked(true);
-    const handleMouseUp = () => setIsClicked(false);
-
     const handleMouseOver = (e: MouseEvent) => {
       const target = e.target as HTMLElement | null;
       if (!target) return;
-      const interactive = target.closest('a, button, input, textarea, select, [data-interactive="true"], [role="button"]');
-      setIsHovered(!!interactive);
+
+      if (target.closest('input, textarea, select, [contenteditable="true"]')) {
+        setIsInput(true);
+        setIsHovered(false);
+        setCursorLabel(null);
+        return;
+      }
+      setIsInput(false);
+
+      const cursorTarget = target.closest('[data-cursor]');
+      if (cursorTarget) {
+        const label = cursorTarget.getAttribute('data-cursor');
+        setCursorLabel(label);
+        setIsHovered(true);
+        return;
+      }
+
+      const whatsappEl = target.closest('a[href*="wa.me"], button[class*="whatsapp"], .btn-whatsapp');
+      if (whatsappEl) {
+        setCursorLabel('Order');
+        setIsHovered(true);
+        return;
+      }
+
+      const productEl = target.closest('[data-cursor-view], a[href^="/product"], .product-card');
+      if (productEl) {
+        setCursorLabel('View');
+        setIsHovered(true);
+        return;
+      }
+
+      const carouselEl = target.closest('[data-carousel], .carousel-container');
+      if (carouselEl) {
+        setCursorLabel('Drag');
+        setIsHovered(true);
+        return;
+      }
+
+      const interactive = target.closest('a, button, [role="button"]');
+      if (interactive) {
+        setIsHovered(true);
+        setCursorLabel(null);
+      } else {
+        setIsHovered(false);
+        setCursorLabel(null);
+      }
     };
 
     window.addEventListener('mousemove', moveCursor);
-    window.addEventListener('mousedown', handleMouseDown);
-    window.addEventListener('mouseup', handleMouseUp);
     document.addEventListener('mouseover', handleMouseOver);
 
     return () => {
+      clearTimeout(timer);
       window.removeEventListener('mousemove', moveCursor);
-      window.removeEventListener('mousedown', handleMouseDown);
-      window.removeEventListener('mouseup', handleMouseUp);
       document.removeEventListener('mouseover', handleMouseOver);
     };
   }, [cursorX, cursorY]);
 
-  if (!enabled) return null;
+  if (!enabled || isInput) return null;
 
   return (
-    <motion.div
-      className="fixed top-0 left-0 pointer-events-none z-[9998] -translate-x-1/2 -translate-y-1/2 will-change-transform"
-      style={{
-        x: smoothX,
-        y: smoothY,
-      }}
-    >
-      {/* Outer Leaf Halo / Glow */}
+    <>
+      {/* 8px Solid Dot */}
       <motion.div
-        animate={{
-          scale: isClicked ? 0.8 : isHovered ? 1.7 : 1,
-          rotate: isHovered ? 45 : 0,
-          opacity: isHovered ? 0.9 : 0.6,
-        }}
-        transition={{ duration: 0.2 }}
-        className="w-8 h-8 rounded-full border border-[#C9973A] bg-[#2F5D3A]/10 backdrop-blur-[1px] flex items-center justify-center -translate-x-1/2 -translate-y-1/2"
+        className="fixed top-0 left-0 pointer-events-none z-[9999] -translate-x-1/2 -translate-y-1/2 will-change-transform"
+        style={{ x: dotX, y: dotY }}
       >
-        {/* Inner Leaf Accent */}
-        <svg
-          className="w-3.5 h-3.5 text-[#2F5D3A] opacity-75"
-          viewBox="0 0 24 24"
-          fill="currentColor"
-        >
-          <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10c.83 0 1.5-.67 1.5-1.5 0-.39-.15-.74-.39-1.01-.23-.26-.38-.61-.38-.99 0-.83.67-1.5 1.5-1.5H16c3.31 0 6-2.69 6-6 0-4.97-4.48-9-10-9z" opacity="0.3" />
-          <path d="M17 8C8 10 5.9 16.17 3.82 21.34l1.89.66C7.57 17.5 9.5 12 17 10V8z" fill="#4C8C4A" />
-        </svg>
+        <div className="w-2 h-2 rounded-full bg-[#C9973A] shadow-[0_0_6px_rgba(201,151,58,0.8)]" />
       </motion.div>
-    </motion.div>
+
+      {/* 36px Ring Follower with Spring */}
+      <motion.div
+        className="fixed top-0 left-0 pointer-events-none z-[9998] -translate-x-1/2 -translate-y-1/2 will-change-transform flex items-center justify-center"
+        style={{ x: ringX, y: ringY }}
+      >
+        <motion.div
+          animate={{
+            width: cursorLabel ? 56 : isHovered ? 44 : 36,
+            height: cursorLabel ? 56 : isHovered ? 44 : 36,
+            borderColor: isHovered ? '#C9973A' : 'rgba(47, 93, 58, 0.45)',
+            backgroundColor: isHovered ? 'rgba(201, 151, 58, 0.12)' : 'transparent',
+          }}
+          transition={{ duration: 0.2 }}
+          className="rounded-full border border-dashed flex items-center justify-center backdrop-blur-[0.5px]"
+        >
+          {cursorLabel && (
+            <span className="text-[10px] font-bold text-[#2F5D3A] uppercase tracking-wider select-none font-sans bg-[#FDF6EC]/85 px-1.5 py-0.5 rounded-full border border-[#C9973A]/40 shadow-xs">
+              {cursorLabel}
+            </span>
+          )}
+        </motion.div>
+      </motion.div>
+    </>
   );
 }

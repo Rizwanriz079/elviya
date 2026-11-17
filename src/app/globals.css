@@ -2,6 +2,9 @@
 @import "tailwindcss";
 
 :root {
+  /* Layout Dimensions */
+  --nav-h: 84px;
+
   /* Botanical Luxe Palette */
   --cream: #FDF6EC;
   --cream-soft: #F7EFE2;
@@ -68,9 +71,14 @@ body {
   overflow-x: hidden;
   position: relative;
   min-height: 100vh;
-  /* Paper grain subtle texture */
-  background-image: radial-gradient(rgba(43, 29, 14, 0.035) 1px, transparent 0);
+  /* Paper grain subtle texture ~4% opacity */
+  background-image: radial-gradient(rgba(43, 29, 14, 0.04) 1px, transparent 0);
   background-size: 24px 24px;
+}
+
+/* Page Top Spacing to guarantee nothing sits under navbar */
+.page-top-padding {
+  padding-top: calc(var(--nav-h) + 24px);
 }
 
 /* Typography Defaults */
@@ -100,7 +108,7 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .glass-panel-dark {
-  background: rgba(30, 63, 39, 0.88);
+  background: rgba(30, 63, 39, 0.92);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
   border: 1px solid rgba(201, 151, 58, 0.3);
@@ -132,6 +140,11 @@ h1, h2, h3, h4, h5, h6 {
   height: 2px;
   background: linear-gradient(90deg, transparent 0%, #C9973A 50%, transparent 100%);
   width: 100%;
+}
+
+/* Arch Shaped Frame for Product Hero */
+.arch-frame {
+  border-radius: 200px 200px 32px 32px;
 }
 
 /* Organic Blobs */
@@ -187,16 +200,7 @@ h1, h2, h3, h4, h5, h6 {
     transform: translateY(0px) rotate(0deg);
   }
   50% {
-    transform: translateY(-12px) rotate(2deg);
-  }
-}
-
-@keyframes floatGentle {
-  0%, 100% {
-    transform: translateY(0px) rotate(0deg);
-  }
-  50% {
-    transform: translateY(-8px) rotate(-1.5deg);
+    transform: translateY(-10px) rotate(1.5deg);
   }
 }
 
@@ -213,17 +217,13 @@ h1, h2, h3, h4, h5, h6 {
   animation: floatSlow 6s ease-in-out infinite;
 }
 
-.animate-float-gentle {
-  animation: floatGentle 4.5s ease-in-out infinite;
-}
-
 .pulse-ring-whatsapp {
   animation: pulseGlow 2.4s infinite;
 }
 
 /* Custom Scrollbar */
 ::-webkit-scrollbar {
-  width: 9px;
+  width: 8px;
 }
 
 ::-webkit-scrollbar-track {
