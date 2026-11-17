@@ -117,7 +117,7 @@ export default function CustomCursor() {
             width: cursorLabel ? 56 : isHovered ? 44 : 36,
             height: cursorLabel ? 56 : isHovered ? 44 : 36,
             borderColor: isHovered ? '#C9973A' : 'rgba(47, 93, 58, 0.45)',
-            backgroundColor: isHovered ? 'rgba(201, 151, 58, 0.12)' : 'transparent',
+            backgroundColor: isHovered ? 'rgba(201, 151, 58, 0.12)' : 'rgba(201, 151, 58, 0)',
           }}
           transition={{ duration: 0.2 }}
           className="rounded-full border border-dashed flex items-center justify-center backdrop-blur-[0.5px]"

@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" fill="none" stroke="#2F5D3A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <!-- Washing leaves in a ceramic bowl -->
+  <path d="M15 48 C15 78 85 78 85 48 Z" stroke="#2F5D3A" stroke-width="2.5" />
+  <path d="M20 48 Q50 44 80 48" stroke="#2F5D3A" stroke-dasharray="3 3" />
+  <path d="M35 44 C35 32 45 25 55 35 Q45 42 35 44 Z" fill="#2F5D3A" fill-opacity="0.12" />
+  <path d="M48 40 C52 26 66 28 64 38 Z" fill="#2F5D3A" fill-opacity="0.12" />
+  <!-- Water ripples -->
+  <path d="M25 58 Q50 64 75 58" stroke="#4C8C4A" stroke-width="1.5" />
+  <!-- Small gold water sparkle -->
+  <circle cx="68" cy="30" r="3" fill="#C9973A" stroke="#C9973A" />
+</svg>

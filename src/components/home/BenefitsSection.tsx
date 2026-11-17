@@ -1,9 +1,11 @@
 'use client';
 
 import { useState } from 'react';
+import Image from 'next/image';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Check, ArrowRight, Sparkles } from 'lucide-react';
 import Link from 'next/link';
+import { bobIndependent } from '@/lib/motion';
 
 export default function BenefitsSection() {
   const [activeTab, setActiveTab] = useState<'hair' | 'scalp' | 'skin'>('hair');
@@ -50,7 +52,41 @@ export default function BenefitsSection() {
   const current = tabData[activeTab];
 
   return (
-    <section className="py-24 relative overflow-hidden bg-[#FDF6EC]">
+    <section className="py-24 sm:py-32 relative overflow-hidden bg-[#FDF6EC]">
+      {/* Background Leaves Texture */}
+      <div
+        className="absolute inset-0 bg-cover bg-center opacity-30 mix-blend-multiply pointer-events-none"
+        style={{ backgroundImage: `url('/images/bg-cream-leaves.webp')` }}
+      />
+
+      {/* Floating Botanical Leaves (Desktop Only) */}
+      <motion.div
+        variants={bobIndependent}
+        animate="animate"
+        className="hidden lg:block absolute left-8 top-20 w-16 h-24 pointer-events-none opacity-40"
+      >
+        <Image
+          src="/images/leaf-2.png"
+          alt="Botanical Leaf"
+          fill
+          sizes="64px"
+          className="object-contain"
+        />
+      </motion.div>
+      <motion.div
+        variants={bobIndependent}
+        animate="animate"
+        className="hidden lg:block absolute right-10 bottom-24 w-20 h-28 pointer-events-none opacity-35 rotate-45"
+      >
+        <Image
+          src="/images/leaf-3.png"
+          alt="Botanical Leaf"
+          fill
+          sizes="80px"
+          className="object-contain"
+        />
+      </motion.div>
+
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <div className="text-center max-w-2xl mx-auto mb-14">
           <span className="text-xs font-semibold tracking-widest text-[#C9973A] uppercase">
@@ -59,14 +95,14 @@ export default function BenefitsSection() {
           <h2 className="font-serif text-3xl sm:text-4xl md:text-5xl font-bold text-[#2B1D0E] mt-2 mb-4">
             Traditional Hair, Scalp & Skin Care
           </h2>
-          <p className="text-base sm:text-lg text-[#2B1D0E]/80">
+          <p className="text-base sm:text-lg text-[#2B1D0E]/80 font-light">
             Handmade with pure virgin coconut oil and fresh neem for gentle, everyday care.
           </p>
         </div>
 
-        {/* Tab Buttons */}
+        {/* Tab Buttons with Sliding Pill */}
         <div className="flex justify-center mb-12">
-          <div className="inline-flex p-1.5 rounded-full bg-[#E8EFE3]/60 border border-[#C9973A]/30">
+          <div className="inline-flex p-1.5 rounded-full bg-[#E8EFE3]/70 border border-[#C9973A]/30 backdrop-blur-sm">
             {(
               [
                 { id: 'hair', label: 'Hair Care' },
@@ -87,8 +123,8 @@ export default function BenefitsSection() {
                 >
                   {isActive && (
                     <motion.div
-                      layoutId="benefits-tab"
-                      className="absolute inset-0 bg-[#2F5D3A] rounded-full shadow-sm"
+                      layoutId="benefits-tab-pill"
+                      className="absolute inset-0 bg-[#2F5D3A] rounded-full shadow-md"
                       transition={{ type: 'spring', stiffness: 350, damping: 28 }}
                     />
                   )}
@@ -108,7 +144,7 @@ export default function BenefitsSection() {
               animate={{ opacity: 1, filter: 'blur(0px)', y: 0 }}
               exit={{ opacity: 0, filter: 'blur(6px)', y: -12 }}
               transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
-              className="glass-panel p-8 sm:p-12 rounded-3xl border border-[#C9973A]/25 shadow-botanical flex flex-col md:flex-row gap-8 items-center"
+              className="glass-panel p-8 sm:p-12 rounded-3xl border border-[#C9973A]/25 shadow-botanical flex flex-col md:flex-row gap-8 items-center bg-[#FDF6EC]/85"
             >
               <div className="flex-1 space-y-4 text-left">
                 <span className="inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider text-[#C9973A]">
@@ -120,7 +156,7 @@ export default function BenefitsSection() {
                   {current.title}
                 </h3>
 
-                <p className="text-sm sm:text-base text-[#2B1D0E]/80 leading-relaxed">
+                <p className="text-sm sm:text-base text-[#2B1D0E]/80 leading-relaxed font-light">
                   {current.description}
                 </p>
 

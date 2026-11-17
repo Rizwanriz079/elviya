@@ -2,6 +2,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { Instagram, Mail, Phone, MapPin, Sparkles, Heart } from 'lucide-react';
 import { BRAND } from '@/lib/constants';
+import OutlineToFill from '@/components/text/OutlineToFill';
 
 export default function Footer() {
   return (
@@ -33,7 +34,7 @@ export default function Footer() {
                 />
               </div>
               <div className="flex flex-col">
-                <span className="font-serif text-2xl font-bold tracking-tight text-[#E0B35C] leading-none">
+                <span className="font-serif text-2xl font-bold tracking-tight text-[#E5C07B] leading-none">
                   Elvia
                 </span>
                 <span className="text-xs tracking-[0.25em] text-[#E8EFE3]/80 font-semibold uppercase mt-0.5">
@@ -42,7 +43,7 @@ export default function Footer() {
               </div>
             </Link>
 
-            <p className="text-[#E8EFE3]/80 text-sm leading-relaxed pr-2">
+            <p className="text-[#E8EFE3]/80 text-sm leading-relaxed pr-2 font-light">
               Pure homemade herbal oils prepared in small artisan batches in Kerala. Infused with pure virgin coconut oil and fresh neem.
             </p>
 
@@ -54,7 +55,7 @@ export default function Footer() {
 
           {/* Quick Links */}
           <div>
-            <h3 className="font-serif text-lg font-semibold text-[#E0B35C] mb-5 tracking-wide flex items-center gap-2">
+            <h3 className="font-serif text-lg font-semibold text-[#E5C07B] mb-5 tracking-wide flex items-center gap-2">
               <Sparkles className="w-4 h-4 text-[#C9973A]" />
               Explore
             </h3>
@@ -96,7 +97,7 @@ export default function Footer() {
 
           {/* Information Links */}
           <div>
-            <h3 className="font-serif text-lg font-semibold text-[#E0B35C] mb-5 tracking-wide">
+            <h3 className="font-serif text-lg font-semibold text-[#E5C07B] mb-5 tracking-wide">
               Information
             </h3>
             <ul className="space-y-2.5 text-sm">
@@ -124,7 +125,7 @@ export default function Footer() {
 
           {/* Direct Contact */}
           <div>
-            <h3 className="font-serif text-lg font-semibold text-[#E0B35C] mb-5 tracking-wide">
+            <h3 className="font-serif text-lg font-semibold text-[#E5C07B] mb-5 tracking-wide">
               Direct Contact
             </h3>
             <ul className="space-y-3 text-sm">
@@ -166,6 +167,19 @@ export default function Footer() {
               </a>
 
               <a
+                href={BRAND.facebook}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="Follow Elvia Herbals on Facebook"
+                className="btn-shine inline-flex items-center gap-2 bg-[#FDF6EC]/10 hover:bg-[#1877F2] border border-[#C9973A]/40 hover:border-[#1877F2] text-[#FDF6EC] hover:text-white text-xs font-semibold px-4 py-2.5 rounded-full shadow-md shadow-black/20 hover:scale-105 transition-all duration-300"
+              >
+                <svg className="w-4 h-4 fill-current" viewBox="0 0 24 24" aria-hidden="true">
+                  <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
+                </svg>
+                <span>Facebook</span>
+              </a>
+
+              <a
                 href={`https://wa.me/${BRAND.whatsapp}?text=${encodeURIComponent(
                   "Hi Elvia Herbals! 🌿 I would like to order."
                 )}`}
@@ -186,9 +200,10 @@ export default function Footer() {
 
         {/* Giant Outlined Watermark Across Bottom */}
         <div className="overflow-hidden pointer-events-none select-none text-center my-4">
-          <span className="font-serif font-black text-[80px] sm:text-[140px] md:text-[180px] lg:text-[230px] uppercase tracking-tighter text-transparent [-webkit-text-stroke:1.5px_rgba(201,151,58,0.12)] block leading-none">
-            Elvia
-          </span>
+          <OutlineToFill
+            text="Elvia"
+            className="text-[80px] sm:text-[140px] md:text-[180px] lg:text-[230px] leading-none tracking-tighter"
+          />
         </div>
 
         {/* Gold Divider Line */}
@@ -197,7 +212,7 @@ export default function Footer() {
         {/* Copyright & Subline */}
         <div className="flex flex-col sm:flex-row items-center justify-between text-xs text-[#E8EFE3]/70 gap-4">
           <p>© 2026 Elvia Herbals. Made with love in India.</p>
-          <p className="font-handwriting text-xl text-[#E0B35C]">
+          <p className="font-handwriting text-xl text-[#E5C07B]">
             Pure Homemade Herbal Oils from Kerala
           </p>
         </div>

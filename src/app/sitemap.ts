@@ -2,7 +2,7 @@ import { MetadataRoute } from 'next'
 import { PRODUCTS } from '@/lib/constants'
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const baseUrl = 'https://www.elviaherbals.com'
+  const baseUrl = 'https://elviaherbals.com'
 
   return [
     {

@@ -1,100 +1,110 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { motion } from 'framer-motion';
+import { motion, useScroll, useTransform } from 'framer-motion';
 import { Sparkles, ArrowRight, ShieldCheck, Check } from 'lucide-react';
 import { PRODUCTS, getWhatsAppOrderUrl } from '@/lib/constants';
-import { slideInLeft, slideInRight, fadeUp } from '@/lib/motion';
+import LetterSpaceExpand from '@/components/text/LetterSpaceExpand';
 
 export default function FeaturedProductSection() {
   const neem = PRODUCTS.find((p) => p.id === 'neem-oil')!;
-  const [activeCallout, setActiveCallout] = useState(0);
+  const [activeCallout, setActiveCallout] = useState<number | null>(0);
+  const sectionRef = useRef<HTMLDivElement>(null);
+
+  const { scrollYProgress } = useScroll({
+    target: sectionRef,
+    offset: ['start end', 'end start'],
+  });
+
+  const bottleScale = useTransform(scrollYProgress, [0.1, 0.5, 0.9], [0.94, 1.05, 0.96]);
+  const bottleRotate = useTransform(scrollYProgress, [0.1, 0.5, 0.9], [-2, 0, 2]);
 
   const callouts = [
     {
       title: 'Fresh Neem Leaves',
+      tag: 'PURE BOTANICAL',
       desc: 'Infused with fresh neem, traditionally used for healthy hair, a clean scalp and clear skin.',
       icon: '🌿',
     },
     {
       title: 'Pure Virgin Coconut Oil',
-      desc: 'Cold unrefined virgin coconut oil provides deep natural hydration without chemical additives.',
+      tag: 'KERALA COLD PRESSED',
+      desc: 'Cold unrefined virgin coconut oil provides deep natural nourishment without chemical additives.',
       icon: '🥥',
     },
     {
-      title: 'Handmade in Kerala',
-      desc: 'Prepared by hand in Kerala with traditional care and patience in small batches.',
+      title: 'Hand-Stirred with Care',
+      tag: 'ARTISAN METHOD',
+      desc: 'Simmered gently over controlled warmth following timeless Ayurvedic traditions in Kerala.',
       icon: '✨',
     },
     {
-      title: 'Zero Preservatives',
-      desc: '100% natural botanical ingredients with no silicones, mineral oil, or synthetic fragrance.',
+      title: 'Small Batch Craft',
+      tag: 'ZERO PRESERVATIVES',
+      desc: 'Freshly prepared in limited batches to guarantee freshness, potency and 100% purity.',
       icon: '🛡️',
     },
   ];
 
   return (
-    <section id="featured" className="py-24 relative overflow-hidden bg-[#162F1D] text-[#FDF6EC]">
-      {/* Background Ambient Radial Glow */}
-      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(47,93,58,0.5)_0%,transparent_75%)] pointer-events-none" />
-      <div className="absolute top-10 left-10 w-96 h-96 rounded-full bg-[#C9973A]/10 blur-3xl pointer-events-none" />
+    <section
+      ref={sectionRef}
+      id="featured"
+      style={{ position: 'relative' }}
+      className="py-24 sm:py-32 relative overflow-hidden bg-[#16301F] text-[#FDF6EC]"
+    >
+      {/* Background Texture & Ambient Glow */}
+      <div
+        className="absolute inset-0 bg-cover bg-center opacity-30 mix-blend-overlay pointer-events-none"
+        style={{ backgroundImage: `url('/images/bg-forest.webp')` }}
+      />
+      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(47,93,58,0.45)_0%,transparent_75%)] pointer-events-none" />
+      <div className="absolute top-1/4 -left-20 w-80 h-80 rounded-full bg-[#C9973A]/10 blur-3xl pointer-events-none" />
+      <div className="absolute bottom-1/4 -right-20 w-80 h-80 rounded-full bg-[#4C8C4A]/15 blur-3xl pointer-events-none" />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         {/* Section Header */}
-        <div className="text-center max-w-3xl mx-auto mb-16">
+        <div className="text-center max-w-3xl mx-auto mb-16 sm:mb-20">
           <motion.div
-            variants={fadeUp}
-            initial="hidden"
-            whileInView="visible"
+            initial={{ opacity: 0, y: 15 }}
+            whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#E8EFE3]/15 border border-[#C9973A]/40 text-[#E0B35C] text-xs font-semibold uppercase tracking-wider mb-3 backdrop-blur-sm"
+            className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#E8EFE3]/10 border border-[#C9973A]/40 text-[#E5C07B] text-xs font-semibold uppercase tracking-wider mb-4 backdrop-blur-sm"
           >
             <Sparkles className="w-3.5 h-3.5 text-[#C9973A]" />
             Signature Kerala Formulation
           </motion.div>
-          <motion.h2
-            variants={fadeUp}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true }}
-            custom={1}
-            className="font-serif text-3xl sm:text-4xl md:text-5xl font-bold text-[#FDF6EC] mb-4"
-          >
-            Pure Neem Oil (100ml)
-          </motion.h2>
-          <motion.p
-            variants={fadeUp}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true }}
-            custom={2}
-            className="text-base sm:text-lg text-[#E8EFE3]/80"
-          >
-            Handmade with pure virgin coconut oil and fresh neem. For healthy hair, a clean scalp and clear skin.
-          </motion.p>
+
+          <h2 className="font-serif text-3xl sm:text-5xl md:text-6xl font-bold text-[#FDF6EC] tracking-tight mb-4">
+            Pure Neem Oil <span className="text-[#C9973A] font-serif font-normal italic">(100ml)</span>
+          </h2>
+
+          <div className="text-sm sm:text-base text-[#E8EFE3]/80 max-w-xl mx-auto font-light leading-relaxed">
+            <LetterSpaceExpand text="TRADITIONAL HAIR, SCALP & SKIN CARE" className="text-xs uppercase tracking-[0.25em] text-[#C9973A] font-semibold block mb-2" />
+            Handmade with pure virgin coconut oil and fresh neem. No chemicals, no preservatives.
+          </div>
         </div>
 
-        {/* 3-Column Showcase Grid */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
-          {/* Left Column: 2 Callouts (slideInLeft) */}
+        {/* 3-Column Interactive Layout */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-8 items-center">
+          {/* Left Column: 2 Callouts */}
           <div className="lg:col-span-4 space-y-5 order-2 lg:order-1">
             {callouts.slice(0, 2).map((item, idx) => {
               const isSelected = activeCallout === idx;
               return (
                 <motion.div
                   key={item.title}
-                  variants={slideInLeft}
-                  initial="hidden"
-                  whileInView="visible"
+                  initial={{ opacity: 0, x: -30 }}
+                  whileInView={{ opacity: 1, x: 0 }}
                   viewport={{ once: true }}
-                  custom={idx}
+                  transition={{ duration: 0.6, delay: idx * 0.15 }}
                   onClick={() => setActiveCallout(idx)}
-                  className={`cursor-pointer p-6 rounded-3xl transition-all duration-300 border ${
+                  className={`cursor-pointer p-6 rounded-3xl transition-all duration-300 border relative ${
                     isSelected
-                      ? 'bg-[#2F5D3A]/80 border-[#C9973A] shadow-lg shadow-[#2F5D3A]/50 scale-[1.02]'
-                      : 'bg-[#1E3F27]/70 hover:bg-[#1E3F27] border-[#C9973A]/20'
+                      ? 'bg-[#2F5D3A]/85 border-[#C9973A] shadow-xl shadow-[#16301F]/80 scale-[1.02]'
+                      : 'bg-[#1E3F27]/60 hover:bg-[#1E3F27]/85 border-[#C9973A]/20'
                   }`}
                 >
                   <div className="flex items-start gap-4">
@@ -102,10 +112,13 @@ export default function FeaturedProductSection() {
                       <span>{item.icon}</span>
                     </div>
                     <div>
+                      <span className="text-[10px] font-semibold uppercase tracking-wider text-[#C9973A] block mb-1">
+                        {item.tag}
+                      </span>
                       <h3 className="font-serif text-lg font-bold text-[#FDF6EC]">
                         {item.title}
                       </h3>
-                      <p className="text-xs sm:text-sm text-[#E8EFE3]/75 mt-1.5 leading-relaxed">
+                      <p className="text-xs sm:text-sm text-[#E8EFE3]/75 mt-1.5 leading-relaxed font-light">
                         {item.desc}
                       </p>
                     </div>
@@ -115,16 +128,18 @@ export default function FeaturedProductSection() {
             })}
           </div>
 
-          {/* Center Column: Sticky / Pinned Bottle & Price */}
-          <div className="lg:col-span-4 flex flex-col items-center justify-center order-1 lg:order-2 py-4">
-            <div className="relative w-64 h-80 sm:w-72 sm:h-96 flex items-center justify-center">
-              {/* Outer Golden Glow Circle */}
-              <div className="absolute inset-0 bg-gradient-to-t from-[#2F5D3A]/50 to-transparent rounded-full blur-2xl pointer-events-none" />
+          {/* Center Column: Interactive Bottle & Call to Action */}
+          <div className="lg:col-span-4 flex flex-col items-center justify-center order-1 lg:order-2 py-6">
+            <div className="relative w-64 h-84 sm:w-72 sm:h-96 flex items-center justify-center">
+              {/* Golden Podium Halo */}
+              <div className="absolute inset-x-8 bottom-4 h-24 bg-[#C9973A]/25 rounded-full blur-2xl pointer-events-none" />
+              <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(47,93,58,0.5)_0%,transparent_70%)] pointer-events-none" />
 
               <motion.div
-                animate={{ y: [-6, 6, -6] }}
-                transition={{ duration: 5, repeat: Infinity, ease: 'easeInOut' }}
-                className="relative w-full h-full drop-shadow-[0_25px_35px_rgba(0,0,0,0.5)]"
+                style={{ scale: bottleScale, rotate: bottleRotate }}
+                animate={{ y: [-5, 5, -5] }}
+                transition={{ duration: 6, repeat: Infinity, ease: 'easeInOut' }}
+                className="relative w-full h-full drop-shadow-[0_25px_40px_rgba(0,0,0,0.65)]"
               >
                 <Image
                   src={neem.image}
@@ -135,11 +150,14 @@ export default function FeaturedProductSection() {
                   priority
                 />
               </motion.div>
+
+              {/* Pedestal Ellipse Shadow */}
+              <div className="absolute -bottom-2 w-48 h-6 bg-black/40 rounded-full blur-md" />
             </div>
 
-            {/* Price & Stock Pill */}
-            <div className="mt-6 flex items-center gap-3 bg-[#E8EFE3]/10 border border-[#C9973A]/30 px-5 py-2.5 rounded-full backdrop-blur-sm">
-              <span className="font-serif text-2xl font-bold text-[#E0B35C]">
+            {/* Price Badge */}
+            <div className="mt-8 flex items-center gap-3 bg-[#E8EFE3]/10 border border-[#C9973A]/40 px-6 py-2.5 rounded-full backdrop-blur-md shadow-lg">
+              <span className="font-serif text-2xl sm:text-3xl font-bold text-[#E5C07B]">
                 ₹{neem.price}
               </span>
               <span className="text-[#C9973A]">•</span>
@@ -147,13 +165,13 @@ export default function FeaturedProductSection() {
                 100ml Bottle
               </span>
               <span className="text-[#C9973A]">•</span>
-              <span className="inline-flex items-center gap-1 text-xs text-[#25D366] font-semibold">
+              <span className="inline-flex items-center gap-1 text-xs text-[#25D366] font-bold">
                 <Check className="w-3.5 h-3.5" /> In Stock
               </span>
             </div>
 
-            {/* Direct Order CTA */}
-            <div className="mt-5 flex flex-col sm:flex-row items-center gap-3 w-full max-w-xs">
+            {/* WhatsApp CTA */}
+            <div className="mt-5 w-full max-w-xs">
               <a
                 href={getWhatsAppOrderUrl(neem, 'kerala')}
                 target="_blank"
@@ -169,7 +187,7 @@ export default function FeaturedProductSection() {
             </div>
           </div>
 
-          {/* Right Column: 2 Callouts (slideInRight) */}
+          {/* Right Column: 2 Callouts */}
           <div className="lg:col-span-4 space-y-5 order-3">
             {callouts.slice(2, 4).map((item, idx) => {
               const actualIdx = idx + 2;
@@ -177,16 +195,15 @@ export default function FeaturedProductSection() {
               return (
                 <motion.div
                   key={item.title}
-                  variants={slideInRight}
-                  initial="hidden"
-                  whileInView="visible"
+                  initial={{ opacity: 0, x: 30 }}
+                  whileInView={{ opacity: 1, x: 0 }}
                   viewport={{ once: true }}
-                  custom={idx}
+                  transition={{ duration: 0.6, delay: idx * 0.15 }}
                   onClick={() => setActiveCallout(actualIdx)}
-                  className={`cursor-pointer p-6 rounded-3xl transition-all duration-300 border ${
+                  className={`cursor-pointer p-6 rounded-3xl transition-all duration-300 border relative ${
                     isSelected
-                      ? 'bg-[#2F5D3A]/80 border-[#C9973A] shadow-lg shadow-[#2F5D3A]/50 scale-[1.02]'
-                      : 'bg-[#1E3F27]/70 hover:bg-[#1E3F27] border-[#C9973A]/20'
+                      ? 'bg-[#2F5D3A]/85 border-[#C9973A] shadow-xl shadow-[#16301F]/80 scale-[1.02]'
+                      : 'bg-[#1E3F27]/60 hover:bg-[#1E3F27]/85 border-[#C9973A]/20'
                   }`}
                 >
                   <div className="flex items-start gap-4">
@@ -194,10 +211,13 @@ export default function FeaturedProductSection() {
                       <span>{item.icon}</span>
                     </div>
                     <div>
+                      <span className="text-[10px] font-semibold uppercase tracking-wider text-[#C9973A] block mb-1">
+                        {item.tag}
+                      </span>
                       <h3 className="font-serif text-lg font-bold text-[#FDF6EC]">
                         {item.title}
                       </h3>
-                      <p className="text-xs sm:text-sm text-[#E8EFE3]/75 mt-1.5 leading-relaxed">
+                      <p className="text-xs sm:text-sm text-[#E8EFE3]/75 mt-1.5 leading-relaxed font-light">
                         {item.desc}
                       </p>
                     </div>
@@ -208,14 +228,14 @@ export default function FeaturedProductSection() {
           </div>
         </div>
 
-        {/* Bottom Delivery Assurance */}
-        <div className="mt-14 pt-8 border-t border-[#C9973A]/20 flex flex-wrap items-center justify-center gap-6 sm:gap-10 text-xs sm:text-sm text-[#E8EFE3]/80 text-center">
+        {/* Bottom Delivery Assurance Strip */}
+        <div className="mt-16 pt-8 border-t border-[#C9973A]/20 flex flex-wrap items-center justify-center gap-6 sm:gap-10 text-xs sm:text-sm text-[#E8EFE3]/80 text-center">
           <div className="flex items-center gap-2">
             <ShieldCheck className="w-4 h-4 text-[#C9973A]" />
             <span>100% Homemade</span>
           </div>
           <span className="text-[#C9973A]">•</span>
-          <div className="flex items-center gap-2">
+          <div>
             <span>Delivery across India</span>
           </div>
           <span className="text-[#C9973A]">•</span>
@@ -223,8 +243,8 @@ export default function FeaturedProductSection() {
             <span>Kerala Flat ₹50</span>
           </div>
           <span className="text-[#C9973A]">•</span>
-          <Link href="/product" className="text-[#E0B35C] hover:underline flex items-center gap-1 font-semibold">
-            <span>View Full Details</span>
+          <Link href="/product" className="text-[#E5C07B] hover:underline flex items-center gap-1 font-semibold">
+            <span>View Full Formulation</span>
             <ArrowRight className="w-3.5 h-3.5" />
           </Link>
         </div>

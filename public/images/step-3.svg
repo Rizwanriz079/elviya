@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" fill="none" stroke="#2F5D3A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <!-- Pouring virgin coconut oil into pot with neem -->
+  <path d="M22 65 C22 85 78 85 78 65 L72 45 L28 45 Z" stroke="#2F5D3A" stroke-width="2.5" />
+  <path d="M25 45 Q50 40 75 45" />
+  <path d="M70 20 L85 28 L78 35" stroke="#2F5D3A" stroke-width="2" />
+  <!-- Golden oil stream -->
+  <path d="M74 32 C65 40 52 48 50 62" stroke="#C9973A" stroke-width="2.5" stroke-linecap="round" />
+  <circle cx="50" cy="66" r="3" fill="#C9973A" />
+</svg>

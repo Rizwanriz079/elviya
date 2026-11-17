@@ -34,7 +34,7 @@ export default function PageIntro() {
         }, 28);
       }, 1050);
 
-      // Auto-exit at 2.15s
+      // Auto-exit curtain slide-up at 2.15s
       const exitTimer = setTimeout(() => {
         handleComplete();
       }, 2150);
@@ -57,18 +57,23 @@ export default function PageIntro() {
             y: '-100%',
             transition: { duration: 0.55, ease: [0.76, 0, 0.24, 1] },
           }}
-          className="fixed inset-0 z-[99999] bg-[#1E3F27] flex flex-col items-center justify-center overflow-hidden px-6 text-white"
+          className="fixed inset-0 z-[99999] bg-[#16301F] flex flex-col items-center justify-center overflow-hidden px-6 text-white"
         >
           {/* Subtle Ambient Radial Glow */}
-          <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(201,151,58,0.18)_0%,transparent_70%)] pointer-events-none" />
+          <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(201,151,58,0.2)_0%,transparent_70%)] pointer-events-none" />
 
-          {/* Quick Skip Button */}
+          {/* Always-visible Skip Button */}
           <button
             onClick={handleComplete}
-            className="absolute top-6 right-6 text-xs uppercase tracking-widest text-[#E8EFE3]/70 hover:text-white px-3.5 py-1.5 rounded-full border border-[#C9973A]/40 transition-colors z-20 backdrop-blur-sm"
+            className="absolute top-6 right-6 text-xs uppercase tracking-widest text-[#E8EFE3]/80 hover:text-white px-3.5 py-1.5 rounded-full border border-[#C9973A]/40 transition-colors z-30 backdrop-blur-sm"
           >
             Skip ✕
           </button>
+
+          {/* Bottom-right Corner 0-100 Counter */}
+          <div className="absolute bottom-6 right-8 text-right font-mono text-xs text-[#E5C07B]/80 z-20">
+            <span>{counter}%</span>
+          </div>
 
           <div className="relative z-10 flex flex-col items-center text-center">
             {/* 0.0s - 0.6s: Falling Golden Oil Drop */}
@@ -78,9 +83,9 @@ export default function PageIntro() {
                 className="w-10 h-10 text-[#C9973A] fill-current absolute"
                 initial={{ y: -70, scale: 0.6, opacity: 0 }}
                 animate={{
-                  y: [ -70, 0, 0 ],
-                  scale: [ 0.6, 1.1, 0 ],
-                  opacity: [ 0, 1, 0 ],
+                  y: [-70, 0, 0],
+                  scale: [0.6, 1.1, 0],
+                  opacity: [0, 1, 0],
                 }}
                 transition={{
                   duration: 0.65,
@@ -179,28 +184,14 @@ export default function PageIntro() {
               HERBALS
             </motion.p>
 
-            {/* 0-100% Counter & Pure Homemade Tag */}
-            <motion.div
+            <motion.p
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
-              transition={{ delay: 1.2, duration: 0.3 }}
-              className="mt-6 flex flex-col items-center gap-1.5"
+              transition={{ delay: 1.4, duration: 0.4 }}
+              className="font-handwriting text-xl text-[#E5C07B] mt-3"
             >
-              <div className="w-24 h-[2px] bg-white/15 rounded-full overflow-hidden">
-                <motion.div
-                  className="h-full bg-gradient-to-r from-[#4C8C4A] to-[#C9973A]"
-                  initial={{ width: '0%' }}
-                  animate={{ width: `${counter}%` }}
-                  transition={{ duration: 0.05 }}
-                />
-              </div>
-              <span className="text-[10px] tracking-widest text-[#E8EFE3]/70 font-mono">
-                {counter}%
-              </span>
-              <p className="font-handwriting text-lg text-[#C9973A] mt-1">
-                Made by hand, with love
-              </p>
-            </motion.div>
+              Made by hand, with love
+            </motion.p>
           </div>
         </motion.div>
       )}

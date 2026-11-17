@@ -1,6 +1,6 @@
 import { BRAND, PRODUCTS, type CatalogProduct } from "@/lib/constants";
 
-const SITE = "https://www.elviaherbals.com";
+const SITE = "https://elviaherbals.com";
 const ORG_ID = `${SITE}/#organization`;
 
 /** We deliver within India only. (The website itself can be found from any country.) */
@@ -32,7 +32,7 @@ export function OrganizationSchema() {
         alternateName: BRAND_NAMES,
         url: SITE,
         logo: `${SITE}/images/logo.jpg`,
-        image: `${SITE}/images/neem-oil-og.jpg`,
+        image: `${SITE}/opengraph-image.png`,
         description:
           "Elvia Herbals (@elviaherbals on Instagram) is a Kerala brand making pure, handmade herbal oils, including Neem Oil made with virgin coconut oil and neem. Delivery across India.",
         email: BRAND.email,
@@ -43,7 +43,11 @@ export function OrganizationSchema() {
           addressCountry: "IN",
         },
         areaServed: AREA_SERVED,
-        sameAs: [BRAND.instagram, `https://wa.me/${BRAND.whatsapp}`],
+        sameAs: [
+          BRAND.instagram,
+          BRAND.facebook,
+          `https://wa.me/${BRAND.whatsapp}`
+        ],
         contactPoint: {
           "@type": "ContactPoint",
           telephone: BRAND.phone,
@@ -147,16 +151,8 @@ export function LocalBusinessSchema() {
         description: "Kerala's homemade herbal oil brand. Order Neem Oil on WhatsApp with delivery across India.",
         address: { "@type": "PostalAddress", addressRegion: "Kerala", addressCountry: "IN" },
         areaServed: AREA_SERVED,
-        sameAs: [BRAND.instagram],
+        sameAs: [BRAND.instagram, BRAND.facebook, `https://wa.me/${BRAND.whatsapp}`],
         parentOrganization: { "@id": ORG_ID },
-        openingHoursSpecification: [
-          {
-            "@type": "OpeningHoursSpecification",
-            dayOfWeek: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
-            opens: "09:00",
-            closes: "18:00",
-          },
-        ],
       }}
     />
   );

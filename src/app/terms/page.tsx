@@ -1,5 +1,21 @@
+import type { Metadata } from "next";
 import { FileText } from "lucide-react";
 import PageTransition from "@/components/PageTransition";
+
+export const metadata: Metadata = {
+  title: "Terms of Service",
+  description:
+    "Terms of Service for Elvia Herbals. Information on small-batch handmade production, WhatsApp ordering, and delivery across India from Kerala.",
+  alternates: { canonical: "https://elviaherbals.com/terms" },
+  openGraph: {
+    title: "Terms of Service | Elvia Herbals",
+    description:
+      "Terms of Service for Elvia Herbals. Information on small-batch handmade production, WhatsApp ordering, and delivery across India.",
+    url: "https://elviaherbals.com/terms",
+    siteName: "Elvia Herbals",
+    locale: "en_IN",
+  },
+};
 
 const defaultContent = `
 <p class="text-[#2B1D0E]/70 text-sm">Last updated: November 2026</p>

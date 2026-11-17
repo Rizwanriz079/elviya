@@ -18,17 +18,16 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   const { slug } = await params;
   const p = OTHER_PRODUCTS.find((x) => x.id === slug);
   if (!p) return {};
-  const status = p.inStock ? `₹${p.price}` : "Back Soon";
   const description = `${p.description.split(". ")[0]}. ${p.size}${p.inStock ? ` for ₹${p.price}` : " – currently out of stock, restocking soon"}. Delivery across India.`;
   return {
-    title: { absolute: `${p.name} ${p.size} | ${status} | Elvia Herbals` },
+    title: `${p.name} ${p.size}`,
     description,
-    alternates: { canonical: `/product/${p.id}` },
+    alternates: { canonical: `https://elviaherbals.com/product/${p.id}` },
     openGraph: {
       title: `${p.name} ${p.size} | Elvia Herbals`,
       description,
       type: "website",
-      url: `/product/${p.id}`,
+      url: `https://elviaherbals.com/product/${p.id}`,
       siteName: "Elvia Herbals",
       locale: "en_IN",
       images: [{ url: p.image, alt: `Elvia Herbals ${p.name} ${p.size}` }],
@@ -41,14 +40,14 @@ export default async function ProductSlugPage({ params }: { params: Promise<{ sl
   if (slug === "neem-oil") permanentRedirect("/product");
   const p = OTHER_PRODUCTS.find((x) => x.id === slug);
   if (!p) notFound();
-  const url = `https://www.elviaherbals.com/product/${p.id}`;
+  const url = `https://elviaherbals.com/product/${p.id}`;
   return (
     <PageTransition>
       <ProductSchema productId={p.id} />
       <FaqSchema productId={p.id} />
       <BreadcrumbSchema
         items={[
-          { name: "Home", url: "https://www.elviaherbals.com" },
+          { name: "Home", url: "https://elviaherbals.com" },
           { name: p.name, url },
         ]}
       />

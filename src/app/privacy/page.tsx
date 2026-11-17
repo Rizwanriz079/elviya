@@ -1,5 +1,21 @@
+import type { Metadata } from "next";
 import { Shield } from "lucide-react";
 import PageTransition from "@/components/PageTransition";
+
+export const metadata: Metadata = {
+  title: "Privacy Policy",
+  description:
+    "Privacy Policy for Elvia Herbals. How we handle inquiries and WhatsApp order details with complete privacy. Pure homemade herbal oils from Kerala.",
+  alternates: { canonical: "https://elviaherbals.com/privacy" },
+  openGraph: {
+    title: "Privacy Policy | Elvia Herbals",
+    description:
+      "Privacy Policy for Elvia Herbals. How we handle inquiries and WhatsApp order details with complete privacy.",
+    url: "https://elviaherbals.com/privacy",
+    siteName: "Elvia Herbals",
+    locale: "en_IN",
+  },
+};
 
 const defaultContent = `
 <p class="text-[#2B1D0E]/70 text-sm">Last updated: November 2026</p>
