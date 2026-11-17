@@ -56,6 +56,7 @@ export default function StatementSection() {
   return (
     <section
       ref={containerRef}
+      style={{ position: 'relative' }}
       className="py-24 sm:py-36 relative bg-[#FDF6EC] overflow-hidden border-b border-[#C9973A]/20"
     >
       {/* Drifting Gold Leaf on Side (Desktop Only) */}

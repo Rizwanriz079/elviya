@@ -52,6 +52,7 @@ export default function FeaturedProductSection() {
     <section
       ref={sectionRef}
       id="featured"
+      style={{ position: 'relative' }}
       className="py-24 sm:py-32 relative overflow-hidden bg-[#16301F] text-[#FDF6EC]"
     >
       {/* Background Texture & Ambient Glow */}

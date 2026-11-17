@@ -73,7 +73,7 @@ export default function HeroSection() {
     <div className="relative overflow-hidden bg-[#FDF6EC]">
       {/* Background Hero Scene with WebP */}
       <div className="absolute inset-0 pointer-events-none z-0">
-        <picture>
+        <picture className="block relative w-full h-full">
           <source media="(min-width: 1024px)" srcSet="/images/hero-bg.webp" />
           <Image
             src="/images/hero-bg-mobile.webp"

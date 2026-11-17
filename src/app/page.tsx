@@ -14,7 +14,7 @@ import PageTransition from '@/components/PageTransition';
 export default function HomePage() {
   return (
     <PageTransition>
-      <div className="overflow-hidden">
+      <div className="overflow-x-clip relative">
         {/* 1. Hero Section with Kinetic Headline & Arch Frame */}
         <HeroSection />
 
