@@ -199,7 +199,7 @@ export const drawPath: Variants = {
 
 // ==================== AMBIENT PRESETS ====================
 
-export const floatY = {
+export const floatY: Variants = {
   animate: {
     y: [-7, 7, -7],
     transition: {
@@ -210,7 +210,7 @@ export const floatY = {
   },
 };
 
-export const rotateSlow = {
+export const rotateSlow: Variants = {
   animate: {
     rotate: 360,
     transition: {
@@ -221,7 +221,19 @@ export const rotateSlow = {
   },
 };
 
-export const bobIndependent = (duration = 4.5, delay = 0) => ({
+export const bobIndependent: Variants = {
+  animate: {
+    y: [-5, 5, -5],
+    x: [-2, 2, -2],
+    transition: {
+      duration: 5,
+      repeat: Infinity,
+      ease: 'easeInOut',
+    },
+  },
+};
+
+export const createBobIndependent = (duration = 4.5, delay = 0): Variants => ({
   animate: {
     y: [-5, 5, -5],
     x: [-2, 2, -2],

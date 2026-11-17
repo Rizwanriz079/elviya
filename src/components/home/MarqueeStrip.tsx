@@ -1,46 +1,44 @@
 'use client';
 
 export default function MarqueeStrip() {
-  const row1 = [
+  const items = [
     '100% Pure',
-    'Virgin Coconut Oil',
-    'Fresh Neem',
-    'Small Batches',
-    'Made in Kerala',
-  ];
-
-  const row2 = [
     'Handmade',
-    'Chemical Free',
-    'Scalp & Hair Care',
-    'Gentle on Skin',
+    'Small Batches',
+    'No Preservatives',
+    'Virgin Coconut Oil',
+    'Made with Love',
     'Delivery Across India',
   ];
 
   return (
-    <div className="relative py-4 bg-[#2F5D3A] overflow-hidden border-y border-[#C9973A]/30 text-[#FDF6EC] shadow-inner space-y-2">
-      {/* Row 1: Leftward Marquee */}
-      <div className="flex w-max space-x-8 animate-[marqueeLeft_32s_linear_infinite] whitespace-nowrap">
-        {[...row1, ...row1, ...row1, ...row1].map((text, idx) => (
-          <div key={`r1-${idx}`} className="flex items-center space-x-8">
-            <span className="font-serif text-xs sm:text-sm font-semibold tracking-wider text-[#FDF6EC]">
-              {text}
-            </span>
-            <span className="text-[#C9973A] text-sm">✦</span>
-          </div>
-        ))}
+    <div className="relative overflow-hidden shadow-inner group">
+      {/* Row 1: Gold text on forest green (#2F5D3A) moving left */}
+      <div className="py-3 bg-[#2F5D3A] border-y border-[#C9973A]/40 overflow-hidden">
+        <div className="flex w-max space-x-8 animate-[marqueeLeft_30s_linear_infinite] group-hover:[animation-play-state:paused] whitespace-nowrap">
+          {[...items, ...items, ...items, ...items].map((text, idx) => (
+            <div key={`r1-${idx}`} className="flex items-center space-x-8">
+              <span className="font-serif text-xs sm:text-sm font-semibold tracking-wider text-[#E5C07B]">
+                {text}
+              </span>
+              <span className="text-[#C9973A] text-xs">✦</span>
+            </div>
+          ))}
+        </div>
       </div>
 
-      {/* Row 2: Rightward Counter-Marquee */}
-      <div className="flex w-max space-x-8 animate-[marqueeRight_36s_linear_infinite] whitespace-nowrap opacity-90">
-        {[...row2, ...row2, ...row2, ...row2].map((text, idx) => (
-          <div key={`r2-${idx}`} className="flex items-center space-x-8">
-            <span className="text-xs sm:text-xs uppercase tracking-widest text-[#E8EFE3]/90 font-medium">
-              {text}
-            </span>
-            <span className="text-[#E0B35C] text-xs">❋</span>
-          </div>
-        ))}
+      {/* Row 2: Outlined text on cream moving right */}
+      <div className="py-2.5 bg-[#FDF6EC] border-b border-[#C9973A]/25 overflow-hidden">
+        <div className="flex w-max space-x-8 animate-[marqueeRight_34s_linear_infinite] group-hover:[animation-play-state:paused] whitespace-nowrap">
+          {[...items, ...items, ...items, ...items].map((text, idx) => (
+            <div key={`r2-${idx}`} className="flex items-center space-x-8">
+              <span className="font-serif text-xs sm:text-xs uppercase tracking-widest font-bold text-transparent [-webkit-text-stroke:1px_#2F5D3A]">
+                {text}
+              </span>
+              <span className="text-[#C9973A] text-xs">❋</span>
+            </div>
+          ))}
+        </div>
       </div>
 
       <style jsx>{`
