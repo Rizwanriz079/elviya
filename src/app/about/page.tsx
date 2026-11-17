@@ -7,12 +7,15 @@ import { motion } from 'framer-motion';
 import { Sparkles, ArrowRight, CheckCircle2 } from 'lucide-react';
 import PageTransition from '@/components/PageTransition';
 import { SHOW_FOUNDER } from '@/lib/constants';
+import CharStagger from '@/components/text/CharStagger';
+import ScriptDraw from '@/components/text/ScriptDraw';
+import WordBlurIn from '@/components/text/WordBlurIn';
+import CountUp from '@/components/text/CountUp';
 import {
-  charStaggerContainer,
-  charStaggerItem,
   clipRevealLeft,
   clipRevealRight,
   fadeUp,
+  rotateIn,
 } from '@/lib/motion';
 
 export default function AboutPage() {
@@ -76,14 +79,18 @@ export default function AboutPage() {
     },
   ];
 
-  const heroHeadline = 'Pure Homemade Herbal Oils';
-
   return (
     <PageTransition>
       <div className="min-h-screen pb-24 overflow-hidden page-top-padding">
-        {/* 1. Hero Section with charStagger kinetic title */}
-        <section className="relative pb-16 text-center">
-          <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 space-y-6">
+        {/* 1. Hero Section with about-hero.webp & CharStagger */}
+        <section className="relative py-16 sm:py-24 text-center overflow-hidden">
+          {/* Subtle botanical scene overlay */}
+          <div
+            className="absolute inset-0 bg-cover bg-center opacity-25 mix-blend-multiply pointer-events-none"
+            style={{ backgroundImage: `url('/images/about-hero.webp')` }}
+          />
+
+          <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 space-y-6 relative z-10">
             <motion.div
               variants={fadeUp}
               initial="hidden"
@@ -91,51 +98,30 @@ export default function AboutPage() {
               className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#E8EFE3] text-[#2F5D3A] text-xs font-bold uppercase tracking-wider border border-[#4C8C4A]/30"
             >
               <Sparkles className="w-3.5 h-3.5 text-[#C9973A]" />
-              Our Story
+              Our Story & Heritage
             </motion.div>
 
             {/* Kinetic Title with Character Stagger */}
-            <motion.h1
-              variants={charStaggerContainer}
-              initial="hidden"
-              animate="visible"
-              className="font-serif text-4xl sm:text-5xl md:text-6xl font-bold text-[#2B1D0E] leading-tight"
-            >
-              <div className="inline-block">
-                {heroHeadline.split('').map((char, i) => (
-                  <motion.span
-                    key={i}
-                    variants={charStaggerItem}
-                    className="inline-block"
-                  >
-                    {char === ' ' ? '\u00A0' : char}
-                  </motion.span>
-                ))}
-              </div>
+            <h1 className="font-serif text-4xl sm:text-5xl md:text-6xl font-bold text-[#2B1D0E] leading-tight">
+              Pure Homemade Herbal Oils
               <br />
-              <span className="text-[#C9973A]">Made in Kerala</span>
-            </motion.h1>
+              <CharStagger
+                text="Handmade in Kerala"
+                className="text-[#C9973A] italic"
+                delay={0.2}
+              />
+            </h1>
 
-            {/* Single-line Caveat script */}
-            <motion.p
-              variants={fadeUp}
-              initial="hidden"
-              animate="visible"
-              custom={4}
-              className="font-handwriting text-3xl sm:text-4xl text-[#2F5D3A] tracking-wide"
-            >
-              Made by hand, with love.
-            </motion.p>
+            {/* Single-line Caveat script with self-drawing underline */}
+            <div className="flex justify-center pt-2">
+              <ScriptDraw text="Made by Hand, With Love." withUnderline={true} />
+            </div>
 
-            <motion.p
-              variants={fadeUp}
-              initial="hidden"
-              animate="visible"
-              custom={5}
-              className="text-base sm:text-lg text-[#2B1D0E]/80 max-w-2xl mx-auto leading-relaxed"
-            >
-              Elvia Herbals is dedicated to pure, handmade herbal oils prepared in small batches in Kerala using pure virgin coconut oil and fresh neem.
-            </motion.p>
+            <WordBlurIn
+              text="Elvia Herbals is dedicated to pure, handmade herbal oils prepared in small batches in Kerala using pure virgin coconut oil and fresh neem."
+              className="text-base sm:text-lg text-[#2B1D0E]/80 max-w-2xl mx-auto leading-relaxed font-light pt-2"
+              delay={0.4}
+            />
           </div>
         </section>
 
@@ -150,10 +136,11 @@ export default function AboutPage() {
               <h2 className="font-serif text-3xl sm:text-4xl font-bold text-[#2B1D0E]">
                 Handmade with Natural Ingredients
               </h2>
-              <p className="text-sm sm:text-base text-[#2B1D0E]/80 leading-relaxed">
-                We believe that simple, natural ingredients make the most reliable care. Our Neem Oil is made by infusing fresh neem directly into pure virgin coconut oil.
-              </p>
-              <p className="text-sm sm:text-base text-[#2B1D0E]/80 leading-relaxed">
+              <WordBlurIn
+                text="We believe that simple, natural ingredients make the most reliable care. Our Neem Oil is made by infusing fresh neem directly into pure virgin coconut oil."
+                className="text-sm sm:text-base text-[#2B1D0E]/80 leading-relaxed font-light"
+              />
+              <p className="text-sm sm:text-base text-[#2B1D0E]/80 leading-relaxed font-light">
                 Every batch is made by hand in small quantities in Kerala with zero added chemicals and zero preservatives.
               </p>
             </div>
@@ -204,9 +191,10 @@ export default function AboutPage() {
               <h2 className="font-serif text-3xl sm:text-4xl font-bold text-[#2B1D0E]">
                 Small Batches for Hair, Scalp & Skin
               </h2>
-              <p className="text-sm sm:text-base text-[#2B1D0E]/80 leading-relaxed">
-                Prepared with care for healthy hair, a clean scalp and clear skin. We deliver across India with flat ₹50 shipping in Kerala and direct ordering on WhatsApp.
-              </p>
+              <WordBlurIn
+                text="Prepared with care for healthy hair, a clean scalp and clear skin. We deliver across India with flat ₹50 shipping in Kerala and direct ordering on WhatsApp."
+                className="text-sm sm:text-base text-[#2B1D0E]/80 leading-relaxed font-light"
+              />
               <div className="grid grid-cols-2 gap-3 pt-2">
                 <div className="flex items-center gap-2 text-xs font-bold text-[#2F5D3A]">
                   <CheckCircle2 className="w-4 h-4 text-[#4C8C4A]" />
@@ -221,35 +209,54 @@ export default function AboutPage() {
           </div>
         </section>
 
-        {/* 3. Our Promise: Dark Section Counters */}
-        <section className="py-20 bg-[#162F1D] text-[#FDF6EC] my-12 relative overflow-hidden">
+        {/* 3. Our Promise: Dark Section Counters with CountUp */}
+        <section className="py-20 bg-[#16301F] text-[#FDF6EC] my-12 relative overflow-hidden">
+          <div
+            className="absolute inset-0 bg-cover bg-center opacity-25 mix-blend-overlay pointer-events-none"
+            style={{ backgroundImage: `url('/images/bg-forest.webp')` }}
+          />
           <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(47,93,58,0.5)_0%,transparent_70%)] pointer-events-none" />
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
             <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
-              {[
-                { number: '100%', label: 'Natural Ingredients', sub: 'Virgin coconut oil & neem' },
-                { number: '0', label: 'Added Chemicals', sub: 'No preservatives' },
-                { number: 'Small', label: 'Batches', sub: 'Handmade fresh' },
-                { number: 'Kerala', label: 'Made in India', sub: 'Delivery across India' },
-              ].map((stat, idx) => (
-                <motion.div
-                  key={idx}
-                  variants={fadeUp}
-                  initial="hidden"
-                  whileInView="visible"
-                  viewport={{ once: true }}
-                  custom={idx}
-                  className="space-y-2 p-4 rounded-2xl bg-[#E8EFE3]/5 border border-[#C9973A]/20"
-                >
-                  <div className="font-serif text-3xl sm:text-5xl font-bold text-[#E0B35C]">
-                    {stat.number}
-                  </div>
-                  <div className="text-sm sm:text-base font-semibold text-[#FDF6EC]">
-                    {stat.label}
-                  </div>
-                  <div className="text-xs text-[#E8EFE3]/70">{stat.sub}</div>
-                </motion.div>
-              ))}
+              <div className="space-y-2 p-6 rounded-2xl bg-[#E8EFE3]/5 border border-[#C9973A]/20">
+                <div className="font-serif text-4xl sm:text-5xl font-bold text-[#E5C07B]">
+                  <CountUp target={100} suffix="%" duration={1.5} />
+                </div>
+                <div className="text-sm sm:text-base font-semibold text-[#FDF6EC]">
+                  Natural Ingredients
+                </div>
+                <div className="text-xs text-[#E8EFE3]/70">Virgin coconut oil & neem</div>
+              </div>
+
+              <div className="space-y-2 p-6 rounded-2xl bg-[#E8EFE3]/5 border border-[#C9973A]/20">
+                <div className="font-serif text-4xl sm:text-5xl font-bold text-[#E5C07B]">
+                  0
+                </div>
+                <div className="text-sm sm:text-base font-semibold text-[#FDF6EC]">
+                  Added Chemicals
+                </div>
+                <div className="text-xs text-[#E8EFE3]/70">No preservatives</div>
+              </div>
+
+              <div className="space-y-2 p-6 rounded-2xl bg-[#E8EFE3]/5 border border-[#C9973A]/20">
+                <div className="font-serif text-4xl sm:text-5xl font-bold text-[#E5C07B]">
+                  Small
+                </div>
+                <div className="text-sm sm:text-base font-semibold text-[#FDF6EC]">
+                  Batches
+                </div>
+                <div className="text-xs text-[#E8EFE3]/70">Handmade fresh</div>
+              </div>
+
+              <div className="space-y-2 p-6 rounded-2xl bg-[#E8EFE3]/5 border border-[#C9973A]/20">
+                <div className="font-serif text-4xl sm:text-5xl font-bold text-[#E5C07B]">
+                  Kerala
+                </div>
+                <div className="text-sm sm:text-base font-semibold text-[#FDF6EC]">
+                  Made in India
+                </div>
+                <div className="text-xs text-[#E8EFE3]/70">Delivery across India</div>
+              </div>
             </div>
           </div>
         </section>
@@ -284,7 +291,7 @@ export default function AboutPage() {
                   <h3 className="font-serif font-bold text-lg text-[#2B1D0E] mt-0.5 mb-2">
                     {step.title}
                   </h3>
-                  <p className="text-xs sm:text-sm text-[#2B1D0E]/80 leading-relaxed">
+                  <p className="text-xs sm:text-sm text-[#2B1D0E]/80 leading-relaxed font-light">
                     {step.desc}
                   </p>
                 </div>
@@ -293,7 +300,7 @@ export default function AboutPage() {
           </div>
         </section>
 
-        {/* 5. Values Cards: Interactive 3D Flip */}
+        {/* 5. Values Cards: Interactive 3D Flip with staggered rotateIn */}
         <section className="py-20 bg-[#F7EFE2]/60">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center max-w-2xl mx-auto mb-16">
@@ -306,11 +313,16 @@ export default function AboutPage() {
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-              {values.map((val) => {
+              {values.map((val, idx) => {
                 const isFlipped = flippedCard === val.id;
                 return (
-                  <div
+                  <motion.div
                     key={val.id}
+                    variants={rotateIn}
+                    initial="hidden"
+                    whileInView="visible"
+                    viewport={{ once: true }}
+                    custom={idx}
                     onClick={() => setFlippedCard(isFlipped ? null : val.id)}
                     className="cursor-pointer h-64 rounded-3xl glass-panel border border-[#C9973A]/30 p-6 flex flex-col justify-between shadow-botanical hover:shadow-botanical-lg transition-all duration-300 relative group"
                   >
@@ -320,7 +332,7 @@ export default function AboutPage() {
                         <h3 className="font-serif text-xl font-bold text-[#2B1D0E] mb-2">
                           {val.title}
                         </h3>
-                        <p className="text-xs sm:text-sm text-[#2B1D0E]/75">
+                        <p className="text-xs sm:text-sm text-[#2B1D0E]/75 font-light">
                           {val.frontDesc}
                         </p>
                         <span className="text-[10px] text-[#C9973A] font-semibold mt-4 block">
@@ -333,7 +345,7 @@ export default function AboutPage() {
                           <h4 className="font-serif font-bold text-base text-[#2F5D3A] mb-2">
                             {val.backTitle}
                           </h4>
-                          <p className="text-xs text-[#2B1D0E]/85 leading-relaxed">
+                          <p className="text-xs text-[#2B1D0E]/85 leading-relaxed font-light">
                             {val.backDesc}
                           </p>
                         </div>
@@ -342,7 +354,7 @@ export default function AboutPage() {
                         </span>
                       </div>
                     )}
-                  </div>
+                  </motion.div>
                 );
               })}
             </div>
