@@ -1,6 +1,7 @@
 import HeroSection from '@/components/home/HeroSection';
 import MarqueeStrip from '@/components/home/MarqueeStrip';
 import FeaturedProductSection from '@/components/home/FeaturedProductSection';
+import StatementSection from '@/components/home/StatementSection';
 import WhyChooseSection from '@/components/home/WhyChooseSection';
 import ProcessStorySection from '@/components/home/ProcessStorySection';
 import BenefitsSection from '@/components/home/BenefitsSection';
@@ -14,34 +15,37 @@ export default function HomePage() {
   return (
     <PageTransition>
       <div className="overflow-hidden">
-        {/* 1. Hero Section */}
+        {/* 1. Hero Section with Kinetic Headline & Arch Frame */}
         <HeroSection />
 
-        {/* 2. Marquee Infinite Loop */}
+        {/* 2. Counter-Rotating Two-Row Marquee */}
         <MarqueeStrip />
 
-        {/* 3. Featured Signature Product (Neem Oil) */}
+        {/* 3. Featured Signature Neem Oil in Deep Forest Dark Section */}
         <FeaturedProductSection />
 
-        {/* 4. Why Choose Elvia Herbals */}
+        {/* 4. Big scrubFill Statement Section */}
+        <StatementSection />
+
+        {/* 5. Bento Grid with Mouse Spotlight Glow */}
         <WhyChooseSection />
 
-        {/* 5. Ingredient Story: From Leaf to Bottle */}
+        {/* 6. From Leaf to Bottle: Pinned Horizontal / Snap Carousel */}
         <ProcessStorySection />
 
-        {/* 6. Traditional Benefits Tabs (Hair / Scalp / Skin) */}
+        {/* 7. Traditional Benefits Tabs (Hair / Scalp / Skin) */}
         <BenefitsSection />
 
-        {/* 7. Almond Oil Coming Soon */}
+        {/* 8. Almond Oil Restocking Soon Split Card */}
         <ComingSoonSection />
 
-        {/* 8. Verified Community Testimonials */}
+        {/* 9. Verified Community Testimonials (Guarded by SHOW_TESTIMONIALS) */}
         <TestimonialsSection />
 
-        {/* 9. Instagram Community Gallery */}
+        {/* 10. Instagram Gallery (Guarded by SHOW_INSTAGRAM) */}
         <InstagramStrip />
 
-        {/* 10. Final Gold Gradient CTA */}
+        {/* 11. Final Gold Gradient CTA with Magnetic Physics */}
         <FinalCtaSection />
       </div>
     </PageTransition>

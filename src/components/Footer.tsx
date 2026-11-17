@@ -5,7 +5,7 @@ import { BRAND } from '@/lib/constants';
 
 export default function Footer() {
   return (
-    <footer className="relative bg-[#2B1D0E] text-[#FDF6EC] pt-16 pb-12 overflow-hidden">
+    <footer className="relative bg-[#2B1D0E] text-[#FDF6EC] pt-16 pb-8 overflow-hidden">
       {/* Curved Botanical Wave Top Edge Divider */}
       <div className="absolute top-0 left-0 right-0 overflow-hidden leading-none z-10 -translate-y-[98%] pointer-events-none">
         <svg
@@ -19,7 +19,7 @@ export default function Footer() {
       </div>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-20">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-16">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-14">
           {/* Brand Information */}
           <div className="space-y-4">
             <Link href="/" className="flex items-center gap-3 group">
@@ -43,10 +43,10 @@ export default function Footer() {
             </Link>
 
             <p className="text-[#E8EFE3]/80 text-sm leading-relaxed pr-2">
-              Pure homemade herbal oils prepared in small artisan batches in Kerala. Infused with virgin coconut oil and fresh garden herbs to nourish your scalp, hair and skin naturally.
+              Pure homemade herbal oils prepared in small artisan batches in Kerala. Infused with pure virgin coconut oil and fresh neem.
             </p>
 
-            <div className="flex items-center gap-2 text-xs text-[#C9973A] font-script text-base">
+            <div className="flex items-center gap-2 text-xs text-[#C9973A] font-handwriting text-xl pt-1">
               <Heart className="w-4 h-4 fill-current text-[#C9973A]" />
               <span>Made by Hand, With Love</span>
             </div>
@@ -94,7 +94,7 @@ export default function Footer() {
             </ul>
           </div>
 
-          {/* Legal Links */}
+          {/* Information Links */}
           <div>
             <h3 className="font-serif text-lg font-semibold text-[#E0B35C] mb-5 tracking-wide">
               Information
@@ -122,7 +122,7 @@ export default function Footer() {
             </ul>
           </div>
 
-          {/* Contact & Socials */}
+          {/* Direct Contact */}
           <div>
             <h3 className="font-serif text-lg font-semibold text-[#E0B35C] mb-5 tracking-wide">
               Direct Contact
@@ -133,7 +133,7 @@ export default function Footer() {
                   href={`tel:${BRAND.phone}`}
                   className="flex items-center gap-3 text-[#E8EFE3]/80 hover:text-[#C9973A] transition-colors"
                 >
-                  <Phone className="w-4 h-4 text-[#C9973A] flex-shrink-0" />
+                  <Phone className="w-4 h-4 text-[#C9973A] shrink-0" />
                   <span>{BRAND.phone}</span>
                 </a>
               </li>
@@ -142,12 +142,12 @@ export default function Footer() {
                   href={`mailto:${BRAND.email}`}
                   className="flex items-center gap-3 text-[#E8EFE3]/80 hover:text-[#C9973A] transition-colors"
                 >
-                  <Mail className="w-4 h-4 text-[#C9973A] flex-shrink-0" />
+                  <Mail className="w-4 h-4 text-[#C9973A] shrink-0" />
                   <span>{BRAND.email}</span>
                 </a>
               </li>
               <li className="flex items-start gap-3 text-[#E8EFE3]/80">
-                <MapPin className="w-4 h-4 text-[#C9973A] flex-shrink-0 mt-1" />
+                <MapPin className="w-4 h-4 text-[#C9973A] shrink-0 mt-1" />
                 <span>{BRAND.address}</span>
               </li>
             </ul>
@@ -172,6 +172,7 @@ export default function Footer() {
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label="Order on WhatsApp"
+                data-cursor="order"
                 className="btn-shine inline-flex items-center gap-2 bg-[#25D366] hover:bg-[#1EBE5D] text-white text-xs font-semibold px-4 py-2.5 rounded-full shadow-md shadow-[#25D366]/20 hover:scale-105 transition-transform"
               >
                 <svg className="w-4 h-4 fill-current" viewBox="0 0 24 24">
@@ -183,13 +184,20 @@ export default function Footer() {
           </div>
         </div>
 
+        {/* Giant Outlined Watermark Across Bottom */}
+        <div className="overflow-hidden pointer-events-none select-none text-center my-4">
+          <span className="font-serif font-black text-[80px] sm:text-[140px] md:text-[180px] lg:text-[230px] uppercase tracking-tighter text-transparent [-webkit-text-stroke:1.5px_rgba(201,151,58,0.12)] block leading-none">
+            Elvia
+          </span>
+        </div>
+
         {/* Gold Divider Line */}
-        <div className="gold-divider mb-8" />
+        <div className="gold-divider mb-6" />
 
         {/* Copyright & Subline */}
         <div className="flex flex-col sm:flex-row items-center justify-between text-xs text-[#E8EFE3]/70 gap-4">
           <p>© 2026 Elvia Herbals. Made with love in India.</p>
-          <p className="font-script text-base text-[#E0B35C]">
+          <p className="font-handwriting text-xl text-[#E0B35C]">
             Pure Homemade Herbal Oils from Kerala
           </p>
         </div>
