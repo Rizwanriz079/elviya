@@ -277,17 +277,31 @@ export default function ProductView({ productId }: { productId: string }) {
                   </div>
                   <div className="pt-2 border-t border-[#4C8C4A]/20 flex justify-between items-baseline">
                     <span className="font-serif font-bold text-base text-[#2B1D0E]">Total:</span>
-                    <div>
+                    <AnimatePresence mode="wait">
                       {isKerala ? (
-                        <span className="font-serif text-3xl font-bold text-[#2F5D3A]">
+                        <motion.span
+                          key="kerala-total"
+                          initial={{ opacity: 0, y: -6 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          exit={{ opacity: 0, y: 6 }}
+                          transition={{ duration: 0.2 }}
+                          className="font-serif text-3xl font-bold text-[#2F5D3A] inline-block"
+                        >
                           ₹{totalPrice}
-                        </span>
+                        </motion.span>
                       ) : (
-                        <span className="font-serif text-2xl font-bold text-[#2F5D3A]">
+                        <motion.span
+                          key="roi-total"
+                          initial={{ opacity: 0, y: -6 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          exit={{ opacity: 0, y: 6 }}
+                          transition={{ duration: 0.2 }}
+                          className="font-serif text-2xl font-bold text-[#2F5D3A] inline-block"
+                        >
                           ₹{product.price} + delivery
-                        </span>
+                        </motion.span>
                       )}
-                    </div>
+                    </AnimatePresence>
                   </div>
                 </div>
               )}
