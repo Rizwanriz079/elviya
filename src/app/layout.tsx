@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import "./globals.css";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
@@ -9,13 +9,20 @@ import FloatingParticles from "@/components/FloatingParticles";
 import PageIntro from "@/components/PageIntro";
 import { OrganizationSchema, WebsiteSchema } from "@/components/StructuredData";
 
+export const viewport: Viewport = {
+  themeColor: "#2F5D3A",
+  width: "device-width",
+  initialScale: 1,
+};
+
 export const metadata: Metadata = {
-  metadataBase: new URL("https://www.elviaherbals.com"),
+  metadataBase: new URL("https://elviaherbals.com"),
   title: {
-    default: "Elvia Herbals | Pure Homemade Herbal Oils from Kerala",
+    default: "Elvia Herbals | Pure Homemade Herbal Oils",
     template: "%s | Elvia Herbals",
   },
-  description: "Elvia Herbals makes pure, handmade herbal oils in Kerala. Experience our handcrafted Neem Oil made with virgin coconut oil and fresh neem for healthy hair, scalp and clear skin. Order directly via WhatsApp with delivery across India.",
+  description:
+    "Pure homemade herbal oils from Kerala. Handcrafted with virgin coconut oil and fresh neem. Pure, small batches. Order on WhatsApp with India delivery.",
   applicationName: "Elvia Herbals",
   keywords: [
     "Elvia Herbals",
@@ -28,47 +35,49 @@ export const metadata: Metadata = {
     "ayurvedic homemade oil",
     "handmade herbal cosmetics Kerala",
   ],
-  authors: [{ name: "Elvia Herbals", url: "https://www.elviaherbals.com" }],
+  authors: [{ name: "Elvia Herbals", url: "https://elviaherbals.com" }],
   creator: "Elvia Herbals",
   publisher: "Elvia Herbals",
-  alternates: { canonical: "/" },
+  alternates: { canonical: "https://elviaherbals.com" },
   robots: {
     index: true,
     follow: true,
     googleBot: { index: true, follow: true, "max-image-preview": "large", "max-snippet": -1 },
   },
-  manifest: "/manifest.json",
+  manifest: "/manifest.webmanifest",
   icons: {
     icon: [
       { url: "/favicon.ico", sizes: "any" },
-      { url: "/icon.png", type: "image/png", sizes: "32x32" },
-      { url: "/icon.png", type: "image/png", sizes: "16x16" },
+      { url: "/icon.png", type: "image/png", sizes: "512x512" },
+      { url: "/icon-192.png", type: "image/png", sizes: "192x192" },
     ],
     apple: [
       { url: "/apple-icon.png", sizes: "180x180", type: "image/png" },
     ],
   },
   openGraph: {
-    title: "Elvia Herbals | Pure Homemade Herbal Oils from Kerala",
-    description: "Handmade in Kerala in small batches. Pure Neem Oil with virgin coconut oil and fresh herbs. Order on WhatsApp with delivery across India.",
+    title: "Elvia Herbals | Pure Homemade Herbal Oils",
+    description:
+      "Pure homemade herbal oils from Kerala. Handcrafted with virgin coconut oil and fresh neem. Pure, small batches. Order on WhatsApp with India delivery.",
     type: "website",
     locale: "en_IN",
     siteName: "Elvia Herbals",
-    url: "https://www.elviaherbals.com",
+    url: "https://elviaherbals.com",
     images: [
       {
-        url: "/images/neem-oil-og.jpg",
+        url: "/opengraph-image.png",
         width: 1200,
         height: 630,
-        alt: "Elvia Herbals Pure Homemade Neem Oil",
+        alt: "Elvia Herbals — Pure Homemade Herbal Oils",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
     title: "Elvia Herbals | Pure Homemade Herbal Oils",
-    description: "Pure, handmade herbal oils from Kerala. Delivery across India. Instagram: @elviaherbals",
-    images: ["/images/neem-oil-og.jpg"],
+    description:
+      "Pure homemade herbal oils from Kerala. Handcrafted with virgin coconut oil and fresh neem. Pure, small batches. Order on WhatsApp with India delivery.",
+    images: ["/twitter-image.png"],
   },
 };
 
