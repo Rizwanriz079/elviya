@@ -1,160 +1,372 @@
-import { Heart, Leaf, Award, Target, Eye } from "lucide-react";
-import WhatsAppButton from "@/components/WhatsAppButton";
-import { Metadata } from "next";
+'use client';
 
-export const metadata: Metadata = {
-  title: "About Us | Kerala's Homemade Herbal Oil Brand",
-  alternates: { canonical: "/about" },
-  description: "Learn about Elvia Herbals' journey in creating pure, handmade herbal oils in Kerala using traditional methods. Discover our values of purity, care, and tradition. Delivery across India.",
-  keywords: [
-    "about Elvia Herbals",
-    "Kerala almond oil brand",
-    "traditional oil making Kerala",
-    "pure almond oil brand",
-    "cold pressed oil Kerala",
-    "homemade almond oil",
-    "Kerala natural products"
-  ],
-  openGraph: {
-    title: "About Elvia Herbals - Kerala's Homemade Herbal Oils",
-    description: "Learn about our journey in creating pure, handmade herbal oils in Kerala using traditional methods.",
-    type: "website",
-    url: "https://www.elviaherbals.com/about",
-    images: [
-      {
-        url: "/images/logo.jpg",
-        width: 1200,
-        height: 630,
-        alt: "Elvia Herbals Logo - Kerala",
-      },
-    ],
-  },
-  twitter: {
-    card: "summary_large_image",
-    title: "About Elvia Herbals",
-    description: "Our story of creating pure, handmade herbal oils in Kerala",
-    images: ["/images/logo.jpg"],
-  },
-};
+import { useState } from 'react';
+import Image from 'next/image';
+import Link from 'next/link';
+import { motion } from 'framer-motion';
+import { Sparkles, ArrowRight, CheckCircle2 } from 'lucide-react';
+import PageTransition from '@/components/PageTransition';
+import { SHOW_FOUNDER } from '@/lib/constants';
+import {
+  charStaggerContainer,
+  charStaggerItem,
+  clipRevealLeft,
+  clipRevealRight,
+  fadeUp,
+} from '@/lib/motion';
 
 export default function AboutPage() {
+  const [flippedCard, setFlippedCard] = useState<string | null>(null);
+
+  const values = [
+    {
+      id: 'purity',
+      title: '100% Pure',
+      frontIcon: '🌿',
+      frontDesc: 'Pure virgin coconut oil and fresh neem.',
+      backTitle: 'Zero Chemicals',
+      backDesc: 'Made with zero preservatives, zero artificial perfumes, and no chemical additives.',
+    },
+    {
+      id: 'tradition',
+      title: 'Handmade in Kerala',
+      frontIcon: '🏺',
+      frontDesc: 'Made by hand with care in Kerala.',
+      backTitle: 'Small Batches',
+      backDesc: 'Prepared carefully by hand in small batches to maintain natural quality.',
+    },
+    {
+      id: 'care',
+      title: 'Made with Love',
+      frontIcon: '🤲',
+      frontDesc: 'Crafted with genuine dedication.',
+      backTitle: 'Mindful Care',
+      backDesc: 'Every bottle is prepared and sealed by hand for healthy hair, scalp and skin.',
+    },
+    {
+      id: 'trust',
+      title: 'Delivery across India',
+      frontIcon: '🤝',
+      frontDesc: 'Direct WhatsApp communication.',
+      backTitle: 'Reliable Shipping',
+      backDesc: 'Flat ₹50 delivery in Kerala, and delivery across India confirmed directly on WhatsApp.',
+    },
+  ];
+
+  const timelineSteps = [
+    {
+      step: 'Step 01',
+      title: 'Fresh Neem Leaves',
+      desc: 'Selected fresh neem leaves are harvested in Kerala and prepared for infusion.',
+    },
+    {
+      step: 'Step 02',
+      title: 'Cleaned Thoroughly',
+      desc: 'Washed carefully by hand in clean water to ensure pure botanical cleanliness.',
+    },
+    {
+      step: 'Step 03',
+      title: 'Infused in Virgin Coconut Oil',
+      desc: 'Infused gently into pure virgin coconut oil using traditional handmade care.',
+    },
+    {
+      step: 'Step 04',
+      title: 'Bottled by Hand in Small Batches',
+      desc: 'Filtered and bottled by hand in Kerala with no preservatives or chemicals.',
+    },
+  ];
+
+  const heroHeadline = 'Pure Homemade Herbal Oils';
+
   return (
-    <div className="min-h-screen bg-[#FFF5E6]">
-      <section className="py-20">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid lg:grid-cols-2 gap-16 items-center">
-            <div>
-              <h1 className="text-4xl sm:text-5xl font-bold text-[#2D1F0E] mb-6">
-                Our Story
-              </h1>
-              <p className="text-lg text-[#8B7355] mb-6">
-                Elvia Herbals was born from a simple belief: that the best skincare comes from nature, made with love and traditional wisdom passed down through generations.
+    <PageTransition>
+      <div className="min-h-screen pb-24 overflow-hidden page-top-padding">
+        {/* 1. Hero Section with charStagger kinetic title */}
+        <section className="relative pb-16 text-center">
+          <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 space-y-6">
+            <motion.div
+              variants={fadeUp}
+              initial="hidden"
+              animate="visible"
+              className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#E8EFE3] text-[#2F5D3A] text-xs font-bold uppercase tracking-wider border border-[#4C8C4A]/30"
+            >
+              <Sparkles className="w-3.5 h-3.5 text-[#C9973A]" />
+              Our Story
+            </motion.div>
+
+            {/* Kinetic Title with Character Stagger */}
+            <motion.h1
+              variants={charStaggerContainer}
+              initial="hidden"
+              animate="visible"
+              className="font-serif text-4xl sm:text-5xl md:text-6xl font-bold text-[#2B1D0E] leading-tight"
+            >
+              <div className="inline-block">
+                {heroHeadline.split('').map((char, i) => (
+                  <motion.span
+                    key={i}
+                    variants={charStaggerItem}
+                    className="inline-block"
+                  >
+                    {char === ' ' ? '\u00A0' : char}
+                  </motion.span>
+                ))}
+              </div>
+              <br />
+              <span className="text-[#C9973A]">Made in Kerala</span>
+            </motion.h1>
+
+            {/* Single-line Caveat script */}
+            <motion.p
+              variants={fadeUp}
+              initial="hidden"
+              animate="visible"
+              custom={4}
+              className="font-handwriting text-3xl sm:text-4xl text-[#2F5D3A] tracking-wide"
+            >
+              Made by hand, with love.
+            </motion.p>
+
+            <motion.p
+              variants={fadeUp}
+              initial="hidden"
+              animate="visible"
+              custom={5}
+              className="text-base sm:text-lg text-[#2B1D0E]/80 max-w-2xl mx-auto leading-relaxed"
+            >
+              Elvia Herbals is dedicated to pure, handmade herbal oils prepared in small batches in Kerala using pure virgin coconut oil and fresh neem.
+            </motion.p>
+          </div>
+        </section>
+
+        {/* 2. Alternating Story Blocks with clipRevealLeft & clipRevealRight */}
+        <section className="py-12 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          {/* Story Block 1 */}
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center mb-24">
+            <div className="space-y-5">
+              <span className="text-xs font-bold uppercase tracking-widest text-[#C9973A]">
+                Our Focus
+              </span>
+              <h2 className="font-serif text-3xl sm:text-4xl font-bold text-[#2B1D0E]">
+                Handmade with Natural Ingredients
+              </h2>
+              <p className="text-sm sm:text-base text-[#2B1D0E]/80 leading-relaxed">
+                We believe that simple, natural ingredients make the most reliable care. Our Neem Oil is made by infusing fresh neem directly into pure virgin coconut oil.
               </p>
-              <p className="text-lg text-[#8B7355] mb-6">
-                Our journey began in a small kitchen, where we started making pure almond oil for our family using a traditional wooden press (ghani). The results were so remarkable that friends and family started asking for more.
-              </p>
-              <p className="text-lg text-[#8B7355]">
-                Today, we make every bottle of Elvia Herbals oil, from our Neem Oil with virgin coconut oil to our Almond Oil, with the same care and dedication, ensuring that you receive nothing but the purest, most nourishing oil for your skin and hair.
+              <p className="text-sm sm:text-base text-[#2B1D0E]/80 leading-relaxed">
+                Every batch is made by hand in small quantities in Kerala with zero added chemicals and zero preservatives.
               </p>
             </div>
-            <div className="relative">
-              <div className="aspect-square bg-white rounded-3xl shadow-xl p-12 flex items-center justify-center">
-                <div className="text-center">
-                  <div className="w-40 h-40 mx-auto mb-6 rounded-full gradient-gold flex items-center justify-center">
-                    <Heart className="w-20 h-20 text-white" />
-                  </div>
-                  <p className="text-xl font-bold text-[#2D1F0E]">Made with Love</p>
-                  <p className="text-[#8B7355]">Since 2020</p>
+
+            <motion.div
+              variants={clipRevealRight}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true }}
+              className="relative aspect-4/3 rounded-3xl overflow-hidden glass-panel border border-[#C9973A]/30 p-4 shadow-botanical"
+            >
+              <div className="relative w-full h-full rounded-2xl overflow-hidden">
+                <Image
+                  src="/images/product-main.jpg"
+                  alt="Handmade in Kerala"
+                  fill
+                  sizes="(max-width: 1024px) 100vw, 600px"
+                  className="object-cover"
+                />
+              </div>
+            </motion.div>
+          </div>
+
+          {/* Story Block 2 */}
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+            <motion.div
+              variants={clipRevealLeft}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true }}
+              className="relative aspect-4/3 rounded-3xl overflow-hidden glass-panel border border-[#C9973A]/30 p-4 shadow-botanical order-2 lg:order-1"
+            >
+              <div className="relative w-full h-full rounded-2xl overflow-hidden">
+                <Image
+                  src="/images/product-1.jpg"
+                  alt="Small Batches"
+                  fill
+                  sizes="(max-width: 1024px) 100vw, 600px"
+                  className="object-cover"
+                />
+              </div>
+            </motion.div>
+
+            <div className="space-y-5 order-1 lg:order-2">
+              <span className="text-xs font-bold uppercase tracking-widest text-[#4C8C4A]">
+                Traditional Care
+              </span>
+              <h2 className="font-serif text-3xl sm:text-4xl font-bold text-[#2B1D0E]">
+                Small Batches for Hair, Scalp & Skin
+              </h2>
+              <p className="text-sm sm:text-base text-[#2B1D0E]/80 leading-relaxed">
+                Prepared with care for healthy hair, a clean scalp and clear skin. We deliver across India with flat ₹50 shipping in Kerala and direct ordering on WhatsApp.
+              </p>
+              <div className="grid grid-cols-2 gap-3 pt-2">
+                <div className="flex items-center gap-2 text-xs font-bold text-[#2F5D3A]">
+                  <CheckCircle2 className="w-4 h-4 text-[#4C8C4A]" />
+                  <span>100% Pure Ingredients</span>
+                </div>
+                <div className="flex items-center gap-2 text-xs font-bold text-[#2F5D3A]">
+                  <CheckCircle2 className="w-4 h-4 text-[#4C8C4A]" />
+                  <span>No Preservatives</span>
                 </div>
               </div>
             </div>
           </div>
-        </div>
-      </section>
+        </section>
 
-      <section className="py-20 bg-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-16">
-            <h2 className="text-3xl sm:text-4xl font-bold text-[#2D1F0E] mb-4">Our Values</h2>
-            <p className="text-lg text-[#8B7355]">What makes Elvia Herbals special</p>
+        {/* 3. Our Promise: Dark Section Counters */}
+        <section className="py-20 bg-[#162F1D] text-[#FDF6EC] my-12 relative overflow-hidden">
+          <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(47,93,58,0.5)_0%,transparent_70%)] pointer-events-none" />
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
+              {[
+                { number: '100%', label: 'Natural Ingredients', sub: 'Virgin coconut oil & neem' },
+                { number: '0', label: 'Added Chemicals', sub: 'No preservatives' },
+                { number: 'Small', label: 'Batches', sub: 'Handmade fresh' },
+                { number: 'Kerala', label: 'Made in India', sub: 'Delivery across India' },
+              ].map((stat, idx) => (
+                <motion.div
+                  key={idx}
+                  variants={fadeUp}
+                  initial="hidden"
+                  whileInView="visible"
+                  viewport={{ once: true }}
+                  custom={idx}
+                  className="space-y-2 p-4 rounded-2xl bg-[#E8EFE3]/5 border border-[#C9973A]/20"
+                >
+                  <div className="font-serif text-3xl sm:text-5xl font-bold text-[#E0B35C]">
+                    {stat.number}
+                  </div>
+                  <div className="text-sm sm:text-base font-semibold text-[#FDF6EC]">
+                    {stat.label}
+                  </div>
+                  <div className="text-xs text-[#E8EFE3]/70">{stat.sub}</div>
+                </motion.div>
+              ))}
+            </div>
           </div>
-          <div className="grid md:grid-cols-3 gap-8">
-            {[
-              { icon: <Leaf className="w-10 h-10" />, title: "Purity", desc: "Pure, natural ingredients with no chemicals, preservatives, or additives." },
-              { icon: <Heart className="w-10 h-10" />, title: "Care", desc: "Every bottle is made with love and attention to detail, ensuring the highest quality." },
-              { icon: <Award className="w-10 h-10" />, title: "Tradition", desc: "We use time-tested traditional methods that have been passed down through generations." },
-            ].map((value, index) => (
-              <div key={index} className="card p-8 text-center">
-                <div className="w-20 h-20 mx-auto mb-6 rounded-full gradient-gold flex items-center justify-center text-white">{value.icon}</div>
-                <h3 className="text-xl font-bold text-[#2D1F0E] mb-4">{value.title}</h3>
-                <p className="text-[#8B7355]">{value.desc}</p>
+        </section>
+
+        {/* 4. Our Process: Vertical Timeline */}
+        <section className="py-24 max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-16">
+            <span className="text-xs font-bold uppercase tracking-wider text-[#C9973A]">
+              From Leaf to Bottle
+            </span>
+            <h2 className="font-serif text-3xl sm:text-4xl font-bold text-[#2B1D0E] mt-1">
+              How Our Oils Are Made
+            </h2>
+          </div>
+
+          <div className="space-y-8 relative before:absolute before:inset-0 before:left-4 sm:before:left-1/2 before:w-[2px] before:bg-gradient-to-b before:from-[#4C8C4A] before:via-[#C9973A] before:to-[#2F5D3A]">
+            {timelineSteps.map((step, idx) => (
+              <div
+                key={idx}
+                className={`relative flex flex-col sm:flex-row items-start sm:items-center gap-6 ${
+                  idx % 2 === 0 ? 'sm:flex-row-reverse' : ''
+                }`}
+              >
+                <div className="w-8 h-8 rounded-full bg-[#C9973A] border-4 border-[#FDF6EC] shadow-md z-10 flex items-center justify-center text-white text-xs font-bold shrink-0 ml-1 sm:ml-0 sm:absolute sm:left-1/2 sm:-translate-x-1/2">
+                  {idx + 1}
+                </div>
+
+                <div className="w-full sm:w-[calc(50%-2.5rem)] glass-panel p-6 rounded-3xl border border-[#C9973A]/25 shadow-botanical">
+                  <span className="text-[10px] font-bold text-[#C9973A] uppercase tracking-wider">
+                    {step.step}
+                  </span>
+                  <h3 className="font-serif font-bold text-lg text-[#2B1D0E] mt-0.5 mb-2">
+                    {step.title}
+                  </h3>
+                  <p className="text-xs sm:text-sm text-[#2B1D0E]/80 leading-relaxed">
+                    {step.desc}
+                  </p>
+                </div>
               </div>
             ))}
           </div>
-        </div>
-      </section>
+        </section>
 
-      <section className="py-20 bg-[#F5E6D3]">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-16">
-            <h2 className="text-3xl sm:text-4xl font-bold text-[#2D1F0E] mb-4">Our Process</h2>
-            <p className="text-lg text-[#8B7355]">How we make our herbal oils</p>
-          </div>
-          <div className="grid md:grid-cols-4 gap-8">
-            {[
-              { step: "1", title: "Selection", desc: "We choose quality natural ingredients" },
-              { step: "2", title: "Preparation", desc: "Ingredients are cleaned and prepared carefully" },
-              { step: "3", title: "Handmade", desc: "Made in small batches using traditional methods" },
-              { step: "4", title: "Packaging", desc: "Bottled fresh and delivered to you" },
-            ].map((item, index) => (
-              <div key={index} className="text-center">
-                <div className="w-16 h-16 mx-auto mb-4 rounded-full gradient-gold flex items-center justify-center text-white text-2xl font-bold">{item.step}</div>
-                <h3 className="font-bold text-[#2D1F0E] mb-2">{item.title}</h3>
-                <p className="text-[#8B7355] text-sm">{item.desc}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      <section className="py-20 bg-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid md:grid-cols-2 gap-12">
-            <div className="card p-8">
-              <div className="w-16 h-16 mb-6 rounded-full bg-[#D9A441]/10 flex items-center justify-center">
-                <Target className="w-8 h-8 text-[#D9A441]" />
-              </div>
-              <h3 className="text-2xl font-bold text-[#2D1F0E] mb-4">Our Mission</h3>
-              <p className="text-[#8B7355]">
-                To provide families with pure, natural, and chemical-free herbal oils that nourish skin and hair while keeping traditional methods alive.
-              </p>
+        {/* 5. Values Cards: Interactive 3D Flip */}
+        <section className="py-20 bg-[#F7EFE2]/60">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="text-center max-w-2xl mx-auto mb-16">
+              <span className="text-xs font-bold uppercase tracking-wider text-[#2F5D3A]">
+                Our Values
+              </span>
+              <h2 className="font-serif text-3xl sm:text-4xl font-bold text-[#2B1D0E] mt-1">
+                Purity, Tradition, Care & Trust
+              </h2>
             </div>
-            <div className="card p-8">
-              <div className="w-16 h-16 mb-6 rounded-full bg-[#3D6A46]/10 flex items-center justify-center">
-                <Eye className="w-8 h-8 text-[#3D6A46]" />
-              </div>
-              <h3 className="text-2xl font-bold text-[#2D1F0E] mb-4">Our Vision</h3>
-              <p className="text-[#8B7355]">
-                To become the most trusted name in natural, homemade beauty products, helping people embrace pure and sustainable skincare solutions.
-              </p>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+              {values.map((val) => {
+                const isFlipped = flippedCard === val.id;
+                return (
+                  <div
+                    key={val.id}
+                    onClick={() => setFlippedCard(isFlipped ? null : val.id)}
+                    className="cursor-pointer h-64 rounded-3xl glass-panel border border-[#C9973A]/30 p-6 flex flex-col justify-between shadow-botanical hover:shadow-botanical-lg transition-all duration-300 relative group"
+                  >
+                    {!isFlipped ? (
+                      <div>
+                        <div className="text-3xl mb-3">{val.frontIcon}</div>
+                        <h3 className="font-serif text-xl font-bold text-[#2B1D0E] mb-2">
+                          {val.title}
+                        </h3>
+                        <p className="text-xs sm:text-sm text-[#2B1D0E]/75">
+                          {val.frontDesc}
+                        </p>
+                        <span className="text-[10px] text-[#C9973A] font-semibold mt-4 block">
+                          Tap to view details ↻
+                        </span>
+                      </div>
+                    ) : (
+                      <div className="flex flex-col justify-between h-full bg-[#E8EFE3]/90 -m-6 p-6 rounded-3xl">
+                        <div>
+                          <h4 className="font-serif font-bold text-base text-[#2F5D3A] mb-2">
+                            {val.backTitle}
+                          </h4>
+                          <p className="text-xs text-[#2B1D0E]/85 leading-relaxed">
+                            {val.backDesc}
+                          </p>
+                        </div>
+                        <span className="text-[10px] text-[#4C8C4A] font-semibold">
+                          Tap to flip back ↻
+                        </span>
+                      </div>
+                    )}
+                  </div>
+                );
+              })}
             </div>
           </div>
-        </div>
-      </section>
+        </section>
 
+        {/* 6. Optional Founder Note (Only shown if SHOW_FOUNDER is true) */}
+        {SHOW_FOUNDER && (
+          <section className="py-20 max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            {/* Real Founder content to be added when client provides */}
+          </section>
+        )}
 
-      <section className="py-20 gradient-gold">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h2 className="text-3xl sm:text-4xl font-bold text-white mb-6">Join the Elvia Herbals Family</h2>
-          <p className="text-xl text-white/90 mb-8">Experience the difference of pure, handmade herbal oils</p>
-          <WhatsAppButton
-            message="Hi Elvia Herbals! I would love to learn more about your products."
-            className="bg-white text-[#D9A441] hover:bg-[#FFF5E6]"
+        {/* CTA to Products */}
+        <section className="py-16 max-w-4xl mx-auto px-4 text-center">
+          <Link
+            href="/product"
+            className="btn-shine inline-flex items-center gap-2 bg-[#2F5D3A] hover:bg-[#1E3F27] text-white px-8 py-4 rounded-full font-bold shadow-md text-sm transition-all"
           >
-            Get in Touch
-          </WhatsAppButton>
-        </div>
-      </section>
-    </div>
+            <span>Explore Pure Neem Oil (100ml)</span>
+            <ArrowRight className="w-4 h-4" />
+          </Link>
+        </section>
+      </div>
+    </PageTransition>
   );
 }

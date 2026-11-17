@@ -96,7 +96,7 @@ export function ProductSchema({ productId }: { productId: string }) {
           "@type": "Offer",
           url,
           priceCurrency: "INR",
-          price: String(p.price),
+          price: p.price ? String(p.price) : "0",
           // Out-of-stock products stay indexed; flip `inStock` in constants.ts when restocked
           availability: p.inStock ? "https://schema.org/InStock" : "https://schema.org/OutOfStock",
           itemCondition: "https://schema.org/NewCondition",
@@ -105,7 +105,7 @@ export function ProductSchema({ productId }: { productId: string }) {
           // Only Kerala has a fixed rate; other locations are quoted on WhatsApp
           shippingDetails: {
             "@type": "OfferShippingDetails",
-            shippingRate: { "@type": "MonetaryAmount", value: String(p.deliveryCharge), currency: "INR" },
+            shippingRate: { "@type": "MonetaryAmount", value: String(p.deliveryChargeKerala), currency: "INR" },
             shippingDestination: { "@type": "DefinedRegion", addressCountry: "IN", addressRegion: "KL" },
           },
         },

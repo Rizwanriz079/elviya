@@ -1,51 +1,32 @@
 import type { Metadata } from "next";
-import { Playfair_Display, Lato } from "next/font/google";
 import "./globals.css";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import WhatsAppButton from "@/components/WhatsAppButton";
-import ScrollEffects from "@/components/ScrollEffects";
+import SmoothScroll from "@/components/SmoothScroll";
+import CustomCursor from "@/components/CustomCursor";
+import FloatingParticles from "@/components/FloatingParticles";
+import PageIntro from "@/components/PageIntro";
 import { OrganizationSchema, WebsiteSchema } from "@/components/StructuredData";
-
-const playfair = Playfair_Display({
-  variable: "--font-playfair",
-  subsets: ["latin"],
-  display: "swap",
-});
-
-const lato = Lato({
-  variable: "--font-lato",
-  subsets: ["latin"],
-  weight: ["300", "400", "700", "900"],
-  display: "swap",
-});
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://www.elviaherbals.com"),
   title: {
-    default: "Elvia Herbals | Homemade Neem Oil & Herbal Oils from Kerala",
+    default: "Elvia Herbals | Pure Homemade Herbal Oils from Kerala",
     template: "%s | Elvia Herbals",
   },
-  description: "Elvia Herbals (@elviaherbals) makes pure, handmade herbal oils in Kerala. Shop our Neem Oil, made with virgin coconut oil and neem for healthy hair, scalp and skin. Order on WhatsApp with delivery across India.",
+  description: "Elvia Herbals makes pure, handmade herbal oils in Kerala. Experience our handcrafted Neem Oil made with virgin coconut oil and fresh neem for healthy hair, scalp and clear skin. Order directly via WhatsApp with delivery across India.",
   applicationName: "Elvia Herbals",
   keywords: [
     "Elvia Herbals",
     "elviaherbals",
-    "elvia herbals Kerala",
-    "elvia herbal oil",
-    "neem oil",
-    "neem oil Kerala",
-    "neem oil for hair",
-    "neem oil for skin",
-    "neem oil for dandruff",
-    "neem and coconut oil",
+    "pure homemade neem oil",
+    "herbal oil Kerala",
     "virgin coconut oil neem oil",
-    "homemade neem oil",
-    "herbal hair oil Kerala",
-    "homemade herbal oil Kerala",
     "pure almond oil",
-    "neem oil India",
-    "herbal hair oil India",
+    "natural hair oil India",
+    "ayurvedic homemade oil",
+    "handmade herbal cosmetics Kerala",
   ],
   authors: [{ name: "Elvia Herbals", url: "https://www.elviaherbals.com" }],
   creator: "Elvia Herbals",
@@ -68,24 +49,24 @@ export const metadata: Metadata = {
     ],
   },
   openGraph: {
-    title: "Elvia Herbals | Homemade Neem Oil & Herbal Oils from Kerala",
-    description: "Pure, handmade herbal oils from Kerala. Neem Oil made with virgin coconut oil and neem for healthy hair and skin. Delivery across India. Instagram @elviaherbals.",
+    title: "Elvia Herbals | Pure Homemade Herbal Oils from Kerala",
+    description: "Handmade in Kerala in small batches. Pure Neem Oil with virgin coconut oil and fresh herbs. Order on WhatsApp with delivery across India.",
     type: "website",
     locale: "en_IN",
     siteName: "Elvia Herbals",
-    url: "/",
+    url: "https://www.elviaherbals.com",
     images: [
       {
         url: "/images/neem-oil-og.jpg",
         width: 1200,
         height: 630,
-        alt: "Elvia Herbals Neem Oil 100ml, made with virgin coconut oil and neem",
+        alt: "Elvia Herbals Pure Homemade Neem Oil",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Elvia Herbals | Homemade Neem Oil from Kerala",
+    title: "Elvia Herbals | Pure Homemade Herbal Oils",
     description: "Pure, handmade herbal oils from Kerala. Delivery across India. Instagram: @elviaherbals",
     images: ["/images/neem-oil-og.jpg"],
   },
@@ -102,15 +83,17 @@ export default function RootLayout({
         <OrganizationSchema />
         <WebsiteSchema />
       </head>
-      <body
-        className={`${playfair.variable} ${lato.variable} antialiased`}
-      >
-        <ScrollEffects />
-        <Header />
-        <main className="min-h-screen pt-20">
-          {children}
-        </main>
-        <Footer />
+      <body className="antialiased min-h-screen selection:bg-[#C9973A]/25 selection:text-[#1E3F27]">
+        <PageIntro />
+        <CustomCursor />
+        <FloatingParticles />
+        <SmoothScroll>
+          <Header />
+          <main className="min-h-screen relative z-10">
+            {children}
+          </main>
+          <Footer />
+        </SmoothScroll>
         <WhatsAppButton variant="floating" />
       </body>
     </html>

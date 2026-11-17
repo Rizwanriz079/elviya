@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { notFound, permanentRedirect } from "next/navigation";
 import ProductView from "@/components/ProductView";
+import PageTransition from "@/components/PageTransition";
 import { ProductSchema, BreadcrumbSchema, FaqSchema } from "@/components/StructuredData";
 import { PRODUCTS } from "@/lib/constants";
 
@@ -17,8 +18,8 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   const { slug } = await params;
   const p = OTHER_PRODUCTS.find((x) => x.id === slug);
   if (!p) return {};
-  const status = p.inStock ? `Rs. ${p.price}` : "Back Soon";
-  const description = `${p.description.split(". ")[0]}. ${p.size}${p.inStock ? ` for Rs. ${p.price}` : " – currently out of stock, restocking soon"}. Delivery across India.`;
+  const status = p.inStock ? `₹${p.price}` : "Back Soon";
+  const description = `${p.description.split(". ")[0]}. ${p.size}${p.inStock ? ` for ₹${p.price}` : " – currently out of stock, restocking soon"}. Delivery across India.`;
   return {
     title: { absolute: `${p.name} ${p.size} | ${status} | Elvia Herbals` },
     description,
@@ -42,7 +43,7 @@ export default async function ProductSlugPage({ params }: { params: Promise<{ sl
   if (!p) notFound();
   const url = `https://www.elviaherbals.com/product/${p.id}`;
   return (
-    <>
+    <PageTransition>
       <ProductSchema productId={p.id} />
       <FaqSchema productId={p.id} />
       <BreadcrumbSchema
@@ -52,6 +53,6 @@ export default async function ProductSlugPage({ params }: { params: Promise<{ sl
         ]}
       />
       <ProductView productId={p.id} />
-    </>
+    </PageTransition>
   );
 }

@@ -1,81 +1,81 @@
 import { FileText } from "lucide-react";
+import PageTransition from "@/components/PageTransition";
 
-// Static page text (edit here)
-const defaultContent = `<p class="text-[#8B7355]">Last updated: November 2026</p>
+const defaultContent = `
+<p class="text-[#2B1D0E]/70 text-sm">Last updated: November 2026</p>
 
-<section>
-  <h2 class="text-xl font-bold text-[#2D1F0E] mb-4">1. Acceptance of Terms</h2>
-  <p class="text-[#8B7355]">
-    By accessing and using the Elvia Herbals website and purchasing our products, you agree to be bound
-    by these Terms and Conditions. If you do not agree with any part of these terms, please do
-    not use our services.
+<section class="space-y-3">
+  <h2 class="font-serif text-xl font-bold text-[#2F5D3A]">1. Acceptance of Terms</h2>
+  <p class="text-[#2B1D0E]/80 text-sm leading-relaxed">
+    By accessing the Elvia Herbals website and purchasing our natural handmade oils, you acknowledge and agree to these terms of service.
   </p>
 </section>
 
-<section>
-  <h2 class="text-xl font-bold text-[#2D1F0E] mb-4">2. Products</h2>
-  <p class="text-[#8B7355]">
-    All products sold by Elvia Herbals are natural, handmade herbal oils. We make every effort to
-    accurately display product colors and images, but actual products may vary slightly. Product
-    availability and prices are subject to change without notice.
+<section class="space-y-3">
+  <h2 class="font-serif text-xl font-bold text-[#2F5D3A]">2. Handmade Formulation & Variations</h2>
+  <p class="text-[#2B1D0E]/80 text-sm leading-relaxed">
+    All products sold by Elvia Herbals are natural, handmade herbal oils prepared in small artisan batches in Kerala. Because we use virgin cold-pressed coconut oil and fresh harvest neem without artificial dyes, slight natural variations in herbal aroma or color between seasonal batches are normal and a hallmark of authentic purity. In colder weather, virgin coconut oil may naturally solidify; gently submerge the bottle in warm water to restore liquid state.
   </p>
 </section>
 
-<section>
-  <h2 class="text-xl font-bold text-[#2D1F0E] mb-4">3. Orders and Payment</h2>
-  <p class="text-[#8B7355] mb-4">
-    Orders are placed through WhatsApp. Payment can be made via:
+<section class="space-y-3">
+  <h2 class="font-serif text-xl font-bold text-[#2F5D3A]">3. Ordering & WhatsApp Payments</h2>
+  <p class="text-[#2B1D0E]/80 text-sm leading-relaxed">
+    Orders are placed and confirmed directly through WhatsApp. We accept UPI payments (GPay, PhonePe, Paytm, BHIM) and direct IMPS bank transfer. Orders are dispatched once payment confirmation is verified.
   </p>
-  <ul class="list-disc list-inside text-[#8B7355] space-y-2">
-    <li>UPI / Google Pay / PhonePe</li>
-    <li>Bank Transfer</li>
-    <li>Cash on Delivery (where available)</li>
+</section>
+
+<section class="space-y-3">
+  <h2 class="font-serif text-xl font-bold text-[#2F5D3A]">4. Shipping & Delivery Terms</h2>
+  <p class="text-[#2B1D0E]/80 text-sm leading-relaxed">
+    We ship across India using trusted express courier services:
+  </p>
+  <ul class="list-disc list-inside text-[#2B1D0E]/80 space-y-1.5 text-sm pl-2">
+    <li><strong>Within Kerala:</strong> Flat ₹50 delivery charge per order; delivered within 2-3 business days.</li>
+    <li><strong>Rest of India:</strong> Standard ₹90 delivery charge (confirmed on WhatsApp); delivered within 4-6 business days.</li>
   </ul>
 </section>
 
-<section>
-  <h2 class="text-xl font-bold text-[#2D1F0E] mb-4">4. Shipping and Delivery</h2>
-  <p class="text-[#8B7355]">
-    We deliver within India only and currently do not ship internationally. Delivery times vary by location and typically take 3-7 business days.
-    Within Kerala, Almond Oil ships free and Neem Oil has a Rs. 50 delivery charge, which is shown when you order. For the rest of India, the delivery charge depends on your location and is confirmed on WhatsApp before you pay.
+<section class="space-y-3">
+  <h2 class="font-serif text-xl font-bold text-[#2F5D3A]">5. Returns & Damaged Shipments</h2>
+  <p class="text-[#2B1D0E]/80 text-sm leading-relaxed">
+    Because our oils are personal care products without chemical preservatives, we do not accept returns once opened. However, if a bottle arrives damaged in transit or compromised, please message us on WhatsApp with an unboxing photo within 48 hours for immediate replacement or full refund.
   </p>
 </section>
 
-<section>
-  <h2 class="text-xl font-bold text-[#2D1F0E] mb-4">5. Returns and Refunds</h2>
-  <p class="text-[#8B7355]">
-    Due to the nature of our products, we only accept returns for damaged or defective items.
-    Please contact us within 48 hours of receiving your order if you have any issues. Refunds
-    will be processed within 7-10 business days.
+<section class="space-y-3">
+  <h2 class="font-serif text-xl font-bold text-[#2F5D3A]">6. Contact Information</h2>
+  <p class="text-[#2B1D0E]/80 text-sm leading-relaxed">
+    For questions or support: email elviaherbals@gmail.com or WhatsApp +91 92070 67522.
   </p>
 </section>
-
-<section>
-  <h2 class="text-xl font-bold text-[#2D1F0E] mb-4">6. Contact</h2>
-  <p class="text-[#8B7355]">
-    For any questions regarding these terms, please contact us at elviaherbals@gmail.com
-    or via WhatsApp at +91 92070 67522.
-  </p>
-</section>`;
+`;
 
 export default function TermsPage() {
   return (
-    <div className="min-h-screen bg-[#FFF5E6] py-20">
-      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center gap-4 mb-8">
-          <div className="w-12 h-12 rounded-full gradient-gold flex items-center justify-center">
-            <FileText className="w-6 h-6 text-white" />
+    <PageTransition>
+      <div className="min-h-screen py-20">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex items-center gap-4 mb-8">
+            <div className="w-12 h-12 rounded-2xl bg-[#E8EFE3] border border-[#4C8C4A]/30 flex items-center justify-center text-[#2F5D3A]">
+              <FileText className="w-6 h-6" />
+            </div>
+            <div>
+              <span className="text-xs font-bold uppercase tracking-wider text-[#C9973A]">
+                Guidelines
+              </span>
+              <h1 className="font-serif text-3xl sm:text-4xl font-bold text-[#2B1D0E]">
+                Terms & Conditions
+              </h1>
+            </div>
           </div>
-          <h1 className="text-4xl font-bold text-[#2D1F0E]">
-            Terms & Conditions
-          </h1>
-        </div>
 
-        <div
-          className="card p-8 space-y-8 [&>section]:space-y-4"
-          dangerouslySetInnerHTML={{ __html: defaultContent }}
-        />
+          <div
+            className="glass-panel p-8 sm:p-10 rounded-3xl border border-[#C9973A]/25 shadow-botanical space-y-8"
+            dangerouslySetInnerHTML={{ __html: defaultContent }}
+          />
+        </div>
       </div>
-    </div>
+    </PageTransition>
   );
 }
