@@ -3,9 +3,17 @@
 import { useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
+import { motion } from 'framer-motion';
 import { Sparkles, ArrowRight, CheckCircle2 } from 'lucide-react';
 import PageTransition from '@/components/PageTransition';
 import { SHOW_FOUNDER } from '@/lib/constants';
+import {
+  charStaggerContainer,
+  charStaggerItem,
+  clipRevealLeft,
+  clipRevealRight,
+  fadeUp,
+} from '@/lib/motion';
 
 export default function AboutPage() {
   const [flippedCard, setFlippedCard] = useState<string | null>(null);
@@ -16,7 +24,7 @@ export default function AboutPage() {
       title: '100% Pure',
       frontIcon: '🌿',
       frontDesc: 'Pure virgin coconut oil and fresh neem.',
-      backTitle: 'No Chemicals',
+      backTitle: 'Zero Chemicals',
       backDesc: 'Made with zero preservatives, zero artificial perfumes, and no chemical additives.',
     },
     {
@@ -32,29 +40,29 @@ export default function AboutPage() {
       title: 'Made with Love',
       frontIcon: '🤲',
       frontDesc: 'Crafted with genuine dedication.',
-      backTitle: 'Natural Care',
-      backDesc: 'Every bottle is prepared and sealed by hand for healthy hair and clean skin.',
+      backTitle: 'Mindful Care',
+      backDesc: 'Every bottle is prepared and sealed by hand for healthy hair, scalp and skin.',
     },
     {
       id: 'trust',
       title: 'Delivery across India',
       frontIcon: '🤝',
       frontDesc: 'Direct WhatsApp communication.',
-      backTitle: 'Reliable Delivery',
-      backDesc: 'Flat ₹50 delivery in Kerala and delivery across India confirmed directly on WhatsApp.',
+      backTitle: 'Reliable Shipping',
+      backDesc: 'Flat ₹50 delivery in Kerala, and delivery across India confirmed directly on WhatsApp.',
     },
   ];
 
   const timelineSteps = [
     {
       step: 'Step 01',
-      title: 'Fresh Neem',
-      desc: 'Fresh neem leaves are selected and prepared for infusion.',
+      title: 'Fresh Neem Leaves',
+      desc: 'Selected fresh neem leaves are harvested in Kerala and prepared for infusion.',
     },
     {
       step: 'Step 02',
       title: 'Cleaned Thoroughly',
-      desc: 'Washed carefully by hand in clean water and prepared.',
+      desc: 'Washed carefully by hand in clean water to ensure pure botanical cleanliness.',
     },
     {
       step: 'Step 03',
@@ -63,40 +71,78 @@ export default function AboutPage() {
     },
     {
       step: 'Step 04',
-      title: 'Bottled in Small Batches',
+      title: 'Bottled by Hand in Small Batches',
       desc: 'Filtered and bottled by hand in Kerala with no preservatives or chemicals.',
     },
   ];
 
+  const heroHeadline = 'Pure Homemade Herbal Oils';
+
   return (
     <PageTransition>
       <div className="min-h-screen pb-24 overflow-hidden page-top-padding">
-        {/* 1. Hero Section */}
+        {/* 1. Hero Section with charStagger kinetic title */}
         <section className="relative pb-16 text-center">
-          <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 space-y-5">
-            <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#E8EFE3] text-[#2F5D3A] text-xs font-bold uppercase tracking-wider border border-[#4C8C4A]/30">
+          <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 space-y-6">
+            <motion.div
+              variants={fadeUp}
+              initial="hidden"
+              animate="visible"
+              className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#E8EFE3] text-[#2F5D3A] text-xs font-bold uppercase tracking-wider border border-[#4C8C4A]/30"
+            >
               <Sparkles className="w-3.5 h-3.5 text-[#C9973A]" />
               Our Story
-            </div>
+            </motion.div>
 
-            <h1 className="font-serif text-4xl sm:text-5xl md:text-6xl font-bold text-[#2B1D0E] leading-tight">
-              Pure Homemade Herbal Oils,<br />
+            {/* Kinetic Title with Character Stagger */}
+            <motion.h1
+              variants={charStaggerContainer}
+              initial="hidden"
+              animate="visible"
+              className="font-serif text-4xl sm:text-5xl md:text-6xl font-bold text-[#2B1D0E] leading-tight"
+            >
+              <div className="inline-block">
+                {heroHeadline.split('').map((char, i) => (
+                  <motion.span
+                    key={i}
+                    variants={charStaggerItem}
+                    className="inline-block"
+                  >
+                    {char === ' ' ? '\u00A0' : char}
+                  </motion.span>
+                ))}
+              </div>
+              <br />
               <span className="text-[#C9973A]">Made in Kerala</span>
-            </h1>
+            </motion.h1>
 
-            <p className="font-script text-3xl sm:text-4xl text-[#2F5D3A] tracking-wide">
+            {/* Single-line Caveat script */}
+            <motion.p
+              variants={fadeUp}
+              initial="hidden"
+              animate="visible"
+              custom={4}
+              className="font-handwriting text-3xl sm:text-4xl text-[#2F5D3A] tracking-wide"
+            >
               Made by hand, with love.
-            </p>
+            </motion.p>
 
-            <p className="text-base sm:text-lg text-[#2B1D0E]/80 max-w-2xl mx-auto leading-relaxed">
+            <motion.p
+              variants={fadeUp}
+              initial="hidden"
+              animate="visible"
+              custom={5}
+              className="text-base sm:text-lg text-[#2B1D0E]/80 max-w-2xl mx-auto leading-relaxed"
+            >
               Elvia Herbals is dedicated to pure, handmade herbal oils prepared in small batches in Kerala using pure virgin coconut oil and fresh neem.
-            </p>
+            </motion.p>
           </div>
         </section>
 
-        {/* 2. Our Story: Neutral, Allowed Facts Only */}
+        {/* 2. Alternating Story Blocks with clipRevealLeft & clipRevealRight */}
         <section className="py-12 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center mb-20">
+          {/* Story Block 1 */}
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center mb-24">
             <div className="space-y-5">
               <span className="text-xs font-bold uppercase tracking-widest text-[#C9973A]">
                 Our Focus
@@ -112,31 +158,44 @@ export default function AboutPage() {
               </p>
             </div>
 
-            <div className="relative aspect-4/3 rounded-3xl overflow-hidden glass-panel border border-[#C9973A]/30 p-4 shadow-botanical">
+            <motion.div
+              variants={clipRevealRight}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true }}
+              className="relative aspect-4/3 rounded-3xl overflow-hidden glass-panel border border-[#C9973A]/30 p-4 shadow-botanical"
+            >
               <div className="relative w-full h-full rounded-2xl overflow-hidden">
                 <Image
                   src="/images/product-main.jpg"
                   alt="Handmade in Kerala"
                   fill
-                  sizes="600px"
+                  sizes="(max-width: 1024px) 100vw, 600px"
                   className="object-cover"
                 />
               </div>
-            </div>
+            </motion.div>
           </div>
 
+          {/* Story Block 2 */}
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-            <div className="relative aspect-4/3 rounded-3xl overflow-hidden glass-panel border border-[#C9973A]/30 p-4 shadow-botanical order-2 lg:order-1">
+            <motion.div
+              variants={clipRevealLeft}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true }}
+              className="relative aspect-4/3 rounded-3xl overflow-hidden glass-panel border border-[#C9973A]/30 p-4 shadow-botanical order-2 lg:order-1"
+            >
               <div className="relative w-full h-full rounded-2xl overflow-hidden">
                 <Image
                   src="/images/product-1.jpg"
                   alt="Small Batches"
                   fill
-                  sizes="600px"
+                  sizes="(max-width: 1024px) 100vw, 600px"
                   className="object-cover"
                 />
               </div>
-            </div>
+            </motion.div>
 
             <div className="space-y-5 order-1 lg:order-2">
               <span className="text-xs font-bold uppercase tracking-widest text-[#4C8C4A]">
@@ -162,9 +221,10 @@ export default function AboutPage() {
           </div>
         </section>
 
-        {/* 3. Our Promise: Counters */}
-        <section className="py-16 bg-[#2F5D3A] text-[#FDF6EC]">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        {/* 3. Our Promise: Dark Section Counters */}
+        <section className="py-20 bg-[#162F1D] text-[#FDF6EC] my-12 relative overflow-hidden">
+          <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(47,93,58,0.5)_0%,transparent_70%)] pointer-events-none" />
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
             <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
               {[
                 { number: '100%', label: 'Natural Ingredients', sub: 'Virgin coconut oil & neem' },
@@ -172,7 +232,15 @@ export default function AboutPage() {
                 { number: 'Small', label: 'Batches', sub: 'Handmade fresh' },
                 { number: 'Kerala', label: 'Made in India', sub: 'Delivery across India' },
               ].map((stat, idx) => (
-                <div key={idx} className="space-y-2">
+                <motion.div
+                  key={idx}
+                  variants={fadeUp}
+                  initial="hidden"
+                  whileInView="visible"
+                  viewport={{ once: true }}
+                  custom={idx}
+                  className="space-y-2 p-4 rounded-2xl bg-[#E8EFE3]/5 border border-[#C9973A]/20"
+                >
                   <div className="font-serif text-3xl sm:text-5xl font-bold text-[#E0B35C]">
                     {stat.number}
                   </div>
@@ -180,7 +248,7 @@ export default function AboutPage() {
                     {stat.label}
                   </div>
                   <div className="text-xs text-[#E8EFE3]/70">{stat.sub}</div>
-                </div>
+                </motion.div>
               ))}
             </div>
           </div>
@@ -205,7 +273,7 @@ export default function AboutPage() {
                   idx % 2 === 0 ? 'sm:flex-row-reverse' : ''
                 }`}
               >
-                <div className="w-8 h-8 rounded-full bg-[#C9973A] border-4 border-[#FDF6EC] shadow-md z-10 flex items-center justify-center text-white text-xs font-bold flex-shrink-0 ml-1 sm:ml-0 sm:absolute sm:left-1/2 sm:-translate-x-1/2">
+                <div className="w-8 h-8 rounded-full bg-[#C9973A] border-4 border-[#FDF6EC] shadow-md z-10 flex items-center justify-center text-white text-xs font-bold shrink-0 ml-1 sm:ml-0 sm:absolute sm:left-1/2 sm:-translate-x-1/2">
                   {idx + 1}
                 </div>
 
@@ -225,7 +293,7 @@ export default function AboutPage() {
           </div>
         </section>
 
-        {/* 5. Values Cards: Interactive Flip */}
+        {/* 5. Values Cards: Interactive 3D Flip */}
         <section className="py-20 bg-[#F7EFE2]/60">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center max-w-2xl mx-auto mb-16">
@@ -244,7 +312,7 @@ export default function AboutPage() {
                   <div
                     key={val.id}
                     onClick={() => setFlippedCard(isFlipped ? null : val.id)}
-                    className="cursor-pointer h-60 rounded-3xl glass-panel border border-[#C9973A]/30 p-6 flex flex-col justify-between shadow-botanical hover:shadow-botanical-lg transition-all duration-300 relative group"
+                    className="cursor-pointer h-64 rounded-3xl glass-panel border border-[#C9973A]/30 p-6 flex flex-col justify-between shadow-botanical hover:shadow-botanical-lg transition-all duration-300 relative group"
                   >
                     {!isFlipped ? (
                       <div>
@@ -255,7 +323,7 @@ export default function AboutPage() {
                         <p className="text-xs sm:text-sm text-[#2B1D0E]/75">
                           {val.frontDesc}
                         </p>
-                        <span className="text-[10px] text-[#C9973A] font-semibold mt-3 block">
+                        <span className="text-[10px] text-[#C9973A] font-semibold mt-4 block">
                           Tap to view details ↻
                         </span>
                       </div>
