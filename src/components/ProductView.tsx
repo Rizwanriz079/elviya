@@ -1,53 +1,102 @@
-"use client";
+'use client';
 
-import { useState, useEffect } from "react";
-import Image from "next/image";
-import Link from "next/link";
-import { useRouter } from "next/navigation";
-import { Sparkles, Heart, Shield, Leaf, Check, Star, ChevronDown, ChevronUp, Package, Truck, Clock, MapPin } from "lucide-react";
-import WhatsAppButton from "@/components/WhatsAppButton";
-import ProductShowcase from "@/components/ProductShowcase";
-import { PRODUCTS, TESTIMONIALS, DELIVERY_ZONES, deliveryFor, orderMessage, type DeliveryZone } from "@/lib/constants";
+import { useState, useEffect } from 'react';
+import Image from 'next/image';
+import Link from 'next/link';
+import { useRouter } from 'next/navigation';
+import { motion, AnimatePresence } from 'framer-motion';
+import {
+  Sparkles,
+  Heart,
+  Shield,
+  Leaf,
+  Check,
+  Star,
+  ChevronDown,
+  Truck,
+  Clock,
+  MapPin,
+  ChevronRight,
+  ShieldCheck,
+  AlertCircle,
+  Bell,
+} from 'lucide-react';
+import {
+  PRODUCTS,
+  DELIVERY_ZONES,
+  CatalogProduct,
+  DeliveryZone,
+  BRAND,
+  getWhatsAppOrderUrl,
+} from '@/lib/constants';
 
-/** Each product has its own URL; Neem Oil (the main product) lives at /product. */
 export function productUrl(id: string) {
-  return id === "neem-oil" ? "/product" : `/product/${id}`;
+  return id === 'neem-oil' ? '/product' : `/product/${id}`;
 }
-
-const BENEFIT_ICONS = [
-  <Sparkles key="s" className="w-8 h-8" />,
-  <Heart key="h" className="w-8 h-8" />,
-  <Shield key="sh" className="w-8 h-8" />,
-  <Leaf key="l" className="w-8 h-8" />,
-];
 
 export default function ProductView({ productId }: { productId: string }) {
   const router = useRouter();
-  const [openFaq, setOpenFaq] = useState<number | null>(null);
-  const [zone, setZone] = useState<DeliveryZone>("kerala");
+  const product: CatalogProduct = PRODUCTS.find((p) => p.id === productId) ?? PRODUCTS[0];
 
-  // Old links like /product?item=almond-oil move to the product's own page
+  const [selectedImage, setSelectedImage] = useState(product.gallery[0] || product.image);
+  const [selectedZone, setSelectedZone] = useState<DeliveryZone>('kerala');
+  const [openAccordion, setOpenAccordion] = useState<string | null>('desc');
+  const [isZoomed, setIsZoomed] = useState(false);
+
+  // Sync selected image when product changes
   useEffect(() => {
-    const item = new URLSearchParams(window.location.search).get("item");
-    if (item && item !== productId && PRODUCTS.some((p) => p.id === item)) router.replace(productUrl(item));
-  }, [productId, router]);
+    setSelectedImage(product.gallery[0] || product.image);
+  }, [product]);
 
-  const product = PRODUCTS.find((p) => p.id === productId) ?? PRODUCTS[0];
-  const charge = deliveryFor(product, zone);
-  const total = charge === null ? null : product.price + charge;
-  const freeShipping = product.deliveryCharge === 0;
-  const faqs = product.faqs;
+  const deliveryCharge =
+    selectedZone === 'kerala'
+      ? product.deliveryChargeKerala
+      : product.deliveryChargeRestOfIndia;
+  const totalPrice = product.price + deliveryCharge;
+  const zoneLabel = selectedZone === 'kerala' ? 'Kerala' : 'Rest of India';
+
+  const orderUrl = getWhatsAppOrderUrl(product, selectedZone);
+
+  const toggleAccordion = (id: string) => {
+    setOpenAccordion(openAccordion === id ? null : id);
+  };
+
+  const otherProducts = PRODUCTS.filter((p) => p.id !== product.id);
 
   return (
-    <div className="min-h-screen bg-[#FFF5E6] overflow-x-clip">
-      {/* Product Selector */}
-      <section className="py-8 bg-white border-b border-[#F5E6D3]">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center gap-3 mb-4">
-            <Package className="w-5 h-5 text-[#D9A441]" />
-            <h2 className="text-lg font-bold text-[#2D1F0E]">Our Products</h2>
+    <div className="min-h-screen pb-24">
+      {/* 1. Breadcrumb & Animated Leaf Banner */}
+      <div className="bg-[#E8EFE3]/60 border-b border-[#C9973A]/20 py-3.5">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between text-xs sm:text-sm text-[#2B1D0E]/80">
+          <div className="flex items-center gap-2">
+            <Link href="/" className="hover:text-[#2F5D3A] transition-colors">
+              Home
+            </Link>
+            <ChevronRight className="w-3.5 h-3.5 text-[#C9973A]" />
+            <Link href="/product" className="hover:text-[#2F5D3A] transition-colors">
+              Products
+            </Link>
+            <ChevronRight className="w-3.5 h-3.5 text-[#C9973A]" />
+            <span className="font-semibold text-[#2F5D3A]">{product.name}</span>
           </div>
-          <div className="flex gap-4 overflow-x-auto pb-2">
+
+          <div className="hidden sm:flex items-center gap-1.5 text-xs text-[#2F5D3A] font-medium">
+            <Leaf className="w-3.5 h-3.5 text-[#4C8C4A] animate-pulse" />
+            <span>Pure Kerala Botanical Formulation</span>
+          </div>
+        </div>
+      </div>
+
+      {/* 2. Product Selector Cards */}
+      <div className="py-6 bg-[#FDF6EC] border-b border-[#C9973A]/15">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex items-center gap-3 mb-3">
+            <Sparkles className="w-4 h-4 text-[#C9973A]" />
+            <span className="text-xs font-bold uppercase tracking-wider text-[#2F5D3A]">
+              Select Product Formulation
+            </span>
+          </div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 max-w-2xl">
             {PRODUCTS.map((p) => {
               const isSelected = p.id === product.id;
               return (
@@ -55,286 +104,448 @@ export default function ProductView({ productId }: { productId: string }) {
                   key={p.id}
                   href={productUrl(p.id)}
                   scroll={false}
-                  aria-current={isSelected ? "page" : undefined}
-                  className={`flex-shrink-0 flex items-center gap-3 p-3 rounded-xl border-2 transition-all ${
+                  className={`relative p-3.5 rounded-2xl flex items-center gap-3.5 transition-all duration-300 border ${
                     isSelected
-                      ? "border-[#D9A441] bg-[#D9A441]/10"
-                      : "border-[#F5E6D3] hover:border-[#D9A441]/50 bg-white"
+                      ? 'border-[#2F5D3A] bg-[#E8EFE3]/80 shadow-botanical'
+                      : 'border-[#C9973A]/25 bg-[#FDF6EC]/60 hover:bg-[#FDF6EC]'
                   }`}
                 >
-                  <div className="w-16 h-16 rounded-lg overflow-hidden bg-[#F5E6D3] flex-shrink-0">
-                    <Image src={p.image} alt={p.name} width={64} height={64} className={`object-cover w-full h-full ${p.inStock ? "" : "grayscale opacity-70"}`} />
-                  </div>
-                  <div className="text-left">
-                    <p className={`font-bold text-sm ${isSelected ? "text-[#D9A441]" : "text-[#2D1F0E]"}`}>{p.name} <span className="font-normal text-[#8B7355]">{p.size}</span></p>
-                    {p.inStock ? (
-                      <p className="text-xs text-[#8B7355]">Rs.{p.price}</p>
-                    ) : (
-                      <p className="text-xs font-semibold text-red-700">Out of stock</p>
-                    )}
-                  </div>
                   {isSelected && (
-                    <div className="w-5 h-5 rounded-full bg-[#D9A441] flex items-center justify-center ml-2">
-                      <Check className="w-3 h-3 text-white" />
-                    </div>
+                    <motion.div
+                      layoutId="product-selector-pill"
+                      className="absolute inset-0 rounded-2xl border-2 border-[#2F5D3A] pointer-events-none"
+                      transition={{ type: 'spring', stiffness: 400, damping: 30 }}
+                    />
                   )}
+
+                  <div className="relative w-14 h-14 rounded-xl overflow-hidden bg-white/70 flex-shrink-0 border border-[#C9973A]/20">
+                    <Image
+                      src={p.image}
+                      alt={p.name}
+                      fill
+                      sizes="56px"
+                      className={`object-contain p-1 ${p.inStock ? '' : 'grayscale opacity-75'}`}
+                    />
+                  </div>
+
+                  <div className="flex-1 min-w-0">
+                    <div className="flex items-center justify-between">
+                      <p className="font-serif font-bold text-sm text-[#2B1D0E] truncate">
+                        {p.name}
+                      </p>
+                      <span className="text-xs text-[#C9973A] font-semibold">{p.size}</span>
+                    </div>
+                    <div className="flex items-center justify-between mt-1">
+                      <span className="text-xs font-bold text-[#2F5D3A]">₹{p.price}</span>
+                      {p.inStock ? (
+                        <span className="text-[10px] font-bold text-[#4C8C4A] bg-[#E8EFE3] px-2 py-0.5 rounded-full">
+                          In Stock
+                        </span>
+                      ) : (
+                        <span className="text-[10px] font-bold text-amber-700 bg-amber-50 px-2 py-0.5 rounded-full">
+                          Restocking Soon
+                        </span>
+                      )}
+                    </div>
+                  </div>
                 </Link>
               );
             })}
           </div>
         </div>
-      </section>
+      </div>
 
-      <section className="py-16">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid lg:grid-cols-2 gap-12 items-start">
-            <div className="lg:sticky lg:top-24 lg:self-start">
-              {product.id === "neem-oil" ? (
-                <ProductShowcase
-                  image={product.image}
-                  alt={`Elvia Herbals ${product.name} ${product.size}`}
-                  badgeTop={product.badges[0]}
-                  badgeBottom={product.badges[1]}
+      {/* 3. Main Product Details View */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
+          {/* Left Column: Image Gallery with Zoom */}
+          <div className="lg:col-span-6 space-y-4">
+            {/* Primary Main Image Box */}
+            <div
+              onMouseEnter={() => setIsZoomed(true)}
+              onMouseLeave={() => setIsZoomed(false)}
+              className="relative w-full aspect-square rounded-3xl overflow-hidden glass-panel border border-[#C9973A]/30 flex items-center justify-center p-8 cursor-zoom-in"
+            >
+              {/* Badges */}
+              <div className="absolute top-4 left-4 z-10 flex flex-col gap-2">
+                {product.inStock ? (
+                  <span className="px-3.5 py-1.5 rounded-full bg-[#E8EFE3] text-[#2F5D3A] text-xs font-bold uppercase tracking-wider border border-[#4C8C4A]/30">
+                    100% Homemade
+                  </span>
+                ) : (
+                  <span className="px-3.5 py-1.5 rounded-full bg-amber-100 text-amber-900 text-xs font-bold uppercase tracking-wider border border-amber-300">
+                    Out of Stock
+                  </span>
+                )}
+                <span className="px-3 py-1 rounded-full bg-[#FDF6EC]/90 text-[#C9973A] text-xs font-bold tracking-wide border border-[#C9973A]/30 backdrop-blur-sm">
+                  {product.size} Glass Bottle
+                </span>
+              </div>
+
+              {/* Main Image */}
+              <div className="relative w-full h-full max-w-[340px] max-h-[440px]">
+                <Image
+                  src={selectedImage}
+                  alt={`${product.name} ${product.size}`}
+                  fill
+                  sizes="(max-width: 1024px) 90vw, 500px"
+                  className={`object-contain transition-transform duration-500 ${
+                    isZoomed ? 'scale-110' : 'scale-100'
+                  } ${product.inStock ? '' : 'grayscale opacity-80'}`}
                   priority
                 />
-              ) : (
-                /* Static (non-animated) display for other products */
-                <div className="relative flex items-center justify-center min-h-[450px]">
-                  <div className="absolute w-[340px] h-[340px] sm:w-[400px] sm:h-[400px] rounded-full bg-gradient-to-br from-[#F5E6D3] via-[#EDD9B5] to-[#E5C99A]" />
-                  <div className="relative z-10 w-[280px] h-[280px] sm:w-[330px] sm:h-[330px] rounded-full overflow-hidden border-8 border-white/70 shadow-xl">
-                    <Image
-                      src={product.image}
-                      alt={`${product.name} ${product.size}`}
-                      fill
-                      sizes="330px"
-                      className={`object-cover ${product.inStock ? "" : "grayscale opacity-80"}`}
-                      priority
-                    />
-                  </div>
-                  {!product.inStock && (
-                    <div className="absolute top-6 right-6 z-20 bg-red-700 text-white px-4 py-2 rounded-full text-sm font-bold shadow-lg">
-                      Out of Stock
-                    </div>
-                  )}
-                </div>
-              )}
-            </div>
-
-            <div className="space-y-8">
-              <div>
-                {product.inStock ? (
-                  <div className="inline-flex items-center gap-2 bg-[#3D6A46]/10 text-[#3D6A46] px-3 py-1 rounded-full text-sm font-medium mb-4">
-                    <Check className="w-4 h-4" /> In Stock
-                  </div>
-                ) : (
-                  <div className="inline-flex items-center gap-2 bg-red-50 text-red-700 px-3 py-1 rounded-full text-sm font-medium mb-4">
-                    <Clock className="w-4 h-4" /> Out of Stock
-                  </div>
-                )}
-                <h1 className="text-4xl font-bold text-[#2D1F0E] mb-2">{product.name} <span className="text-2xl font-semibold text-[#8B7355]">{product.size}</span></h1>
-                <div className="flex items-center gap-2 mb-4">
-                  <div className="flex gap-0.5">
-                    {[...Array(5)].map((_, i) => (<Star key={i} className="w-5 h-5 fill-[#D9A441] text-[#D9A441]" />))}
-                  </div>
-                </div>
-                <p className="text-lg text-[#8B7355]">{product.description}</p>
-              </div>
-
-              <div className="flex items-center gap-3">
-                <h3 className="font-bold text-[#2D1F0E] text-xl">Size:</h3>
-                <div className="inline-flex items-center gap-2 px-5 py-2 rounded-xl border-2 border-[#D9A441] bg-[#D9A441]/10">
-                  <span className="font-bold text-[#2D1F0E] text-lg">{product.size}</span>
-                </div>
-              </div>
-
-              {product.inStock ? (
-                <>
-                  {/* Delivery location */}
-                  <div>
-                    <p className="flex items-center gap-2 font-bold text-[#2D1F0E] mb-3"><MapPin className="w-5 h-5 text-[#D9A441]" /> Deliver to</p>
-                    <div className="flex flex-wrap gap-2" role="radiogroup" aria-label="Delivery location">
-                      {DELIVERY_ZONES.map((z) => (
-                        <button
-                          key={z.id}
-                          type="button"
-                          role="radio"
-                          aria-checked={zone === z.id}
-                          onClick={() => setZone(z.id)}
-                          className={`px-4 py-2 rounded-full border-2 text-sm font-semibold transition-colors ${
-                            zone === z.id
-                              ? "border-[#3D6A46] bg-[#3D6A46] text-white"
-                              : "border-[#F5E6D3] bg-white text-[#8B7355] hover:border-[#3D6A46]/50"
-                          }`}
-                        >
-                          {z.label}
-                        </button>
-                      ))}
-                    </div>
-                  </div>
-
-                  {/* Price breakdown */}
-                  <div className="bg-gradient-to-r from-[#D9A441]/10 to-[#C4932B]/10 p-6 rounded-2xl border-2 border-[#D9A441]/30 space-y-3">
-                    <div className="flex items-center justify-between">
-                      <span className="text-[#8B7355]">Price ({product.size})</span>
-                      <span className="text-right">
-                        {product.originalPrice && (
-                          <span className="text-[#8B7355] line-through mr-2">Rs.{product.originalPrice}</span>
-                        )}
-                        <span className="text-3xl font-bold text-[#D9A441]">Rs.{product.price}</span>
-                      </span>
-                    </div>
-                    <div className="flex items-center justify-between gap-4 text-[#8B7355]">
-                      <span className="inline-flex items-center gap-2"><Truck className="w-4 h-4 flex-shrink-0" /> Delivery ({DELIVERY_ZONES.find((z) => z.id === zone)!.short})</span>
-                      {charge === null ? (
-                        <span className="font-semibold text-right">Based on location</span>
-                      ) : charge === 0 ? (
-                        <span className="font-bold text-[#3D6A46]">FREE</span>
-                      ) : (
-                        <span className="font-semibold">+ Rs.{charge}</span>
-                      )}
-                    </div>
-                    <div className="flex items-center justify-between pt-3 border-t border-[#D9A441]/20">
-                      <span className="font-bold text-[#2D1F0E]">Total</span>
-                      {total === null ? (
-                        <span className="text-lg font-bold text-[#2D1F0E] text-right">Rs.{product.price} + delivery</span>
-                      ) : (
-                        <span className="text-2xl font-bold text-[#2D1F0E]">Rs.{total}</span>
-                      )}
-                    </div>
-                    {charge === null && (
-                      <p className="text-sm text-[#8B7355]">
-                        Delivery charge depends on your city / pincode. We&apos;ll confirm it on WhatsApp before you pay.
-                      </p>
-                    )}
-                  </div>
-
-                  <WhatsAppButton message={orderMessage(product, zone)} className="w-full py-4 text-lg">
-                    {total === null
-                      ? `Order ${product.size} – get delivery quote`
-                      : `Order ${product.size} for Rs.${total} ${charge === 0 ? "(free shipping)" : "(incl. delivery)"}`}
-                  </WhatsAppButton>
-                </>
-              ) : (
-                <>
-                  <div className="p-6 rounded-2xl border-2 border-red-200 bg-red-50">
-                    <p className="text-xl font-bold text-red-700 mb-1">Out of Stock</p>
-                    {freeShipping && (
-                      <p className="inline-flex items-center gap-2 text-[#3D6A46] font-semibold mb-2"><Truck className="w-4 h-4" /> Free shipping when it&apos;s back</p>
-                    )}
-                    <p className="text-[#8B7355]">We will restock soon. Message us on WhatsApp and we&apos;ll let you know when it&apos;s back. We deliver across India.</p>
-                  </div>
-                  <WhatsAppButton
-                    message={`Hi Elvia Herbals! Please let me know when ${product.name} (${product.size}) is back in stock.`}
-                    className="w-full py-4 text-lg"
-                  >
-                    Notify me when back in stock
-                  </WhatsAppButton>
-                </>
-              )}
-
-              <div className="grid grid-cols-2 gap-4">
-                <div className="flex items-center gap-3 p-4 bg-white rounded-xl">
-                  <Shield className="w-8 h-8 text-[#3D6A46]" />
-                  <div>
-                    <p className="font-bold text-[#2D1F0E]">100% Pure</p>
-                    <p className="text-sm text-[#8B7355]">No chemicals</p>
-                  </div>
-                </div>
-                <div className="flex items-center gap-3 p-4 bg-white rounded-xl">
-                  <Leaf className="w-8 h-8 text-[#3D6A46]" />
-                  <div>
-                    <p className="font-bold text-[#2D1F0E]">Handmade</p>
-                    <p className="text-sm text-[#8B7355]">Traditional method</p>
-                  </div>
-                </div>
-              </div>
-
-              <div className="space-y-4">
-                <h3 className="text-xl font-bold text-[#2D1F0E]">Ingredients</h3>
-                <div className="flex flex-wrap gap-2">
-                  {product.ingredients.map((ingredient, index) => (
-                    <span key={index} className="px-4 py-2 bg-white rounded-full text-[#8B7355] text-sm">
-                      {ingredient}
-                    </span>
-                  ))}
-                </div>
-              </div>
-
-              <div className="space-y-4">
-                <h3 className="text-xl font-bold text-[#2D1F0E]">How to Use</h3>
-                <ul className="space-y-3">
-                  {product.howToUse.map((step, index) => (
-                    <li key={index} className="flex gap-3">
-                      <span className="w-6 h-6 rounded-full bg-[#D9A441] text-white flex items-center justify-center text-sm flex-shrink-0">{index + 1}</span>
-                      <span className="text-[#8B7355]">{step}</span>
-                    </li>
-                  ))}
-                </ul>
               </div>
             </div>
-          </div>
-        </div>
-      </section>
 
-      <section className="py-16 bg-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h2 className="text-3xl font-bold text-[#2D1F0E] text-center mb-12">Benefits</h2>
-          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-8">
-            {product.benefits.map((benefit, index) => (
-              <div key={index} className="text-center p-6">
-                <div className="w-16 h-16 mx-auto mb-4 rounded-full gradient-gold flex items-center justify-center text-white">{BENEFIT_ICONS[index % BENEFIT_ICONS.length]}</div>
-                <h3 className="font-bold text-[#2D1F0E] mb-2">{benefit.title}</h3>
-                <p className="text-[#8B7355] text-sm">{benefit.desc}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      <section className="py-16 bg-[#F5E6D3]">
-        <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h2 className="text-3xl font-bold text-[#2D1F0E] text-center mb-12">FAQs</h2>
-          <div className="space-y-4">
-            {faqs.map((faq, index) => (
-              <div key={index} className="bg-white rounded-xl overflow-hidden">
+            {/* Thumbnail Switcher */}
+            <div className="grid grid-cols-4 gap-3">
+              {product.gallery.map((img, idx) => (
                 <button
-                  onClick={() => setOpenFaq(openFaq === index ? null : index)}
-                  className="w-full px-6 py-4 flex items-center justify-between text-left"
+                  key={idx}
+                  onClick={() => setSelectedImage(img)}
+                  className={`relative aspect-square rounded-2xl overflow-hidden border-2 transition-all duration-200 bg-[#FDF6EC] p-1.5 ${
+                    selectedImage === img
+                      ? 'border-[#2F5D3A] shadow-md scale-105'
+                      : 'border-[#C9973A]/25 opacity-70 hover:opacity-100'
+                  }`}
                 >
-                  <span className="font-bold text-[#2D1F0E]">{faq.q}</span>
-                  {openFaq === index ? <ChevronUp className="w-5 h-5 text-[#D9A441]" /> : <ChevronDown className="w-5 h-5 text-[#8B7355]" />}
+                  <Image
+                    src={img}
+                    alt={`Thumbnail ${idx + 1}`}
+                    fill
+                    sizes="100px"
+                    className="object-contain"
+                  />
                 </button>
-                {openFaq === index && (
-                  <div className="px-6 pb-4 text-[#8B7355]">{faq.a}</div>
-                )}
-              </div>
-            ))}
+              ))}
+            </div>
           </div>
-        </div>
-      </section>
 
-      {/* Existing reviews are for Almond Oil, so only show them there */}
-      {product.id === "almond-oil" && (
-      <section className="py-16 bg-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h2 className="text-3xl font-bold text-[#2D1F0E] text-center mb-12">Customer Reviews</h2>
-          <div className="grid md:grid-cols-3 gap-8">
-            {TESTIMONIALS.map((t) => (
-              <div key={t.id} className="card p-6">
-                <div className="flex gap-1 mb-3">
-                  {[...Array(t.rating)].map((_, i) => (<Star key={i} className="w-4 h-4 fill-[#D9A441] text-[#D9A441]" />))}
+          {/* Right Column: Title, Delivery Price Calculator & WhatsApp Action */}
+          <div className="lg:col-span-6 space-y-6">
+            <div>
+              {/* Rating */}
+              <div className="flex items-center gap-1.5 mb-2">
+                <div className="flex text-[#C9973A]">
+                  {[...Array(5)].map((_, i) => (
+                    <Star key={i} className="w-4 h-4 fill-current" />
+                  ))}
                 </div>
-                <p className="text-[#8B7355] mb-4 italic">{t.text}</p>
-                <div>
-                  <p className="font-bold text-[#2D1F0E]">{t.name}</p>
-                  <p className="text-sm text-[#8B7355]">{t.location}</p>
+                <span className="text-xs font-bold text-[#2F5D3A]">
+                  5.0 (Handcrafted in Kerala)
+                </span>
+              </div>
+
+              <h1 className="font-serif text-3xl sm:text-4xl lg:text-5xl font-bold text-[#2B1D0E] leading-tight">
+                {product.name}
+              </h1>
+
+              <div className="flex items-center gap-3 mt-2">
+                <span className="px-3 py-1 rounded-full bg-[#E8EFE3] text-[#2F5D3A] text-xs font-bold uppercase tracking-wider">
+                  {product.size}
+                </span>
+                <span className="text-xs text-[#2B1D0E]/70 font-script text-base">
+                  Pure virgin coconut oil & garden neem
+                </span>
+              </div>
+            </div>
+
+            <p className="text-sm sm:text-base text-[#2B1D0E]/85 leading-relaxed">
+              {product.description}
+            </p>
+
+            {/* Price & Delivery Area Interactive Toggle */}
+            <div className="glass-panel p-6 rounded-3xl border border-[#C9973A]/30 space-y-5 shadow-botanical">
+              {/* Delivery Zone Toggle */}
+              <div>
+                <label className="block text-xs font-bold uppercase tracking-wider text-[#2F5D3A] mb-2.5">
+                  Deliver To:
+                </label>
+                <div className="grid grid-cols-2 gap-3">
+                  {DELIVERY_ZONES.map((z) => {
+                    const isSelected = selectedZone === z.id;
+                    return (
+                      <button
+                        key={z.id}
+                        type="button"
+                        onClick={() => setSelectedZone(z.id)}
+                        className={`py-3 px-4 rounded-2xl text-left border text-xs sm:text-sm font-semibold transition-all duration-200 flex flex-col justify-between ${
+                          isSelected
+                            ? 'bg-[#2F5D3A] text-[#FDF6EC] border-[#2F5D3A] shadow-md'
+                            : 'bg-[#FDF6EC]/80 text-[#2B1D0E] border-[#C9973A]/30 hover:bg-[#FDF6EC]'
+                        }`}
+                      >
+                        <div className="flex items-center justify-between w-full">
+                          <span>{z.label}</span>
+                          {isSelected && <Check className="w-4 h-4 text-[#E0B35C]" />}
+                        </div>
+                        <span className={`text-[11px] mt-1 ${isSelected ? 'text-[#E0B35C]' : 'text-[#2B1D0E]/60'}`}>
+                          {z.id === 'kerala' ? '+₹50 Delivery' : '+₹90 Standard Delivery'}
+                        </span>
+                      </button>
+                    );
+                  })}
                 </div>
               </div>
-            ))}
+
+              {/* Price Breakdown Calculation */}
+              <div className="p-4 rounded-2xl bg-[#E8EFE3]/70 border border-[#4C8C4A]/25 space-y-2">
+                <div className="flex justify-between text-xs sm:text-sm text-[#2B1D0E]/80">
+                  <span>Product Price ({product.size}):</span>
+                  <span className="font-semibold text-[#2B1D0E]">₹{product.price}</span>
+                </div>
+                <div className="flex justify-between text-xs sm:text-sm text-[#2B1D0E]/80">
+                  <span>Delivery to {zoneLabel}:</span>
+                  <span className="font-semibold text-[#2F5D3A]">+₹{deliveryCharge}</span>
+                </div>
+                <div className="pt-2 border-t border-[#4C8C4A]/20 flex justify-between items-baseline">
+                  <span className="font-serif font-bold text-base text-[#2B1D0E]">Total Amount:</span>
+                  <div className="flex items-baseline gap-2">
+                    <motion.span
+                      key={totalPrice}
+                      initial={{ scale: 1.15, color: '#C9973A' }}
+                      animate={{ scale: 1, color: '#2F5D3A' }}
+                      transition={{ duration: 0.3 }}
+                      className="font-serif text-3xl font-bold text-[#2F5D3A]"
+                    >
+                      ₹{totalPrice}
+                    </motion.span>
+                    <span className="text-xs text-[#2B1D0E]/60">all inclusive</span>
+                  </div>
+                </div>
+              </div>
+
+              {/* Primary Order Action Button */}
+              {product.inStock ? (
+                <a
+                  href={orderUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="btn-shine w-full flex items-center justify-center gap-3 bg-[#25D366] hover:bg-[#1EBE5D] text-white py-4 rounded-2xl font-bold shadow-xl shadow-[#25D366]/30 text-base transition-all hover:scale-[1.02] active:scale-95 text-center"
+                >
+                  <svg className="w-5 h-5 fill-current" viewBox="0 0 24 24">
+                    <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+                  </svg>
+                  <span>Order {product.size} for ₹{totalPrice} (incl. delivery)</span>
+                </a>
+              ) : (
+                <div className="space-y-3">
+                  <a
+                    href={getWhatsAppOrderUrl(product)}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="btn-shine w-full flex items-center justify-center gap-3 bg-[#25D366] hover:bg-[#1EBE5D] text-white py-4 rounded-2xl font-bold shadow-lg shadow-[#25D366]/25 text-base"
+                  >
+                    <Bell className="w-5 h-5 fill-current" />
+                    <span>Notify Me on WhatsApp When Available</span>
+                  </a>
+                  <button
+                    disabled
+                    className="w-full py-3 rounded-2xl bg-gray-200 text-gray-500 font-semibold cursor-not-allowed text-sm"
+                  >
+                    Temporarily Out of Stock
+                  </button>
+                </div>
+              )}
+            </div>
+
+            {/* Trust Row */}
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 pt-2">
+              {[
+                { icon: '🌿', label: 'Zero Chemicals' },
+                { icon: '🥥', label: 'Virgin Coconut Oil' },
+                { icon: '🤲', label: 'Made with Love' },
+                { icon: '🇮🇳', label: 'Delivery Across India' },
+              ].map((item, idx) => (
+                <div
+                  key={idx}
+                  className="p-3 rounded-2xl bg-[#E8EFE3]/50 border border-[#4C8C4A]/20 text-center"
+                >
+                  <span className="text-xl block mb-1">{item.icon}</span>
+                  <span className="text-[11px] font-bold text-[#2F5D3A] block">{item.label}</span>
+                </div>
+              ))}
+            </div>
+
+            {/* Accordions: Description, Ingredients, How to Use, Benefits, Delivery */}
+            <div className="space-y-3 pt-4">
+              {[
+                {
+                  id: 'desc',
+                  title: 'Description & Formulation',
+                  content: product.description,
+                },
+                {
+                  id: 'ingredients',
+                  title: 'Pure Ingredients',
+                  contentList: product.ingredients,
+                },
+                {
+                  id: 'howToUse',
+                  title: 'How to Use & Rituals',
+                  steps: product.howToUse,
+                },
+                {
+                  id: 'delivery',
+                  title: 'Delivery & Shipping Information',
+                  faqs: [
+                    'Within Kerala: Flat ₹50 delivery charge, delivers in 2-3 business days.',
+                    'Rest of India: Standard ₹90 delivery charge (confirmed on WhatsApp), delivers in 4-6 business days.',
+                    'Direct dispatch from Kerala with protective eco-friendly packaging.',
+                  ],
+                },
+              ].map((acc) => {
+                const isOpen = openAccordion === acc.id;
+                return (
+                  <div
+                    key={acc.id}
+                    className="rounded-2xl border border-[#C9973A]/25 overflow-hidden bg-[#FDF6EC]/80"
+                  >
+                    <button
+                      type="button"
+                      onClick={() => toggleAccordion(acc.id)}
+                      className="w-full py-4 px-6 flex items-center justify-between text-left font-serif font-bold text-base text-[#2B1D0E] hover:text-[#2F5D3A] transition-colors"
+                    >
+                      <span>{acc.title}</span>
+                      <ChevronDown
+                        className={`w-4 h-4 text-[#C9973A] transition-transform duration-300 ${
+                          isOpen ? 'rotate-180' : ''
+                        }`}
+                      />
+                    </button>
+
+                    <AnimatePresence>
+                      {isOpen && (
+                        <motion.div
+                          initial={{ height: 0, opacity: 0 }}
+                          animate={{ height: 'auto', opacity: 1 }}
+                          exit={{ height: 0, opacity: 0 }}
+                          transition={{ duration: 0.25 }}
+                          className="overflow-hidden px-6 pb-5 text-xs sm:text-sm text-[#2B1D0E]/80 space-y-2 border-t border-[#C9973A]/15 pt-3"
+                        >
+                          {acc.content && <p className="leading-relaxed">{acc.content}</p>}
+
+                          {acc.contentList && (
+                            <ul className="space-y-1.5">
+                              {acc.contentList.map((item, i) => (
+                                <li key={i} className="flex items-center gap-2">
+                                  <Check className="w-3.5 h-3.5 text-[#4C8C4A]" />
+                                  <span>{item}</span>
+                                </li>
+                              ))}
+                            </ul>
+                          )}
+
+                          {acc.steps && (
+                            <div className="space-y-2.5">
+                              {acc.steps.map((st, i) => (
+                                <div key={i} className="bg-[#FDF6EC] p-3 rounded-xl border border-[#C9973A]/15">
+                                  <p className="font-bold text-[#2F5D3A] text-xs">{st.title}</p>
+                                  <p className="text-xs text-[#2B1D0E]/75 mt-0.5">{st.instructions}</p>
+                                </div>
+                              ))}
+                            </div>
+                          )}
+
+                          {acc.faqs && (
+                            <ul className="space-y-1.5">
+                              {acc.faqs.map((f, i) => (
+                                <li key={i} className="flex items-start gap-2">
+                                  <Truck className="w-3.5 h-3.5 text-[#C9973A] flex-shrink-0 mt-0.5" />
+                                  <span>{f}</span>
+                                </li>
+                              ))}
+                            </ul>
+                          )}
+                        </motion.div>
+                      )}
+                    </AnimatePresence>
+                  </div>
+                );
+              })}
+            </div>
           </div>
         </div>
-      </section>
-      )}
+
+        {/* 4. You May Also Like Section */}
+        {otherProducts.length > 0 && (
+          <div className="mt-24 pt-12 border-t border-[#C9973A]/25">
+            <div className="flex items-center justify-between mb-8">
+              <div>
+                <span className="text-xs font-bold uppercase tracking-wider text-[#C9973A]">
+                  Artisan Herbal Care
+                </span>
+                <h3 className="font-serif text-2xl sm:text-3xl font-bold text-[#2B1D0E]">
+                  You May Also Like
+                </h3>
+              </div>
+            </div>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+              {otherProducts.map((p) => (
+                <Link
+                  key={p.id}
+                  href={productUrl(p.id)}
+                  className="glass-panel p-6 rounded-3xl border border-[#C9973A]/25 shadow-botanical hover:shadow-botanical-lg transition-all duration-300 group flex flex-col justify-between"
+                >
+                  <div>
+                    <div className="relative aspect-square w-full rounded-2xl bg-white/70 overflow-hidden mb-4 p-4">
+                      <Image
+                        src={p.image}
+                        alt={p.name}
+                        fill
+                        sizes="300px"
+                        className={`object-contain group-hover:scale-105 transition-transform duration-300 ${
+                          p.inStock ? '' : 'grayscale opacity-75'
+                        }`}
+                      />
+                    </div>
+                    <span className="text-xs font-semibold text-[#C9973A]">{p.size}</span>
+                    <h4 className="font-serif text-xl font-bold text-[#2B1D0E] group-hover:text-[#2F5D3A] transition-colors mt-0.5">
+                      {p.name}
+                    </h4>
+                    <p className="text-xs text-[#2B1D0E]/70 mt-1 line-clamp-2">
+                      {p.shortDesc}
+                    </p>
+                  </div>
+
+                  <div className="pt-4 mt-4 border-t border-[#C9973A]/15 flex items-center justify-between">
+                    <span className="font-bold text-[#2F5D3A]">₹{p.price}</span>
+                    <span className="text-xs font-semibold text-[#C9973A] flex items-center gap-1 group-hover:translate-x-1 transition-transform">
+                      <span>View Details</span>
+                      <ChevronRight className="w-3.5 h-3.5" />
+                    </span>
+                  </div>
+                </Link>
+              ))}
+            </div>
+          </div>
+        )}
+      </div>
+
+      {/* 5. Sticky Mobile Bottom Bar (Mobile Only) */}
+      <div className="md:hidden fixed bottom-0 left-0 right-0 z-40 bg-[#FDF6EC]/98 backdrop-blur-xl border-t border-[#C9973A]/30 p-3.5 shadow-2xl">
+        <div className="flex items-center justify-between gap-3 max-w-md mx-auto">
+          <div>
+            <span className="text-[10px] text-[#2B1D0E]/60 uppercase tracking-wide block">Total ({zoneLabel})</span>
+            <span className="font-serif text-xl font-bold text-[#2F5D3A]">
+              ₹{totalPrice}
+            </span>
+          </div>
+
+          <a
+            href={orderUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="btn-shine flex-1 flex items-center justify-center gap-2 bg-[#25D366] text-white py-3 px-5 rounded-full font-bold text-sm shadow-md shadow-[#25D366]/30"
+          >
+            <svg className="w-4 h-4 fill-current" viewBox="0 0 24 24">
+              <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+            </svg>
+            <span>{product.inStock ? 'Order on WhatsApp' : 'Notify on WhatsApp'}</span>
+          </a>
+        </div>
+      </div>
     </div>
   );
 }
