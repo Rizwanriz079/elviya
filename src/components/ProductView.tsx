@@ -20,6 +20,9 @@ import {
   SHOW_RATINGS,
   getWhatsAppOrderUrl,
 } from '@/lib/constants';
+import SlotRoller from '@/components/text/SlotRoller';
+import MaskLines from '@/components/text/MaskLines';
+import { drawPath } from '@/lib/motion';
 
 export function productUrl(id: string) {
   return id === 'neem-oil' ? '/product' : `/product/${id}`;
@@ -63,6 +66,32 @@ export default function ProductView({ productId }: { productId: string }) {
           <ChevronRight className="w-3.5 h-3.5 text-[#C9973A]" />
           <span className="font-semibold text-[#2F5D3A]">{product.name}</span>
         </nav>
+      </div>
+
+      {/* Botanical Header Banner with MaskLines */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-10">
+        <div className="relative rounded-3xl p-6 sm:p-8 bg-[#FDF6EC] border border-[#C9973A]/25 overflow-hidden shadow-botanical">
+          <div
+            className="absolute inset-0 bg-cover bg-center opacity-30 mix-blend-multiply pointer-events-none"
+            style={{ backgroundImage: `url('/images/bg-cream-leaves.webp')` }}
+          />
+          <div className="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-4">
+            <div>
+              <span className="text-xs uppercase tracking-[0.25em] text-[#C9973A] font-bold block mb-1">
+                Pure Homemade Herbal Oils
+              </span>
+              <MaskLines
+                lines={['Kerala Botanical Formulation', product.name]}
+                className="font-serif text-2xl sm:text-3xl font-bold text-[#2B1D0E]"
+              />
+            </div>
+            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-[#E8EFE3] border border-[#4C8C4A]/30 text-[#2F5D3A] text-xs font-semibold self-start md:self-auto">
+              <span>✦ Handmade in Kerala</span>
+              <span>•</span>
+              <span>Small Batches</span>
+            </div>
+          </div>
+        </div>
       </div>
 
       {/* 2. Product Selector Cards */}
@@ -223,7 +252,7 @@ export default function ProductView({ productId }: { productId: string }) {
               </div>
             </div>
 
-            <p className="text-sm sm:text-base text-[#2B1D0E]/85 leading-relaxed">
+            <p className="text-sm sm:text-base text-[#2B1D0E]/85 leading-relaxed font-light">
               {product.description}
             </p>
 
@@ -250,9 +279,9 @@ export default function ProductView({ productId }: { productId: string }) {
                         >
                           <div className="flex items-center justify-between w-full">
                             <span>{z.short}</span>
-                            {isSelected && <Check className="w-4 h-4 text-[#E0B35C]" />}
+                            {isSelected && <Check className="w-4 h-4 text-[#E5C07B]" />}
                           </div>
-                          <span className={`text-[11px] mt-1 ${isSelected ? 'text-[#E0B35C]' : 'text-[#2B1D0E]/60'}`}>
+                          <span className={`text-[11px] mt-1 ${isSelected ? 'text-[#E5C07B]' : 'text-[#2B1D0E]/60'}`}>
                             {z.id === 'kerala' ? '+₹50 delivery' : 'Charge confirmed on WhatsApp'}
                           </span>
                         </button>
@@ -262,7 +291,7 @@ export default function ProductView({ productId }: { productId: string }) {
                 </div>
               )}
 
-              {/* Price Calculation */}
+              {/* Price Calculation with SlotRoller */}
               {product.inStock && product.price && (
                 <div className="p-4 rounded-2xl bg-[#E8EFE3]/70 border border-[#4C8C4A]/25 space-y-2">
                   <div className="flex justify-between text-xs sm:text-sm text-[#2B1D0E]/80">
@@ -277,31 +306,19 @@ export default function ProductView({ productId }: { productId: string }) {
                   </div>
                   <div className="pt-2 border-t border-[#4C8C4A]/20 flex justify-between items-baseline">
                     <span className="font-serif font-bold text-base text-[#2B1D0E]">Total:</span>
-                    <AnimatePresence mode="wait">
+                    <div>
                       {isKerala ? (
-                        <motion.span
-                          key="kerala-total"
-                          initial={{ opacity: 0, y: -6 }}
-                          animate={{ opacity: 1, y: 0 }}
-                          exit={{ opacity: 0, y: 6 }}
-                          transition={{ duration: 0.2 }}
-                          className="font-serif text-3xl font-bold text-[#2F5D3A] inline-block"
-                        >
-                          ₹{totalPrice}
-                        </motion.span>
+                        <SlotRoller
+                          value={totalPrice ?? 319}
+                          prefix="₹"
+                          className="font-serif text-3xl font-bold text-[#2F5D3A]"
+                        />
                       ) : (
-                        <motion.span
-                          key="roi-total"
-                          initial={{ opacity: 0, y: -6 }}
-                          animate={{ opacity: 1, y: 0 }}
-                          exit={{ opacity: 0, y: 6 }}
-                          transition={{ duration: 0.2 }}
-                          className="font-serif text-2xl font-bold text-[#2F5D3A] inline-block"
-                        >
-                          ₹{product.price} + delivery
-                        </motion.span>
+                        <span className="font-serif text-2xl font-bold text-[#2F5D3A] inline-block">
+                          ₹{product.price} <span className="text-sm font-normal text-[#2B1D0E]/70">+ delivery</span>
+                        </span>
                       )}
-                    </AnimatePresence>
+                    </div>
                   </div>
                 </div>
               )}
@@ -346,19 +363,47 @@ export default function ProductView({ productId }: { productId: string }) {
               )}
             </div>
 
-            {/* Trust Row */}
+            {/* Trust Row with Animated SVG Icons */}
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 pt-2">
               {[
-                { icon: '🌿', label: 'No Chemicals' },
-                { icon: '🥥', label: 'Virgin Coconut Oil' },
-                { icon: '🤲', label: 'Handmade in Kerala' },
-                { icon: '🇮🇳', label: 'Delivery Across India' },
+                {
+                  label: 'No Chemicals',
+                  svg: (
+                    <svg className="w-5 h-5 text-[#4C8C4A]" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                      <motion.path variants={drawPath} initial="hidden" whileInView="visible" viewport={{ once: true }} d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+                    </svg>
+                  ),
+                },
+                {
+                  label: 'Virgin Coconut Oil',
+                  svg: (
+                    <svg className="w-5 h-5 text-[#C9973A]" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                      <motion.path variants={drawPath} initial="hidden" whileInView="visible" viewport={{ once: true }} d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z" />
+                    </svg>
+                  ),
+                },
+                {
+                  label: 'Handmade in Kerala',
+                  svg: (
+                    <svg className="w-5 h-5 text-[#2F5D3A]" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                      <motion.path variants={drawPath} initial="hidden" whileInView="visible" viewport={{ once: true }} d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10Z" />
+                    </svg>
+                  ),
+                },
+                {
+                  label: 'Delivery Across India',
+                  svg: (
+                    <svg className="w-5 h-5 text-[#C9973A]" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                      <motion.path variants={drawPath} initial="hidden" whileInView="visible" viewport={{ once: true }} d="M1 3h15v13H1zM16 8h4l3 3v5h-7V8zM5.5 21a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5zM18.5 21a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5z" />
+                    </svg>
+                  ),
+                },
               ].map((item, idx) => (
                 <div
                   key={idx}
-                  className="p-3 rounded-2xl bg-[#E8EFE3]/50 border border-[#4C8C4A]/20 text-center"
+                  className="p-3.5 rounded-2xl bg-[#E8EFE3]/60 border border-[#4C8C4A]/20 flex flex-col items-center justify-center text-center gap-1.5"
                 >
-                  <span className="text-xl block mb-1">{item.icon}</span>
+                  <div className="p-1 rounded-lg bg-white/70 shadow-sm">{item.svg}</div>
                   <span className="text-[11px] font-bold text-[#2F5D3A] block">{item.label}</span>
                 </div>
               ))}
@@ -420,10 +465,10 @@ export default function ProductView({ productId }: { productId: string }) {
                           transition={{ duration: 0.25 }}
                           className="overflow-hidden px-6 pb-5 text-xs sm:text-sm text-[#2B1D0E]/80 space-y-2 border-t border-[#C9973A]/15 pt-3"
                         >
-                          {acc.content && <p className="leading-relaxed">{acc.content}</p>}
+                          {acc.content && <p className="leading-relaxed font-light">{acc.content}</p>}
 
                           {acc.contentList && (
-                            <ul className="space-y-1.5">
+                            <ul className="space-y-1.5 font-light">
                               {acc.contentList.map((item, i) => (
                                 <li key={i} className="flex items-center gap-2">
                                   <Check className="w-3.5 h-3.5 text-[#4C8C4A]" />
@@ -438,14 +483,14 @@ export default function ProductView({ productId }: { productId: string }) {
                               {acc.steps.map((st, i) => (
                                 <div key={i} className="bg-[#FDF6EC] p-3 rounded-xl border border-[#C9973A]/15">
                                   <p className="font-bold text-[#2F5D3A] text-xs">{st.title}</p>
-                                  <p className="text-xs text-[#2B1D0E]/75 mt-0.5">{st.instructions}</p>
+                                  <p className="text-xs text-[#2B1D0E]/75 mt-0.5 font-light">{st.instructions}</p>
                                 </div>
                               ))}
                             </div>
                           )}
 
                           {acc.faqs && (
-                            <ul className="space-y-1.5">
+                            <ul className="space-y-1.5 font-light">
                               {acc.faqs.map((f, i) => (
                                 <li key={i} className="flex items-start gap-2">
                                   <Truck className="w-3.5 h-3.5 text-[#C9973A] flex-shrink-0 mt-0.5" />
@@ -495,7 +540,7 @@ export default function ProductView({ productId }: { productId: string }) {
                     <h4 className="font-serif text-xl font-bold text-[#2B1D0E] group-hover:text-[#2F5D3A] transition-colors mt-0.5">
                       {p.name}
                     </h4>
-                    <p className="text-xs text-[#2B1D0E]/70 mt-1 line-clamp-2">
+                    <p className="text-xs text-[#2B1D0E]/70 mt-1 line-clamp-2 font-light">
                       {p.shortDesc}
                     </p>
                   </div>
@@ -518,7 +563,7 @@ export default function ProductView({ productId }: { productId: string }) {
         )}
       </div>
 
-      {/* 5. Sticky Mobile Bottom Bar */}
+      {/* 5. Sticky Mobile Bottom Bar with Safe-Area Insets */}
       <div className="md:hidden fixed bottom-0 left-0 right-0 z-40 bg-[#FDF6EC]/98 backdrop-blur-xl border-t border-[#C9973A]/30 p-3.5 shadow-2xl pb-[calc(0.875rem+env(safe-area-inset-bottom,0px))]">
         <div className="flex items-center justify-between gap-3 max-w-md mx-auto">
           <div>
