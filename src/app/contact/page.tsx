@@ -1,13 +1,13 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useRef } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import {
   Phone,
   Mail,
   MapPin,
   Instagram,
   Send,
-  CheckCircle2,
   ChevronDown,
   Sparkles,
   QrCode,
@@ -15,9 +15,59 @@ import {
 } from 'lucide-react';
 import { BRAND, FAQS, getWhatsAppContactUrl } from '@/lib/constants';
 import PageTransition from '@/components/PageTransition';
+import { blurIn, fadeUp, drawPath } from '@/lib/motion';
+
+function ContactSpotlightCard({
+  children,
+  href,
+  target,
+}: {
+  children: React.ReactNode;
+  href?: string;
+  target?: string;
+}) {
+  const cardRef = useRef<HTMLAnchorElement>(null);
+  const [mousePos, setMousePos] = useState({ x: -200, y: -200 });
+
+  const handleMouseMove = (e: React.MouseEvent<HTMLAnchorElement>) => {
+    if (!cardRef.current) return;
+    const rect = cardRef.current.getBoundingClientRect();
+    setMousePos({
+      x: e.clientX - rect.left,
+      y: e.clientY - rect.top,
+    });
+  };
+
+  const handleMouseLeave = () => {
+    setMousePos({ x: -200, y: -200 });
+  };
+
+  const Component = href ? 'a' : 'div';
+
+  return (
+    <Component
+      ref={cardRef as any} // eslint-disable-line @typescript-eslint/no-explicit-any
+      href={href}
+      target={target}
+      rel={target ? 'noopener noreferrer' : undefined}
+      onMouseMove={handleMouseMove as any} // eslint-disable-line @typescript-eslint/no-explicit-any
+      onMouseLeave={handleMouseLeave}
+      className="glass-panel p-4 rounded-2xl border border-[#C9973A]/20 shadow-sm hover:shadow-botanical hover:-translate-y-0.5 transition-all duration-300 flex items-center gap-4 group block relative overflow-hidden"
+    >
+      <div
+        className="pointer-events-none absolute -inset-px transition-opacity duration-300 opacity-0 group-hover:opacity-100"
+        style={{
+          background: `radial-gradient(220px circle at ${mousePos.x}px ${mousePos.y}px, rgba(201,151,58,0.18), transparent 70%)`,
+        }}
+      />
+      {children}
+    </Component>
+  );
+}
 
 export default function ContactPage() {
   const [formData, setFormData] = useState({ name: '', phone: '', message: '' });
+  const [touched, setTouched] = useState<{ [key: string]: boolean }>({});
   const [errors, setErrors] = useState<{ [key: string]: string }>({});
   const [isSuccess, setIsSuccess] = useState(false);
   const [openFaq, setOpenFaq] = useState<number | null>(0);
@@ -34,11 +84,18 @@ export default function ContactPage() {
     return newErrors;
   };
 
+  const handleBlur = (field: string) => {
+    setTouched((prev) => ({ ...prev, [field]: true }));
+    const errs = validate();
+    setErrors(errs);
+  };
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     const validationErrors = validate();
     if (Object.keys(validationErrors).length > 0) {
       setErrors(validationErrors);
+      setTouched({ name: true, phone: true, message: true });
       return;
     }
 
@@ -49,33 +106,51 @@ export default function ContactPage() {
 
     setTimeout(() => {
       window.open(waUrl, '_blank');
-    }, 800);
+    }, 1100);
   };
 
   return (
     <PageTransition>
       <div className="min-h-screen pb-24 overflow-hidden page-top-padding">
-        {/* 1. Header */}
+        {/* 1. Header with blurIn heading */}
         <section className="pb-16 text-center">
           <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 space-y-4">
-            <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#E8EFE3] text-[#2F5D3A] text-xs font-bold uppercase tracking-wider border border-[#4C8C4A]/30">
+            <motion.div
+              variants={fadeUp}
+              initial="hidden"
+              animate="visible"
+              className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#E8EFE3] text-[#2F5D3A] text-xs font-bold uppercase tracking-wider border border-[#4C8C4A]/30"
+            >
               <Sparkles className="w-3.5 h-3.5 text-[#C9973A]" />
               Contact
-            </div>
-            <h1 className="font-serif text-4xl sm:text-5xl md:text-6xl font-bold text-[#2B1D0E]">
+            </motion.div>
+
+            <motion.h1
+              variants={blurIn}
+              initial="hidden"
+              animate="visible"
+              className="font-serif text-4xl sm:text-5xl md:text-6xl font-bold text-[#2B1D0E]"
+            >
               Let’s Talk
-            </h1>
-            <p className="text-base sm:text-lg text-[#2B1D0E]/80 max-w-xl mx-auto">
+            </motion.h1>
+
+            <motion.p
+              variants={fadeUp}
+              initial="hidden"
+              animate="visible"
+              custom={1}
+              className="text-base sm:text-lg text-[#2B1D0E]/80 max-w-xl mx-auto"
+            >
               Message us on WhatsApp for orders, delivery questions, or product details. We communicate directly with every customer.
-            </p>
+            </motion.p>
           </div>
         </section>
 
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
-            {/* 2. Left Column: Contact Cards */}
+            {/* 2. Left Column: WhatsApp & Contact Cards */}
             <div className="lg:col-span-5 space-y-6">
-              {/* WhatsApp Card */}
+              {/* WhatsApp Card with Decorative QR Code */}
               <div className="glass-panel-leaf p-7 rounded-3xl border border-[#4C8C4A]/30 shadow-botanical space-y-5">
                 <div className="flex items-center justify-between">
                   <span className="px-3 py-1 rounded-full bg-[#25D366] text-white text-xs font-bold uppercase tracking-wider flex items-center gap-1.5">
@@ -95,7 +170,7 @@ export default function ContactPage() {
                 </div>
 
                 <div className="flex items-center gap-4 p-4 rounded-2xl bg-[#FDF6EC] border border-[#C9973A]/25">
-                  <div className="w-12 h-12 rounded-xl bg-[#25D366]/15 flex items-center justify-center flex-shrink-0 text-[#25D366]">
+                  <div className="w-12 h-12 rounded-xl bg-[#25D366]/15 flex items-center justify-center shrink-0 text-[#25D366]">
                     <QrCode className="w-6 h-6" />
                   </div>
                   <div>
@@ -118,7 +193,7 @@ export default function ContactPage() {
                 </a>
               </div>
 
-              {/* Verified Contact Details (Allowed Facts Only) */}
+              {/* Verified Contact Details with Spotlight Hover */}
               <div className="space-y-3">
                 {[
                   {
@@ -137,7 +212,7 @@ export default function ContactPage() {
                     icon: <MapPin className="w-5 h-5 text-[#C9973A]" />,
                     title: 'Location',
                     detail: BRAND.address,
-                    link: '#',
+                    link: undefined,
                   },
                   {
                     icon: <Instagram className="w-5 h-5 text-[#C9973A]" />,
@@ -146,17 +221,15 @@ export default function ContactPage() {
                     link: BRAND.instagram,
                   },
                 ].map((card, idx) => (
-                  <a
+                  <ContactSpotlightCard
                     key={idx}
                     href={card.link}
-                    target={card.link.startsWith('http') ? '_blank' : undefined}
-                    rel="noopener noreferrer"
-                    className="glass-panel p-4 rounded-2xl border border-[#C9973A]/20 shadow-sm hover:shadow-botanical hover:-translate-y-0.5 transition-all duration-300 flex items-center gap-4 group block"
+                    target={card.link && card.link.startsWith('http') ? '_blank' : undefined}
                   >
-                    <div className="w-11 h-11 rounded-xl bg-[#E8EFE3] flex items-center justify-center flex-shrink-0 group-hover:scale-105 transition-transform">
+                    <div className="w-11 h-11 rounded-xl bg-[#E8EFE3] flex items-center justify-center shrink-0 group-hover:scale-105 transition-transform z-10">
                       {card.icon}
                     </div>
-                    <div className="flex-1 min-w-0">
+                    <div className="flex-1 min-w-0 z-10">
                       <p className="text-xs font-semibold text-[#C9973A] uppercase tracking-wide">
                         {card.title}
                       </p>
@@ -164,12 +237,12 @@ export default function ContactPage() {
                         {card.detail}
                       </p>
                     </div>
-                  </a>
+                  </ContactSpotlightCard>
                 ))}
               </div>
             </div>
 
-            {/* 3. Right Column: Form & FAQs */}
+            {/* 3. Right Column: Floating-Label Form & FAQs */}
             <div className="lg:col-span-7 space-y-10">
               <div className="glass-panel p-8 sm:p-10 rounded-3xl border border-[#C9973A]/30 shadow-botanical-lg relative">
                 <h2 className="font-serif text-2xl sm:text-3xl font-bold text-[#2B1D0E] mb-2">
@@ -181,8 +254,20 @@ export default function ContactPage() {
 
                 {isSuccess ? (
                   <div className="py-12 text-center space-y-4">
+                    {/* Self-drawing SVG checkmark */}
                     <div className="w-16 h-16 rounded-full bg-[#E8EFE3] text-[#2F5D3A] flex items-center justify-center mx-auto border-2 border-[#4C8C4A]">
-                      <CheckCircle2 className="w-10 h-10 text-[#4C8C4A]" />
+                      <svg className="w-10 h-10 text-[#4C8C4A]" viewBox="0 0 24 24" fill="none">
+                        <motion.path
+                          d="M5 13l4 4L19 7"
+                          stroke="currentColor"
+                          strokeWidth="2.5"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          variants={drawPath}
+                          initial="hidden"
+                          animate="visible"
+                        />
+                      </svg>
                     </div>
                     <h3 className="font-serif text-2xl font-bold text-[#2F5D3A]">
                       Opening WhatsApp...
@@ -192,47 +277,71 @@ export default function ContactPage() {
                     </p>
                   </div>
                 ) : (
-                  <form onSubmit={handleSubmit} className="space-y-4">
-                    <div>
-                      <label className="block text-xs font-bold text-[#2F5D3A] uppercase tracking-wider mb-1.5">
-                        Your Name *
-                      </label>
+                  <form onSubmit={handleSubmit} className="space-y-5">
+                    {/* Floating Label: Name */}
+                    <div className="relative">
                       <input
                         type="text"
+                        id="contact-name"
                         value={formData.name}
                         onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                        placeholder="Enter your name"
-                        className="w-full px-4 py-3 rounded-2xl bg-[#FDF6EC] border border-[#C9973A]/30 text-sm text-[#2B1D0E] placeholder-[#2B1D0E]/40 focus:outline-none focus:border-[#2F5D3A] transition-colors"
+                        onBlur={() => handleBlur('name')}
+                        placeholder=" "
+                        className="peer w-full px-4 pt-5 pb-2 rounded-2xl bg-[#FDF6EC] border border-[#C9973A]/30 text-sm text-[#2B1D0E] focus:outline-none focus:border-[#2F5D3A] transition-colors"
                       />
-                      {errors.name && <p className="text-xs text-red-600 mt-1">{errors.name}</p>}
+                      <label
+                        htmlFor="contact-name"
+                        className="absolute left-4 top-3.5 text-xs text-[#2B1D0E]/60 transition-all duration-200 pointer-events-none peer-placeholder-shown:top-3.5 peer-placeholder-shown:text-sm peer-focus:top-1.5 peer-focus:text-[10px] peer-focus:text-[#2F5D3A] peer-focus:font-bold peer-[:not(:placeholder-shown)]:top-1.5 peer-[:not(:placeholder-shown)]:text-[10px] peer-[:not(:placeholder-shown)]:text-[#2F5D3A] peer-[:not(:placeholder-shown)]:font-bold"
+                      >
+                        Your Name *
+                      </label>
+                      {touched.name && errors.name && (
+                        <p className="text-xs text-red-600 mt-1">{errors.name}</p>
+                      )}
                     </div>
 
-                    <div>
-                      <label className="block text-xs font-bold text-[#2F5D3A] uppercase tracking-wider mb-1.5">
-                        WhatsApp / Phone Number *
-                      </label>
+                    {/* Floating Label: Phone */}
+                    <div className="relative">
                       <input
                         type="tel"
+                        id="contact-phone"
                         value={formData.phone}
                         onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-                        placeholder="Enter phone number"
-                        className="w-full px-4 py-3 rounded-2xl bg-[#FDF6EC] border border-[#C9973A]/30 text-sm text-[#2B1D0E] placeholder-[#2B1D0E]/40 focus:outline-none focus:border-[#2F5D3A] transition-colors"
+                        onBlur={() => handleBlur('phone')}
+                        placeholder=" "
+                        className="peer w-full px-4 pt-5 pb-2 rounded-2xl bg-[#FDF6EC] border border-[#C9973A]/30 text-sm text-[#2B1D0E] focus:outline-none focus:border-[#2F5D3A] transition-colors"
                       />
-                      {errors.phone && <p className="text-xs text-red-600 mt-1">{errors.phone}</p>}
+                      <label
+                        htmlFor="contact-phone"
+                        className="absolute left-4 top-3.5 text-xs text-[#2B1D0E]/60 transition-all duration-200 pointer-events-none peer-placeholder-shown:top-3.5 peer-placeholder-shown:text-sm peer-focus:top-1.5 peer-focus:text-[10px] peer-focus:text-[#2F5D3A] peer-focus:font-bold peer-[:not(:placeholder-shown)]:top-1.5 peer-[:not(:placeholder-shown)]:text-[10px] peer-[:not(:placeholder-shown)]:text-[#2F5D3A] peer-[:not(:placeholder-shown)]:font-bold"
+                      >
+                        WhatsApp / Phone Number *
+                      </label>
+                      {touched.phone && errors.phone && (
+                        <p className="text-xs text-red-600 mt-1">{errors.phone}</p>
+                      )}
                     </div>
 
-                    <div>
-                      <label className="block text-xs font-bold text-[#2F5D3A] uppercase tracking-wider mb-1.5">
-                        Message *
-                      </label>
+                    {/* Floating Label: Message */}
+                    <div className="relative">
                       <textarea
                         rows={4}
+                        id="contact-message"
                         value={formData.message}
                         onChange={(e) => setFormData({ ...formData, message: e.target.value })}
-                        placeholder="Your inquiry or order details..."
-                        className="w-full px-4 py-3 rounded-2xl bg-[#FDF6EC] border border-[#C9973A]/30 text-sm text-[#2B1D0E] placeholder-[#2B1D0E]/40 focus:outline-none focus:border-[#2F5D3A] transition-colors resize-none"
+                        onBlur={() => handleBlur('message')}
+                        placeholder=" "
+                        className="peer w-full px-4 pt-5 pb-2 rounded-2xl bg-[#FDF6EC] border border-[#C9973A]/30 text-sm text-[#2B1D0E] focus:outline-none focus:border-[#2F5D3A] transition-colors resize-none"
                       />
-                      {errors.message && <p className="text-xs text-red-600 mt-1">{errors.message}</p>}
+                      <label
+                        htmlFor="contact-message"
+                        className="absolute left-4 top-3.5 text-xs text-[#2B1D0E]/60 transition-all duration-200 pointer-events-none peer-placeholder-shown:top-3.5 peer-placeholder-shown:text-sm peer-focus:top-1.5 peer-focus:text-[10px] peer-focus:text-[#2F5D3A] peer-focus:font-bold peer-[:not(:placeholder-shown)]:top-1.5 peer-[:not(:placeholder-shown)]:text-[10px] peer-[:not(:placeholder-shown)]:text-[#2F5D3A] peer-[:not(:placeholder-shown)]:font-bold"
+                      >
+                        Message or Order Details *
+                      </label>
+                      {touched.message && errors.message && (
+                        <p className="text-xs text-red-600 mt-1">{errors.message}</p>
+                      )}
                     </div>
 
                     <button
@@ -247,7 +356,7 @@ export default function ContactPage() {
                 )}
               </div>
 
-              {/* 4. FAQ Accordion */}
+              {/* 4. FAQ Accordion with Confirmed Answers */}
               <div className="space-y-4">
                 <div className="flex items-center gap-2">
                   <Sparkles className="w-4 h-4 text-[#C9973A]" />
@@ -271,17 +380,25 @@ export default function ContactPage() {
                         >
                           <span>{faq.question}</span>
                           <ChevronDown
-                            className={`w-4 h-4 text-[#C9973A] transition-transform duration-300 flex-shrink-0 ml-2 ${
+                            className={`w-4 h-4 text-[#C9973A] transition-transform duration-300 shrink-0 ml-2 ${
                               isOpen ? 'rotate-180' : ''
                             }`}
                           />
                         </button>
 
-                        {isOpen && (
-                          <div className="px-4 sm:px-5 pb-5 text-xs sm:text-sm text-[#2B1D0E]/80 border-t border-[#C9973A]/15 pt-3 leading-relaxed">
-                            {faq.answer}
-                          </div>
-                        )}
+                        <AnimatePresence>
+                          {isOpen && (
+                            <motion.div
+                              initial={{ height: 0, opacity: 0 }}
+                              animate={{ height: 'auto', opacity: 1 }}
+                              exit={{ height: 0, opacity: 0 }}
+                              transition={{ duration: 0.25 }}
+                              className="overflow-hidden px-4 sm:px-5 pb-5 text-xs sm:text-sm text-[#2B1D0E]/80 border-t border-[#C9973A]/15 pt-3 leading-relaxed"
+                            >
+                              {faq.answer}
+                            </motion.div>
+                          )}
+                        </AnimatePresence>
                       </div>
                     );
                   })}
