@@ -7,6 +7,7 @@ import { usePathname } from 'next/navigation';
 import { motion, AnimatePresence, useScroll, useSpring } from 'framer-motion';
 import { Menu, X, ArrowUpRight, Phone } from 'lucide-react';
 import { BRAND } from '@/lib/constants';
+import NavTextSwap from '@/components/text/NavTextSwap';
 
 export default function Header() {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -29,18 +30,18 @@ export default function Header() {
     { href: '/contact', label: 'Contact' },
   ];
 
-  // Scroll listener for auto-hide and background transition
+  // Auto-hide on scroll down, reappear on scroll up, glass transition at 40px
   useEffect(() => {
     const handleScroll = () => {
       const currentScrollY = window.scrollY;
 
-      if (currentScrollY > 20) {
+      if (currentScrollY > 40) {
         setIsScrolled(true);
       } else {
         setIsScrolled(false);
       }
 
-      if (currentScrollY > 100 && currentScrollY > lastScrollY && !isMobileMenuOpen) {
+      if (currentScrollY > 120 && currentScrollY > lastScrollY && !isMobileMenuOpen) {
         setIsVisible(false);
       } else {
         setIsVisible(true);
@@ -53,17 +54,34 @@ export default function Header() {
     return () => window.removeEventListener('scroll', handleScroll);
   }, [lastScrollY, isMobileMenuOpen]);
 
-  // Lock body scroll when mobile drawer is open
+  // Lock body scroll and handle Escape key for mobile menu
   useEffect(() => {
     if (isMobileMenuOpen) {
       document.body.style.overflow = 'hidden';
     } else {
       document.body.style.overflow = '';
     }
+
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        setIsMobileMenuOpen(false);
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
     return () => {
       document.body.style.overflow = '';
+      window.removeEventListener('keydown', handleKeyDown);
     };
   }, [isMobileMenuOpen]);
+
+  // Close mobile drawer on route change
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setIsMobileMenuOpen(false);
+    }, 0);
+    return () => clearTimeout(timer);
+  }, [pathname]);
 
   return (
     <>
@@ -73,13 +91,13 @@ export default function Header() {
           isVisible ? 'translate-y-0' : '-translate-y-[140%]'
         }`}
       >
-        <div className="max-w-[1120px] mx-auto px-4 pt-3.5 sm:pt-4">
+        <div className="max-w-[1100px] mx-auto px-4 pt-4">
           <nav
             aria-label="Main Navigation"
-            className={`pointer-events-auto relative flex items-center justify-between px-5 sm:px-6 py-2.5 rounded-full transition-all duration-300 overflow-hidden ${
+            className={`pointer-events-auto relative flex items-center justify-between px-5 sm:px-6 rounded-full transition-all duration-300 overflow-hidden ${
               isScrolled
-                ? 'bg-[#FDF6EC]/92 backdrop-blur-md shadow-botanical border border-[#C9973A]/30'
-                : 'bg-[#FDF6EC]/70 backdrop-blur-sm border border-[#C9973A]/20 shadow-sm'
+                ? 'bg-[#FDF6EC]/92 backdrop-blur-md shadow-botanical border border-[#C9973A]/30 py-2 scale-[0.98]'
+                : 'bg-[#FDF6EC]/70 backdrop-blur-sm border border-[#C9973A]/20 shadow-sm py-2.5 scale-100'
             }`}
           >
             {/* Logo Left */}
@@ -122,7 +140,11 @@ export default function Header() {
                         : 'text-[#2B1D0E]/80 hover:text-[#2F5D3A]'
                     }`}
                   >
-                    {link.label}
+                    {isActive ? (
+                      <span>{link.label}</span>
+                    ) : (
+                      <NavTextSwap label={link.label} />
+                    )}
                     {isActive && (
                       <motion.div
                         layoutId="nav-pill"
