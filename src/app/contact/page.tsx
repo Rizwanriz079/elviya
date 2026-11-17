@@ -15,7 +15,9 @@ import {
 } from 'lucide-react';
 import { BRAND, FAQS, getWhatsAppContactUrl } from '@/lib/constants';
 import PageTransition from '@/components/PageTransition';
-import { blurIn, fadeUp, drawPath } from '@/lib/motion';
+import { fadeUp, drawPath } from '@/lib/motion';
+import TypeCaret from '@/components/text/TypeCaret';
+import WordBlurIn from '@/components/text/WordBlurIn';
 
 function ContactSpotlightCard({
   children,
@@ -70,6 +72,7 @@ export default function ContactPage() {
   const [touched, setTouched] = useState<{ [key: string]: boolean }>({});
   const [errors, setErrors] = useState<{ [key: string]: string }>({});
   const [isSuccess, setIsSuccess] = useState(false);
+  const [shake, setShake] = useState(false);
   const [openFaq, setOpenFaq] = useState<number | null>(0);
 
   const validate = () => {
@@ -96,6 +99,8 @@ export default function ContactPage() {
     if (Object.keys(validationErrors).length > 0) {
       setErrors(validationErrors);
       setTouched({ name: true, phone: true, message: true });
+      setShake(true);
+      setTimeout(() => setShake(false), 500);
       return;
     }
 
@@ -112,9 +117,15 @@ export default function ContactPage() {
   return (
     <PageTransition>
       <div className="min-h-screen pb-24 overflow-hidden page-top-padding">
-        {/* 1. Header with blurIn heading */}
-        <section className="pb-16 text-center">
-          <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 space-y-4">
+        {/* 1. Header with contact-bg.webp & TypeCaret heading */}
+        <section className="relative pb-16 text-center overflow-hidden">
+          {/* Subtle contact background texture */}
+          <div
+            className="absolute inset-0 bg-cover bg-center opacity-25 mix-blend-multiply pointer-events-none"
+            style={{ backgroundImage: `url('/images/contact-bg.webp')` }}
+          />
+
+          <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 space-y-4 relative z-10">
             <motion.div
               variants={fadeUp}
               initial="hidden"
@@ -122,27 +133,18 @@ export default function ContactPage() {
               className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#E8EFE3] text-[#2F5D3A] text-xs font-bold uppercase tracking-wider border border-[#4C8C4A]/30"
             >
               <Sparkles className="w-3.5 h-3.5 text-[#C9973A]" />
-              Contact
+              Direct Communication
             </motion.div>
 
-            <motion.h1
-              variants={blurIn}
-              initial="hidden"
-              animate="visible"
-              className="font-serif text-4xl sm:text-5xl md:text-6xl font-bold text-[#2B1D0E]"
-            >
-              Let’s Talk
-            </motion.h1>
+            <h1 className="font-serif text-4xl sm:text-5xl md:text-6xl font-bold text-[#2B1D0E]">
+              <TypeCaret text="Let’s Talk" />
+            </h1>
 
-            <motion.p
-              variants={fadeUp}
-              initial="hidden"
-              animate="visible"
-              custom={1}
-              className="text-base sm:text-lg text-[#2B1D0E]/80 max-w-xl mx-auto"
-            >
-              Message us on WhatsApp for orders, delivery questions, or product details. We communicate directly with every customer.
-            </motion.p>
+            <WordBlurIn
+              text="Message us on WhatsApp for orders, delivery questions, or product details. We communicate directly with every customer."
+              className="text-base sm:text-lg text-[#2B1D0E]/80 max-w-xl mx-auto font-light leading-relaxed"
+              delay={0.3}
+            />
           </div>
         </section>
 
@@ -164,7 +166,7 @@ export default function ContactPage() {
                   <h3 className="font-serif text-2xl font-bold text-[#2B1D0E]">
                     Chat on WhatsApp
                   </h3>
-                  <p className="text-xs sm:text-sm text-[#2B1D0E]/80 mt-1">
+                  <p className="text-xs sm:text-sm text-[#2B1D0E]/80 mt-1 font-light">
                     Direct conversation with Elvia Herbals for orders and inquiries.
                   </p>
                 </div>
@@ -242,13 +244,13 @@ export default function ContactPage() {
               </div>
             </div>
 
-            {/* 3. Right Column: Floating-Label Form & FAQs */}
+            {/* 3. Right Column: Form with Error Shake & FAQs */}
             <div className="lg:col-span-7 space-y-10">
               <div className="glass-panel p-8 sm:p-10 rounded-3xl border border-[#C9973A]/30 shadow-botanical-lg relative">
                 <h2 className="font-serif text-2xl sm:text-3xl font-bold text-[#2B1D0E] mb-2">
                   Send a Message
                 </h2>
-                <p className="text-xs sm:text-sm text-[#2B1D0E]/75 mb-6">
+                <p className="text-xs sm:text-sm text-[#2B1D0E]/75 mb-6 font-light">
                   Fill in your details to open WhatsApp with your prefilled inquiry.
                 </p>
 
@@ -272,12 +274,23 @@ export default function ContactPage() {
                     <h3 className="font-serif text-2xl font-bold text-[#2F5D3A]">
                       Opening WhatsApp...
                     </h3>
-                    <p className="text-sm text-[#2B1D0E]/80 max-w-md mx-auto">
+                    <p className="text-sm text-[#2B1D0E]/80 max-w-md mx-auto font-light">
                       Connecting you directly to Elvia Herbals on WhatsApp.
                     </p>
                   </div>
                 ) : (
-                  <form onSubmit={handleSubmit} className="space-y-5">
+                  <motion.form
+                    onSubmit={handleSubmit}
+                    animate={
+                      shake
+                        ? {
+                            x: [-8, 8, -6, 6, -3, 3, 0],
+                            transition: { duration: 0.45 },
+                          }
+                        : {}
+                    }
+                    className="space-y-5"
+                  >
                     {/* Floating Label: Name */}
                     <div className="relative">
                       <input
@@ -352,7 +365,7 @@ export default function ContactPage() {
                       <Send className="w-4 h-4" />
                       <span>Continue to WhatsApp</span>
                     </button>
-                  </form>
+                  </motion.form>
                 )}
               </div>
 
@@ -393,7 +406,7 @@ export default function ContactPage() {
                               animate={{ height: 'auto', opacity: 1 }}
                               exit={{ height: 0, opacity: 0 }}
                               transition={{ duration: 0.25 }}
-                              className="overflow-hidden px-4 sm:px-5 pb-5 text-xs sm:text-sm text-[#2B1D0E]/80 border-t border-[#C9973A]/15 pt-3 leading-relaxed"
+                              className="overflow-hidden px-4 sm:px-5 pb-5 text-xs sm:text-sm text-[#2B1D0E]/80 border-t border-[#C9973A]/15 pt-3 leading-relaxed font-light"
                             >
                               {faq.answer}
                             </motion.div>
