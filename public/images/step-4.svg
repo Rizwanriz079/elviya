@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" fill="none" stroke="#2F5D3A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <!-- Hand holding small glass bottle -->
+  <rect x="42" y="38" width="22" height="42" rx="4" stroke="#2F5D3A" stroke-width="2" />
+  <rect x="46" y="28" width="14" height="10" rx="1.5" stroke="#2F5D3A" stroke-width="1.8" />
+  <line x1="42" y1="52" x2="64" y2="52" stroke="#4C8C4A" stroke-width="1.2" />
+  <line x1="42" y1="64" x2="64" y2="64" stroke="#4C8C4A" stroke-width="1.2" />
+  <!-- Hand silhouette contour -->
+  <path d="M20 62 C26 55 38 52 42 56 L42 74 C36 78 26 76 20 68 Z" stroke="#2F5D3A" fill="#2F5D3A" fill-opacity="0.08" />
+  <!-- Small gold seal accent -->
+  <circle cx="53" cy="58" r="3.5" fill="#C9973A" stroke="#C9973A" />
+</svg>
