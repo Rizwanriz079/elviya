@@ -5,7 +5,7 @@ import Image from 'next/image';
 import { useState, useEffect } from 'react';
 import { usePathname } from 'next/navigation';
 import { motion, AnimatePresence, useScroll, useSpring } from 'framer-motion';
-import { Menu, X, ArrowUpRight, Phone } from 'lucide-react';
+import { Menu, X, ArrowUpRight, Phone, Instagram } from 'lucide-react';
 import { BRAND } from '@/lib/constants';
 import NavTextSwap from '@/components/text/NavTextSwap';
 
@@ -289,6 +289,32 @@ export default function Header() {
                   <span>{BRAND.phone}</span>
                 </span>
                 <span>Kerala, India</span>
+              </div>
+
+              {/* Social row: Instagram & Facebook */}
+              <div className="flex items-center justify-center gap-3 pt-2">
+                <a
+                  href={BRAND.instagram}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label="Elvia Herbals on Instagram"
+                  className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-[#E8EFE3] text-[#2F5D3A] text-xs font-medium border border-[#C9973A]/30 active:scale-95"
+                >
+                  <Instagram className="w-3.5 h-3.5 text-[#DD2A7B]" />
+                  <span>Instagram</span>
+                </a>
+                <a
+                  href={BRAND.facebook}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label="Elvia Herbals on Facebook"
+                  className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-[#E8EFE3] text-[#2F5D3A] text-xs font-medium border border-[#C9973A]/30 active:scale-95"
+                >
+                  <svg className="w-3.5 h-3.5 fill-[#1877F2]" viewBox="0 0 24 24" aria-hidden="true">
+                    <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
+                  </svg>
+                  <span>Facebook</span>
+                </a>
               </div>
             </div>
           </motion.div>

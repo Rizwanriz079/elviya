@@ -15,8 +15,28 @@ export const BRAND = {
   whatsapp: '919207067522',
   instagram: 'https://www.instagram.com/elviaherbals/',
   instagramHandle: '@elviaherbals',
+  facebook: 'https://www.facebook.com/share/1FWwC8UMjg/',
   address: 'Kerala, India',
 };
+
+// Social Links
+export const SOCIAL = {
+  instagram: 'https://www.instagram.com/elviaherbals/',
+  facebook: 'https://www.facebook.com/share/1FWwC8UMjg/',
+  whatsapp: 'https://wa.me/919207067522',
+};
+
+// Legacy exports preservation
+export const siteConfig = {
+  name: BRAND.name,
+  tagline: BRAND.tagline,
+  url: 'https://elviaherbals.com',
+  ogImage: '/opengraph-image.png',
+  links: SOCIAL,
+};
+
+export const orderMessage = (productName = 'Pure Neem Oil 100ml') =>
+  `Hi Elvia Herbals! 🌿\n\nI want to order ${productName}. Please share availability and payment details. Thank you!`;
 
 // Shipping Configuration
 export const SHIPPING = {

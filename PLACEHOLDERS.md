@@ -42,3 +42,9 @@ This file tracks all real business content waiting for client confirmation. Per 
 ### 6. Almond Oil Pricing & Restock
 - **Current Status**: Out of stock. No price is displayed. Customers see "Restocking soon" and a "Notify Me on WhatsApp" button.
 - **Input Needed**: Price and stock quantity once the next batch is ready.
+
+---
+
+### 7. Facebook Public Page Vanity URL
+- **Current Status**: Active with client-provided link (`https://www.facebook.com/share/1FWwC8UMjg/`).
+- **Note**: Client provided share link `https://www.facebook.com/share/1FWwC8UMjg/`; once a permanent public vanity username/page URL (e.g., `https://www.facebook.com/elviaherbals`) is created, update `src/lib/constants.ts`.
