@@ -7,7 +7,7 @@ import Container from '@/components/ui/Container';
 import OutlineToFill from '@/components/text/OutlineToFill';
 import ScriptDraw from '@/components/text/ScriptDraw';
 import { PRODUCTS, getWhatsAppOrderUrl } from '@/lib/constants';
-import { clipRevealLeft, blurIn, rotateIn, scaleIn } from '@/lib/motion';
+import { slideInLeft, blurIn, rotateIn, scaleIn } from '@/lib/motion';
 
 export default function ProcessStorySection() {
   const neem = PRODUCTS.find((p) => p.id === 'neem-oil')!;
@@ -129,7 +129,7 @@ export default function ProcessStorySection() {
       title: 'Fresh Neem',
       desc: 'Fresh neem leaves selected for preparation.',
       svg: '/images/step-1.svg',
-      entrance: clipRevealLeft,
+      entrance: slideInLeft,
     },
     {
       num: '02',

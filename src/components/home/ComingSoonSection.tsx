@@ -4,21 +4,21 @@ import Image from 'next/image';
 import { motion } from 'framer-motion';
 import { Bell, Sparkles } from 'lucide-react';
 import { PRODUCTS, BRAND } from '@/lib/constants';
-import { clipRevealRight } from '@/lib/motion';
+import { scaleIn } from '@/lib/motion';
 import Container from '@/components/ui/Container';
 
 export default function ComingSoonSection() {
   const almond = PRODUCTS.find((p) => p.id === 'almond-oil')!;
 
   return (
-    <section className="py-24 sm:py-32 relative overflow-hidden bg-[#F7EFE2] border-b border-[#C9973A]/20 section-deferred">
+    <section className="py-20 sm:py-32 relative overflow-hidden bg-[#F7EFE2] border-b border-[#C9973A]/20 section-deferred">
       <Container className="relative z-10">
         <motion.div
-          variants={clipRevealRight}
+          variants={scaleIn}
           initial="hidden"
           whileInView="visible"
-          viewport={{ once: true, margin: '-60px' }}
-          className="p-8 sm:p-12 md:p-14 rounded-3xl border border-[#C9973A]/30 shadow-botanical max-w-5xl 2xl:max-w-6xl mx-auto relative overflow-hidden bg-gradient-to-r from-[#FDF6EC] via-[#FDF6EC] to-[#1E3022]/90"
+          viewport={{ once: true, amount: 0.1 }}
+          className="p-6 sm:p-12 md:p-14 rounded-3xl border border-[#C9973A]/30 shadow-botanical max-w-5xl 2xl:max-w-6xl mx-auto relative overflow-hidden bg-gradient-to-r from-[#FDF6EC] via-[#FDF6EC] to-[#1E3022]/90"
         >
           {/* Subtle Scene Texture Overlay */}
           <div
@@ -42,12 +42,12 @@ export default function ComingSoonSection() {
           <div className="grid grid-cols-1 md:grid-cols-12 gap-8 items-center relative z-10">
             {/* Left: Greyscale Bottle in Subtle Glow */}
             <div className="md:col-span-5 flex items-center justify-center relative">
-              <div className="relative w-48 sm:w-56 h-64 sm:h-72">
+              <div className="relative w-40 sm:w-56 h-52 sm:h-72">
                 <Image
                   src={almond.image}
                   alt="Pure Almond Oil 60ml - Restocking Soon"
                   fill
-                  sizes="240px"
+                  sizes="(max-width: 640px) 160px, 240px"
                   className="object-contain grayscale opacity-80"
                 />
               </div>
