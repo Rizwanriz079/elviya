@@ -1,10 +1,16 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useSyncExternalStore } from 'react';
 import { motion, useMotionValue, useSpring } from 'framer-motion';
+import { usePerfMode } from '@/lib/perf';
+
+const subscribeClient = () => () => {};
+const getClientSnapshot = () => true;
+const getServerClientSnapshot = () => false;
 
 export default function CustomCursor() {
-  const [enabled, setEnabled] = useState(false);
+  const isMounted = useSyncExternalStore(subscribeClient, getClientSnapshot, getServerClientSnapshot);
+  const { isLite, isFinePointer, isReducedMotion } = usePerfMode();
   const [cursorLabel, setCursorLabel] = useState<string | null>(null);
   const [isHovered, setIsHovered] = useState(false);
   const [isInput, setIsInput] = useState(false);
@@ -23,11 +29,7 @@ export default function CustomCursor() {
   const ringY = useSpring(cursorY, ringSpring);
 
   useEffect(() => {
-    const timer = setTimeout(() => {
-      const isFinePointer = window.matchMedia('(pointer: fine)').matches;
-      const isReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-      setEnabled(isFinePointer && !isReducedMotion);
-    }, 0);
+    if (isLite || !isFinePointer || isReducedMotion) return;
 
     const moveCursor = (e: MouseEvent) => {
       cursorX.set(e.clientX);
@@ -89,13 +91,12 @@ export default function CustomCursor() {
     document.addEventListener('mouseover', handleMouseOver);
 
     return () => {
-      clearTimeout(timer);
       window.removeEventListener('mousemove', moveCursor);
       document.removeEventListener('mouseover', handleMouseOver);
     };
-  }, [cursorX, cursorY]);
+  }, [cursorX, cursorY, isLite, isFinePointer, isReducedMotion]);
 
-  if (!enabled || isInput) return null;
+  if (!isMounted || isLite || !isFinePointer || isReducedMotion || isInput) return null;
 
   return (
     <>

@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
+  <!-- Homepage -->
+  <url>
+    <loc>https://elviaherbals.com</loc>
+    <lastmod>2026-11-18</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>1.0</priority>
+  </url>
+
+  <!-- Products Catalog -->
+  <url>
+    <loc>https://elviaherbals.com/product</loc>
+    <lastmod>2026-11-18</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+
+  <!-- Flagship Product: Pure Neem Oil 100ml -->
+  <url>
+    <loc>https://elviaherbals.com/product/neem-oil</loc>
+    <lastmod>2026-11-18</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+    <image:image>
+      <image:loc>https://elviaherbals.com/images/bottle-neem.png</image:loc>
+      <image:title>Elvia Herbals Pure Homemade Neem Oil 100ml</image:title>
+      <image:caption>Pure homemade neem oil infused into virgin coconut oil, handmade in Kerala</image:caption>
+    </image:image>
+  </url>
+
+  <!-- Product: Pure Almond Oil 60ml -->
+  <url>
+    <loc>https://elviaherbals.com/product/almond-oil</loc>
+    <lastmod>2026-11-18</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://elviaherbals.com/images/almond-scene.webp</image:loc>
+      <image:title>Elvia Herbals Pure Almond Oil 60ml</image:title>
+      <image:caption>Pure almond oil, handmade in small batches in Kerala</image:caption>
+    </image:image>
+  </url>
+
+  <!-- About / Our Story -->
+  <url>
+    <loc>https://elviaherbals.com/about</loc>
+    <lastmod>2026-11-18</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <!-- Contact Us -->
+  <url>
+    <loc>https://elviaherbals.com/contact</loc>
+    <lastmod>2026-11-18</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <!-- Privacy Policy -->
+  <url>
+    <loc>https://elviaherbals.com/privacy</loc>
+    <lastmod>2026-11-18</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
+  </url>
+
+  <!-- Terms of Service -->
+  <url>
+    <loc>https://elviaherbals.com/terms</loc>
+    <lastmod>2026-11-18</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
+  </url>
+</urlset>

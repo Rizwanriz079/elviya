@@ -11,6 +11,7 @@ import CharStagger from '@/components/text/CharStagger';
 import ScriptDraw from '@/components/text/ScriptDraw';
 import WordBlurIn from '@/components/text/WordBlurIn';
 import CountUp from '@/components/text/CountUp';
+import Container from '@/components/ui/Container';
 import {
   clipRevealLeft,
   clipRevealRight,
@@ -90,7 +91,7 @@ export default function AboutPage() {
             style={{ backgroundImage: `url('/images/about-hero.webp')` }}
           />
 
-          <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 space-y-6 relative z-10">
+          <Container className="max-w-4xl space-y-6 relative z-10 text-center">
             <motion.div
               variants={fadeUp}
               initial="hidden"
@@ -122,11 +123,12 @@ export default function AboutPage() {
               className="text-base sm:text-lg text-[#2B1D0E]/80 max-w-2xl mx-auto leading-relaxed font-light pt-2"
               delay={0.4}
             />
-          </div>
+          </Container>
         </section>
 
         {/* 2. Alternating Story Blocks with clipRevealLeft & clipRevealRight */}
-        <section className="py-12 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <section className="py-12">
+          <Container>
           {/* Story Block 1 */}
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center mb-24">
             <div className="space-y-5">
@@ -207,7 +209,8 @@ export default function AboutPage() {
               </div>
             </div>
           </div>
-        </section>
+        </Container>
+      </section>
 
         {/* 3. Our Promise: Dark Section Counters with CountUp */}
         <section className="py-20 bg-[#16301F] text-[#FDF6EC] my-12 relative overflow-hidden">
@@ -216,7 +219,7 @@ export default function AboutPage() {
             style={{ backgroundImage: `url('/images/bg-forest.webp')` }}
           />
           <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(47,93,58,0.5)_0%,transparent_70%)] pointer-events-none" />
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+          <Container className="relative z-10">
             <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
               <div className="space-y-2 p-6 rounded-2xl bg-[#E8EFE3]/5 border border-[#C9973A]/20">
                 <div className="font-serif text-4xl sm:text-5xl font-bold text-[#E5C07B]">
@@ -258,19 +261,20 @@ export default function AboutPage() {
                 <div className="text-xs text-[#E8EFE3]/70">Delivery across India</div>
               </div>
             </div>
-          </div>
+          </Container>
         </section>
 
         {/* 4. Our Process: Vertical Timeline */}
-        <section className="py-24 max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-16">
-            <span className="text-xs font-bold uppercase tracking-wider text-[#C9973A]">
-              From Leaf to Bottle
-            </span>
-            <h2 className="font-serif text-3xl sm:text-4xl font-bold text-[#2B1D0E] mt-1">
-              How Our Oils Are Made
-            </h2>
-          </div>
+        <section className="py-24">
+          <Container className="max-w-4xl">
+            <div className="text-center mb-16">
+              <span className="text-xs font-bold uppercase tracking-wider text-[#C9973A]">
+                From Leaf to Bottle
+              </span>
+              <h2 className="font-serif text-3xl sm:text-4xl font-bold text-[#2B1D0E] mt-1">
+                How Our Oils Are Made
+              </h2>
+            </div>
 
           <div className="space-y-8 relative before:absolute before:inset-0 before:left-4 sm:before:left-1/2 before:w-[2px] before:bg-gradient-to-b before:from-[#4C8C4A] before:via-[#C9973A] before:to-[#2F5D3A]">
             {timelineSteps.map((step, idx) => (
@@ -298,78 +302,82 @@ export default function AboutPage() {
               </div>
             ))}
           </div>
-        </section>
+        </Container>
+      </section>
 
-        {/* 5. Values Cards: Interactive 3D Flip with staggered rotateIn */}
-        <section className="py-20 bg-[#F7EFE2]/60">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="text-center max-w-2xl mx-auto mb-16">
-              <span className="text-xs font-bold uppercase tracking-wider text-[#2F5D3A]">
-                Our Values
-              </span>
-              <h2 className="font-serif text-3xl sm:text-4xl font-bold text-[#2B1D0E] mt-1">
-                Purity, Tradition, Care & Trust
-              </h2>
-            </div>
-
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-              {values.map((val, idx) => {
-                const isFlipped = flippedCard === val.id;
-                return (
-                  <motion.div
-                    key={val.id}
-                    variants={rotateIn}
-                    initial="hidden"
-                    whileInView="visible"
-                    viewport={{ once: true }}
-                    custom={idx}
-                    onClick={() => setFlippedCard(isFlipped ? null : val.id)}
-                    className="cursor-pointer h-64 rounded-3xl glass-panel border border-[#C9973A]/30 p-6 flex flex-col justify-between shadow-botanical hover:shadow-botanical-lg transition-all duration-300 relative group"
-                  >
-                    {!isFlipped ? (
-                      <div>
-                        <div className="text-3xl mb-3">{val.frontIcon}</div>
-                        <h3 className="font-serif text-xl font-bold text-[#2B1D0E] mb-2">
-                          {val.title}
-                        </h3>
-                        <p className="text-xs sm:text-sm text-[#2B1D0E]/75 font-light">
-                          {val.frontDesc}
-                        </p>
-                        <span className="text-[10px] text-[#C9973A] font-semibold mt-4 block">
-                          Tap to view details ↻
-                        </span>
-                      </div>
-                    ) : (
-                      <div className="flex flex-col justify-between h-full bg-[#E8EFE3]/90 -m-6 p-6 rounded-3xl">
-                        <div>
-                          <h4 className="font-serif font-bold text-base text-[#2F5D3A] mb-2">
-                            {val.backTitle}
-                          </h4>
-                          <p className="text-xs text-[#2B1D0E]/85 leading-relaxed font-light">
-                            {val.backDesc}
-                          </p>
-                        </div>
-                        <span className="text-[10px] text-[#4C8C4A] font-semibold">
-                          Tap to flip back ↻
-                        </span>
-                      </div>
-                    )}
-                  </motion.div>
-                );
-              })}
-            </div>
+      {/* 5. Values Cards: Interactive 3D Flip with staggered rotateIn */}
+      <section className="py-20 bg-[#F7EFE2]/60">
+        <Container>
+          <div className="text-center max-w-2xl mx-auto mb-16">
+            <span className="text-xs font-bold uppercase tracking-wider text-[#2F5D3A]">
+              Our Values
+            </span>
+            <h2 className="font-serif text-3xl sm:text-4xl font-bold text-[#2B1D0E] mt-1">
+              Purity, Tradition, Care & Trust
+            </h2>
           </div>
-        </section>
 
-        {/* 6. Optional Founder Note (Only shown if SHOW_FOUNDER is true) */}
-        {SHOW_FOUNDER && (
-          <section className="py-20 max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            {values.map((val, idx) => {
+              const isFlipped = flippedCard === val.id;
+              return (
+                <motion.div
+                  key={val.id}
+                  variants={rotateIn}
+                  initial="hidden"
+                  whileInView="visible"
+                  viewport={{ once: true }}
+                  custom={idx}
+                  onClick={() => setFlippedCard(isFlipped ? null : val.id)}
+                  className="cursor-pointer h-64 rounded-3xl glass-panel border border-[#C9973A]/30 p-6 flex flex-col justify-between shadow-botanical hover:shadow-botanical-lg transition-all duration-300 relative group"
+                >
+                  {!isFlipped ? (
+                    <div>
+                      <div className="text-3xl mb-3">{val.frontIcon}</div>
+                      <h3 className="font-serif text-xl font-bold text-[#2B1D0E] mb-2">
+                        {val.title}
+                      </h3>
+                      <p className="text-xs sm:text-sm text-[#2B1D0E]/75 font-light">
+                        {val.frontDesc}
+                      </p>
+                      <span className="text-[10px] text-[#C9973A] font-semibold mt-4 block">
+                        Tap to view details ↻
+                      </span>
+                    </div>
+                  ) : (
+                    <div className="flex flex-col justify-between h-full bg-[#E8EFE3]/90 -m-6 p-6 rounded-3xl">
+                      <div>
+                        <h4 className="font-serif font-bold text-base text-[#2F5D3A] mb-2">
+                          {val.backTitle}
+                        </h4>
+                        <p className="text-xs text-[#2B1D0E]/85 leading-relaxed font-light">
+                          {val.backDesc}
+                        </p>
+                      </div>
+                      <span className="text-[10px] text-[#4C8C4A] font-semibold">
+                        Tap to flip back ↻
+                      </span>
+                    </div>
+                  )}
+                </motion.div>
+              );
+            })}
+          </div>
+        </Container>
+      </section>
+
+      {/* 6. Optional Founder Note (Only shown if SHOW_FOUNDER is true) */}
+      {SHOW_FOUNDER && (
+        <section className="py-20 text-center">
+          <Container className="max-w-4xl">
             {/* Real Founder content to be added when client provides */}
-          </section>
-        )}
+          </Container>
+        </section>
+      )}
 
-        {/* CTA to Products */}
-        <section className="py-16 max-w-4xl mx-auto px-4 text-center">
+      {/* CTA to Products */}
+      <section className="py-16 text-center">
+        <Container className="max-w-4xl">
           <Link
             href="/product"
             className="btn-shine inline-flex items-center gap-2 bg-[#2F5D3A] hover:bg-[#1E3F27] text-white px-8 py-4 rounded-full font-bold shadow-md text-sm transition-all"
@@ -377,7 +385,8 @@ export default function AboutPage() {
             <span>Explore Pure Neem Oil (100ml)</span>
             <ArrowRight className="w-4 h-4" />
           </Link>
-        </section>
+        </Container>
+      </section>
       </div>
     </PageTransition>
   );

@@ -1,7 +1,12 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useSyncExternalStore } from 'react';
 import { motion } from 'framer-motion';
+import { usePerfMode } from '@/lib/perf';
+
+const subscribeClient = () => () => {};
+const getClientSnapshot = () => true;
+const getServerClientSnapshot = () => false;
 
 interface Particle {
   id: number;
@@ -26,37 +31,21 @@ const INITIAL_PARTICLES: Particle[] = [
 ];
 
 export default function FloatingParticles() {
-  const [isDesktop, setIsDesktop] = useState(false);
+  const isMounted = useSyncExternalStore(subscribeClient, getClientSnapshot, getServerClientSnapshot);
+  const { isLite, isFinePointer, isReducedMotion } = usePerfMode();
   const [isVisible, setIsVisible] = useState(true);
 
   useEffect(() => {
-    const timer = setTimeout(() => {
-      const match = window.innerWidth >= 1024 && window.matchMedia('(pointer: fine)').matches;
-      const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-      setIsDesktop(match && !reducedMotion);
-    }, 0);
-
-    const checkDesktop = () => {
-      const match = window.innerWidth >= 1024 && window.matchMedia('(pointer: fine)').matches;
-      const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-      setIsDesktop(match && !reducedMotion);
-    };
-
-    window.addEventListener('resize', checkDesktop);
-
     const handleVisibility = () => {
       setIsVisible(!document.hidden);
     };
     document.addEventListener('visibilitychange', handleVisibility);
-
     return () => {
-      clearTimeout(timer);
-      window.removeEventListener('resize', checkDesktop);
       document.removeEventListener('visibilitychange', handleVisibility);
     };
   }, []);
 
-  if (!isDesktop || !isVisible) return null;
+  if (!isMounted || isLite || !isFinePointer || isReducedMotion || !isVisible) return null;
 
   return (
     <div className="fixed inset-0 pointer-events-none z-[1] overflow-hidden">

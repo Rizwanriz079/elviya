@@ -1,8 +1,8 @@
 # Elvia Herbals - Pure Homemade Herbal Oils from Kerala
-# https://www.elviaherbals.com
+# https://elviaherbals.com
 
 User-agent: *
 Allow: /
 
 # Sitemaps
-Sitemap: https://www.elviaherbals.com/sitemap.xml
+Sitemap: https://elviaherbals.com/sitemap.xml

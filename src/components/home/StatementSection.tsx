@@ -3,6 +3,7 @@
 import { useRef } from 'react';
 import Image from 'next/image';
 import { motion, useScroll, useTransform } from 'framer-motion';
+import Container from '@/components/ui/Container';
 
 function ScrubWord({
   word,
@@ -57,7 +58,7 @@ export default function StatementSection() {
     <section
       ref={containerRef}
       style={{ position: 'relative' }}
-      className="py-24 sm:py-36 relative bg-[#FDF6EC] overflow-hidden border-b border-[#C9973A]/20"
+      className="py-24 sm:py-36 relative bg-[#FDF6EC] overflow-hidden border-b border-[#C9973A]/20 section-deferred"
     >
       {/* Drifting Gold Leaf on Side (Desktop Only) */}
       <motion.div
@@ -73,13 +74,13 @@ export default function StatementSection() {
         />
       </motion.div>
 
-      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
+      <Container className="text-center relative z-10 max-w-5xl">
         <p className="text-xs uppercase tracking-[0.25em] text-[#C9973A] font-semibold mb-6">
           Our Guiding Philosophy
         </p>
 
         {/* Big ScrubFill Statement */}
-        <h2 className="font-serif text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-bold leading-snug sm:leading-tight">
+        <h2 className="font-serif fluid-section-h2 font-bold leading-snug sm:leading-tight">
           {statementWords.map((item, index) => {
             const start = index / statementWords.length;
             const end = (index + 1) / statementWords.length;
@@ -102,7 +103,7 @@ export default function StatementSection() {
           </p>
           <div className="h-[1px] w-12 bg-[#C9973A]/40" />
         </div>
-      </div>
+      </Container>
     </section>
   );
 }

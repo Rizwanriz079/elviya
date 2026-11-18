@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 import Lenis from 'lenis';
 import { motion, useScroll, useSpring } from 'framer-motion';
 
@@ -12,19 +12,36 @@ export default function SmoothScroll({ children }: { children: React.ReactNode }
     restDelta: 0.001,
   });
 
+  const lenisRef = useRef<Lenis | null>(null);
+
   useEffect(() => {
+    // Lenis should run ONLY on desktop with a fine pointer (mouse/trackpad).
+    // Touch screens use native hardware momentum scrolling for 60-120fps.
+    const isFinePointer = window.matchMedia('(pointer: fine) and (hover: hover)').matches;
     const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    if (prefersReducedMotion) return;
+
+    const params = new URLSearchParams(window.location.search);
+    const smoothParam = params.get('smooth');
+    const isExplicitlyDisabled =
+      process.env.NEXT_PUBLIC_SMOOTH_SCROLL === 'false' || smoothParam === 'off';
+
+    if (!isFinePointer || prefersReducedMotion || isExplicitlyDisabled) {
+      return;
+    }
 
     const lenis = new Lenis({
-      duration: 1.2,
-      easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-      orientation: 'vertical',
-      gestureOrientation: 'vertical',
+      lerp: 0.12, // Snappy response with premium smooth deceleration
+      wheelMultiplier: 1.0, // Natural scroll distance per mouse wheel notch
       smoothWheel: true,
-      wheelMultiplier: 1,
-      touchMultiplier: 1.5,
+      syncTouch: false, // Touch devices use native momentum
     });
+
+    lenisRef.current = lenis;
+
+    // Check if splash screen is currently active
+    if (document.documentElement.dataset.splashActive === 'true') {
+      lenis.stop();
+    }
 
     let rafId: number;
     function raf(time: number) {
@@ -33,6 +50,14 @@ export default function SmoothScroll({ children }: { children: React.ReactNode }
     }
     rafId = requestAnimationFrame(raf);
 
+    const handleSplashStart = () => {
+      lenis.stop();
+    };
+
+    const handleSplashEnd = () => {
+      lenis.start();
+    };
+
     const handleVisibilityChange = () => {
       if (document.hidden) {
         lenis.stop();
@@ -40,12 +65,18 @@ export default function SmoothScroll({ children }: { children: React.ReactNode }
         lenis.start();
       }
     };
+
+    window.addEventListener('elvia:splash-start', handleSplashStart);
+    window.addEventListener('elvia:splash-end', handleSplashEnd);
     document.addEventListener('visibilitychange', handleVisibilityChange);
 
     return () => {
       cancelAnimationFrame(rafId);
+      window.removeEventListener('elvia:splash-start', handleSplashStart);
+      window.removeEventListener('elvia:splash-end', handleSplashEnd);
       document.removeEventListener('visibilitychange', handleVisibilityChange);
       lenis.destroy();
+      lenisRef.current = null;
     };
   }, []);
 

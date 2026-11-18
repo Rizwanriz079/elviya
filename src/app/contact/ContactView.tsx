@@ -18,6 +18,7 @@ import PageTransition from '@/components/PageTransition';
 import { fadeUp, drawPath } from '@/lib/motion';
 import TypeCaret from '@/components/text/TypeCaret';
 import WordBlurIn from '@/components/text/WordBlurIn';
+import Container from '@/components/ui/Container';
 
 function ContactSpotlightCard({
   children,
@@ -125,7 +126,7 @@ export default function ContactPage() {
             style={{ backgroundImage: `url('/images/contact-bg.webp')` }}
           />
 
-          <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 space-y-4 relative z-10">
+          <Container className="max-w-4xl space-y-4 relative z-10">
             <motion.div
               variants={fadeUp}
               initial="hidden"
@@ -145,10 +146,10 @@ export default function ContactPage() {
               className="text-base sm:text-lg text-[#2B1D0E]/80 max-w-xl mx-auto font-light leading-relaxed"
               delay={0.3}
             />
-          </div>
+          </Container>
         </section>
 
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <Container>
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
             {/* 2. Left Column: WhatsApp & Contact Cards */}
             <div className="lg:col-span-5 space-y-6">
@@ -429,7 +430,7 @@ export default function ContactPage() {
               </div>
             </div>
           </div>
-        </div>
+        </Container>
       </div>
     </PageTransition>
   );

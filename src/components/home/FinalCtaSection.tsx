@@ -1,6 +1,6 @@
 'use client';
 
-import { useRef, useState, useEffect } from 'react';
+import { useRef, useSyncExternalStore } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { motion, useMotionValue, useSpring } from 'framer-motion';
@@ -8,10 +8,21 @@ import { ArrowRight, Sparkles } from 'lucide-react';
 import { PRODUCTS, getWhatsAppOrderUrl } from '@/lib/constants';
 import CharStagger from '@/components/text/CharStagger';
 import { floatY } from '@/lib/motion';
+import Container from '@/components/ui/Container';
+import { usePerfMode } from '@/lib/perf';
+
+const subscribeResize = (callback: () => void) => {
+  window.addEventListener('resize', callback);
+  return () => window.removeEventListener('resize', callback);
+};
+const getDesktopWidth = () => window.innerWidth >= 1024;
+const getServerDesktopWidth = () => false;
 
 export default function FinalCtaSection() {
   const neem = PRODUCTS.find((p) => p.id === 'neem-oil')!;
-  const [isDesktop, setIsDesktop] = useState(false);
+  const { isLite, isFinePointer, isReducedMotion } = usePerfMode();
+  const hasDesktopWidth = useSyncExternalStore(subscribeResize, getDesktopWidth, getServerDesktopWidth);
+  const isDesktop = !isLite && isFinePointer && !isReducedMotion && hasDesktopWidth;
 
   // Magnetic button physics
   const btnRef = useRef<HTMLAnchorElement>(null);
@@ -19,15 +30,6 @@ export default function FinalCtaSection() {
   const btnY = useMotionValue(0);
   const smoothBtnX = useSpring(btnX, { stiffness: 350, damping: 25 });
   const smoothBtnY = useSpring(btnY, { stiffness: 350, damping: 25 });
-
-  useEffect(() => {
-    const checkDesktop = () => {
-      setIsDesktop(window.innerWidth >= 1024 && window.matchMedia('(pointer: fine)').matches);
-    };
-    checkDesktop();
-    window.addEventListener('resize', checkDesktop);
-    return () => window.removeEventListener('resize', checkDesktop);
-  }, []);
 
   const handleMagneticMove = (e: React.MouseEvent<HTMLAnchorElement>) => {
     if (!isDesktop || !btnRef.current) return;
@@ -46,7 +48,7 @@ export default function FinalCtaSection() {
   };
 
   return (
-    <section className="py-24 sm:py-36 relative overflow-hidden bg-gradient-to-br from-[#C9973A] via-[#B8872F] to-[#8C641E] text-[#FDF6EC]">
+    <section className="py-24 sm:py-36 relative overflow-hidden bg-gradient-to-br from-[#C9973A] via-[#B8872F] to-[#8C641E] text-[#FDF6EC] section-deferred">
       {/* Background Texture & Ambient Glow */}
       <div
         className="absolute inset-0 bg-cover bg-center opacity-30 mix-blend-overlay pointer-events-none"
@@ -82,7 +84,7 @@ export default function FinalCtaSection() {
         />
       </motion.div>
 
-      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10 space-y-8">
+      <Container className="text-center relative z-10 space-y-8">
         <motion.div
           initial={{ opacity: 0, y: 15 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -93,7 +95,7 @@ export default function FinalCtaSection() {
           Pure Homemade Herbal Oils
         </motion.div>
 
-        <h2 className="font-serif text-3xl sm:text-5xl md:text-6xl font-bold tracking-tight text-white max-w-3xl mx-auto leading-tight">
+        <h2 className="font-serif fluid-section-h2 font-bold tracking-tight text-white max-w-4xl mx-auto leading-tight">
           Ready to Experience{' '}
           <CharStagger
             text="Pure Goodness?"
@@ -136,7 +138,7 @@ export default function FinalCtaSection() {
             <ArrowRight className="w-4 h-4" />
           </Link>
         </div>
-      </div>
+      </Container>
     </section>
   );
 }

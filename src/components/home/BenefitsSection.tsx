@@ -6,6 +6,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Check, ArrowRight, Sparkles } from 'lucide-react';
 import Link from 'next/link';
 import { bobIndependent } from '@/lib/motion';
+import Container from '@/components/ui/Container';
 
 export default function BenefitsSection() {
   const [activeTab, setActiveTab] = useState<'hair' | 'scalp' | 'skin'>('hair');
@@ -19,7 +20,7 @@ export default function BenefitsSection() {
       points: [
         'Virgin coconut oil base nourishes hair strands from root to tip',
         'Helps keep hair soft, smooth, and naturally lustrous',
-        'Handmade without silicones, liquid paraffin or artificial perfumes',
+        'Handmade without chemicals, preservatives or artificial perfumes',
       ],
       badge: 'Hair Nourishment',
     },
@@ -43,7 +44,7 @@ export default function BenefitsSection() {
       points: [
         'Gently hydrates and softens dry skin patches',
         'Traditionally used to promote clean, clear-looking skin',
-        'Contains no synthetic preservatives or mineral oils',
+        'Contains zero chemicals and zero preservatives',
       ],
       badge: 'Skin Support',
     },
@@ -52,7 +53,7 @@ export default function BenefitsSection() {
   const current = tabData[activeTab];
 
   return (
-    <section className="py-24 sm:py-32 relative overflow-hidden bg-[#FDF6EC]">
+    <section className="py-24 sm:py-32 relative overflow-hidden bg-[#FDF6EC] section-deferred">
       {/* Background Leaves Texture */}
       <div
         className="absolute inset-0 bg-cover bg-center opacity-30 mix-blend-multiply pointer-events-none"
@@ -87,12 +88,12 @@ export default function BenefitsSection() {
         />
       </motion.div>
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+      <Container className="relative z-10">
         <div className="text-center max-w-2xl mx-auto mb-14">
           <span className="text-xs font-semibold tracking-widest text-[#C9973A] uppercase">
             Botanical Care
           </span>
-          <h2 className="font-serif text-3xl sm:text-4xl md:text-5xl font-bold text-[#2B1D0E] mt-2 mb-4">
+          <h2 className="font-serif fluid-section-h2 font-bold text-[#2B1D0E] mt-2 mb-4">
             Traditional Hair, Scalp & Skin Care
           </h2>
           <p className="text-base sm:text-lg text-[#2B1D0E]/80 font-light">
@@ -186,7 +187,7 @@ export default function BenefitsSection() {
             </motion.div>
           </AnimatePresence>
         </div>
-      </div>
+      </Container>
     </section>
   );
 }

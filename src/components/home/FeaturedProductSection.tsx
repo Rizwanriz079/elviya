@@ -7,6 +7,7 @@ import { motion, useScroll, useTransform } from 'framer-motion';
 import { Sparkles, ArrowRight, ShieldCheck, Check } from 'lucide-react';
 import { PRODUCTS, getWhatsAppOrderUrl } from '@/lib/constants';
 import LetterSpaceExpand from '@/components/text/LetterSpaceExpand';
+import Container from '@/components/ui/Container';
 
 export default function FeaturedProductSection() {
   const neem = PRODUCTS.find((p) => p.id === 'neem-oil')!;
@@ -55,6 +56,20 @@ export default function FeaturedProductSection() {
       style={{ position: 'relative' }}
       className="py-24 sm:py-32 relative overflow-hidden bg-[#16301F] text-[#FDF6EC]"
     >
+      {/* Top Botanical Wave Divider */}
+      <div className="absolute top-0 left-0 right-0 overflow-hidden leading-none z-10 pointer-events-none -translate-y-[1px]">
+        <svg viewBox="0 0 1200 120" preserveAspectRatio="none" className="relative block w-full h-6 sm:h-10 text-[#FDF6EC] fill-current">
+          <path d="M0,0 C150,85 350,-35 500,40 C650,115 900,10 1200,50 L1200,0 L0,0 Z" />
+        </svg>
+      </div>
+
+      {/* Bottom Botanical Wave Divider */}
+      <div className="absolute bottom-0 left-0 right-0 overflow-hidden leading-none z-10 pointer-events-none translate-y-[1px]">
+        <svg viewBox="0 0 1200 120" preserveAspectRatio="none" className="relative block w-full h-6 sm:h-10 text-[#FDF6EC] fill-current">
+          <path d="M0,50 C300,95 550,-10 700,65 C850,140 1050,25 1200,50 L1200,120 L0,120 Z" />
+        </svg>
+      </div>
+
       {/* Background Texture & Ambient Glow */}
       <div
         className="absolute inset-0 bg-cover bg-center opacity-30 mix-blend-overlay pointer-events-none"
@@ -64,7 +79,7 @@ export default function FeaturedProductSection() {
       <div className="absolute top-1/4 -left-20 w-80 h-80 rounded-full bg-[#C9973A]/10 blur-3xl pointer-events-none" />
       <div className="absolute bottom-1/4 -right-20 w-80 h-80 rounded-full bg-[#4C8C4A]/15 blur-3xl pointer-events-none" />
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+      <Container className="relative z-10">
         {/* Section Header */}
         <div className="text-center max-w-3xl mx-auto mb-16 sm:mb-20">
           <motion.div
@@ -77,7 +92,7 @@ export default function FeaturedProductSection() {
             Signature Kerala Formulation
           </motion.div>
 
-          <h2 className="font-serif text-3xl sm:text-5xl md:text-6xl font-bold text-[#FDF6EC] tracking-tight mb-4">
+          <h2 className="font-serif fluid-section-h2 font-bold text-[#FDF6EC] tracking-tight mb-4">
             Pure Neem Oil <span className="text-[#C9973A] font-serif font-normal italic">(100ml)</span>
           </h2>
 
@@ -142,7 +157,7 @@ export default function FeaturedProductSection() {
                 className="relative w-full h-full drop-shadow-[0_25px_40px_rgba(0,0,0,0.65)]"
               >
                 <Image
-                  src={neem.image}
+                  src="/images/bottle-neem.png"
                   alt="Pure Neem Oil 100ml"
                   fill
                   sizes="320px"
@@ -248,7 +263,7 @@ export default function FeaturedProductSection() {
             <ArrowRight className="w-3.5 h-3.5" />
           </Link>
         </div>
-      </div>
+      </Container>
     </section>
   );
 }

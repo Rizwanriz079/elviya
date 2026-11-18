@@ -3,6 +3,7 @@ import Image from 'next/image';
 import { Instagram, Mail, Phone, MapPin, Sparkles, Heart } from 'lucide-react';
 import { BRAND } from '@/lib/constants';
 import OutlineToFill from '@/components/text/OutlineToFill';
+import Container from '@/components/ui/Container';
 
 export default function Footer() {
   return (
@@ -19,7 +20,7 @@ export default function Footer() {
         </svg>
       </div>
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-20">
+      <Container className="relative z-20">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-14">
           {/* Brand Information */}
           <div className="space-y-4">
@@ -216,7 +217,7 @@ export default function Footer() {
             Pure Homemade Herbal Oils from Kerala
           </p>
         </div>
-      </div>
+      </Container>
     </footer>
   );
 }
