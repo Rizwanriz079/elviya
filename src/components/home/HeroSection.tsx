@@ -9,9 +9,7 @@ import { PRODUCTS, getWhatsAppOrderUrl } from '@/lib/constants';
 import Container from '@/components/ui/Container';
 import ScriptDraw from '@/components/text/ScriptDraw';
 import GoldShimmer from '@/components/text/GoldShimmer';
-import SlotRoller from '@/components/text/SlotRoller';
-import WordBlurIn from '@/components/text/WordBlurIn';
-import { floatY, rotateSlow } from '@/lib/motion';
+import { rotateSlow } from '@/lib/motion';
 import { usePerfMode } from '@/lib/perf';
 
 const subscribeResize = (callback: () => void) => {
@@ -70,6 +68,36 @@ export default function HeroSection() {
   const { isLite, isFinePointer, isReducedMotion } = usePerfMode();
   const hasDesktopWidth = useSyncExternalStore(subscribeResize, getDesktopWidth, getServerDesktopWidth);
   const isDesktop = !isLite && isFinePointer && !isReducedMotion && hasDesktopWidth;
+
+  // Hero intro choreography state (coordinates with splash screen & reduced motion)
+  const [isAnimationTriggered, setIsAnimationTriggered] = useState(false);
+  const isHeroReady = isReducedMotion || isAnimationTriggered;
+
+  useEffect(() => {
+    if (isReducedMotion) {
+      return;
+    }
+
+    const splashActive =
+      typeof document !== 'undefined' &&
+      document.documentElement.dataset.splashActive === 'true';
+
+    if (!splashActive) {
+      // Small frame delay so background is painted and visual sequence begins smoothly
+      const timer = setTimeout(() => setIsAnimationTriggered(true), 60);
+      return () => clearTimeout(timer);
+    }
+
+    // If splash is active, wait for elvia:splash-end before starting hero animation
+    const handleSplashEnd = () => {
+      setTimeout(() => setIsAnimationTriggered(true), 80);
+    };
+
+    window.addEventListener('elvia:splash-end', handleSplashEnd, { once: true });
+    return () => {
+      window.removeEventListener('elvia:splash-end', handleSplashEnd);
+    };
+  }, [isReducedMotion]);
 
   // Active Hotspot state
   const [activeHotspot, setActiveHotspot] = useState<string | null>(null);
@@ -182,20 +210,35 @@ export default function HeroSection() {
       </div>
 
       <section id="hero-section" className="relative hero-svh flex flex-col justify-between page-top-padding z-10">
-        <Container className="w-full my-auto py-2 sm:py-3 flex-1 flex flex-col justify-center">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8 items-center">
-            {/* Left Column: Headline, Script, SlotRoller & CTAs */}
-            <div className="order-1 lg:col-span-7 flex flex-col items-start text-left space-y-2.5 sm:space-y-4 lg:space-y-5">
-              {/* ScriptDraw Line - Single Line, Never Wraps */}
-              <ScriptDraw text="Made by hand, with love." withUnderline={true} />
+        <Container className="w-full my-auto py-1.5 sm:py-3 flex-1 flex flex-col justify-center">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-5 lg:gap-8 items-center">
+            {/* Left Column on Desktop / Order 1 on Mobile: Headline, Script & CTAs */}
+            <div className="order-1 lg:col-span-7 flex flex-col items-start text-left space-y-2 sm:space-y-3 lg:space-y-4">
+              {/* Step 3 in Sequence (0.85s): Brand Line - Single Line, Never Wraps */}
+              <motion.div
+                initial={isReducedMotion ? false : { opacity: 0, y: 18 }}
+                animate={isHeroReady ? { opacity: 1, y: 0 } : { opacity: 0, y: 18 }}
+                transition={{
+                  duration: isReducedMotion ? 0 : 0.55,
+                  delay: isReducedMotion ? 0 : 0.85,
+                  ease: [0.22, 1, 0.36, 1],
+                }}
+                className="whitespace-nowrap"
+              >
+                <ScriptDraw text="Made by hand, with love." withUnderline={true} />
+              </motion.div>
 
-              {/* Kinetic Fluid 3-Line Headline */}
+              {/* Step 4 in Sequence (1.05s → 1.35s): Kinetic Fluid 3-Line Headline */}
               <h1 className="font-serif fluid-hero-h1 font-bold tracking-tight text-[#2B1D0E]">
                 <span className="block overflow-hidden py-0.5">
                   <motion.span
-                    initial={{ y: '100%', opacity: 0 }}
-                    animate={{ y: 0, opacity: 1 }}
-                    transition={{ duration: 0.75, ease: [0.76, 0, 0.24, 1] }}
+                    initial={isReducedMotion ? false : { y: '100%', opacity: 0 }}
+                    animate={isHeroReady ? { y: 0, opacity: 1 } : { y: '100%', opacity: 0 }}
+                    transition={{
+                      duration: isReducedMotion ? 0 : 0.65,
+                      delay: isReducedMotion ? 0 : 1.05,
+                      ease: [0.76, 0, 0.24, 1],
+                    }}
                     className="inline-block"
                   >
                     Pure
@@ -203,19 +246,27 @@ export default function HeroSection() {
                 </span>
                 <span className="block overflow-hidden py-0.5">
                   <motion.span
-                    initial={{ y: '100%', opacity: 0 }}
-                    animate={{ y: 0, opacity: 1 }}
-                    transition={{ duration: 0.75, delay: 0.1, ease: [0.76, 0, 0.24, 1] }}
+                    initial={isReducedMotion ? false : { y: '100%', opacity: 0 }}
+                    animate={isHeroReady ? { y: 0, opacity: 1 } : { y: '100%', opacity: 0 }}
+                    transition={{
+                      duration: isReducedMotion ? 0 : 0.65,
+                      delay: isReducedMotion ? 0 : 1.17,
+                      ease: [0.76, 0, 0.24, 1],
+                    }}
                     className="inline-block relative"
                   >
                     Homemade
-                    {/* Real two-leaf SVG sprig growing from the top of Homemade */}
+                    {/* Small botanical two-leaf SVG sprig gently reveals with stroke/scale after word reveal */}
                     <motion.svg
                       viewBox="0 0 50 50"
-                      className="w-8 h-8 sm:w-10 sm:h-10 text-[#4C8C4A] absolute -top-5 right-[-2.2rem] overflow-visible"
-                      initial={{ scale: 0, rotate: -30, opacity: 0 }}
-                      animate={{ scale: 1, rotate: 0, opacity: 1 }}
-                      transition={{ delay: 0.7, duration: 0.65, ease: [0.22, 1, 0.36, 1] }}
+                      className="w-7 h-7 sm:w-9 sm:h-9 text-[#4C8C4A] absolute -top-4 right-[-1.8rem] sm:right-[-2.2rem] overflow-visible pointer-events-none"
+                      initial={isReducedMotion ? false : { scale: 0, opacity: 0 }}
+                      animate={isHeroReady ? { scale: 1, opacity: 1 } : { scale: 0, opacity: 0 }}
+                      transition={{
+                        delay: isReducedMotion ? 0 : 1.55,
+                        duration: 0.55,
+                        ease: [0.22, 1, 0.36, 1],
+                      }}
                     >
                       <path
                         d="M 12 38 Q 25 22 36 10"
@@ -237,35 +288,62 @@ export default function HeroSection() {
                 </span>
                 <span className="block overflow-hidden py-0.5">
                   <motion.span
-                    initial={{ y: '100%', opacity: 0 }}
-                    animate={{ y: 0, opacity: 1 }}
-                    transition={{ duration: 0.75, delay: 0.2, ease: [0.76, 0, 0.24, 1] }}
+                    initial={isReducedMotion ? false : { y: '100%', opacity: 0 }}
+                    animate={isHeroReady ? { y: 0, opacity: 1 } : { y: '100%', opacity: 0 }}
+                    transition={{
+                      duration: isReducedMotion ? 0 : 0.65,
+                      delay: isReducedMotion ? 0 : 1.29,
+                      ease: [0.76, 0, 0.24, 1],
+                    }}
                     className="inline-block"
                   >
-                    <GoldShimmer>Herbal Oils</GoldShimmer>
+                    <GoldShimmer>Herbal</GoldShimmer>{' '}
+                    <span className="text-[#2B1D0E]">Oils</span>
                   </motion.span>
                 </span>
               </h1>
 
-              {/* SlotRoller Mechanical Vertical Word Carousel */}
-              <div className="flex items-center gap-2 text-base sm:text-lg md:text-xl font-medium text-[#2F5D3A] font-serif pt-0.5">
-                <span>Traditionally used for</span>
-                <SlotRoller words={['Hair Care', 'Scalp Care', 'Skin Care']} />
+              {/* Step 5 in Sequence (1.50s → 1.65s): Supporting Factual Text */}
+              <div className="space-y-1 sm:space-y-1.5 pt-0.5">
+                <motion.p
+                  initial={isReducedMotion ? false : { opacity: 0, y: 16 }}
+                  animate={isHeroReady ? { opacity: 1, y: 0 } : { opacity: 0, y: 16 }}
+                  transition={{
+                    duration: isReducedMotion ? 0 : 0.55,
+                    delay: isReducedMotion ? 0 : 1.50,
+                    ease: [0.22, 1, 0.36, 1],
+                  }}
+                  className="font-serif text-sm sm:text-base md:text-lg font-medium text-[#2F5D3A]"
+                >
+                  Traditionally used for hair, scalp and skin care.
+                </motion.p>
+
+                <motion.p
+                  initial={isReducedMotion ? false : { opacity: 0, y: 16 }}
+                  animate={isHeroReady ? { opacity: 1, y: 0 } : { opacity: 0, y: 16 }}
+                  transition={{
+                    duration: isReducedMotion ? 0 : 0.55,
+                    delay: isReducedMotion ? 0 : 1.65,
+                    ease: [0.22, 1, 0.36, 1],
+                  }}
+                  className="max-w-xl fluid-body text-[#2B1D0E]/85 font-light"
+                >
+                  Made with pure virgin coconut oil and fresh neem. Prepared by hand in Kerala.
+                </motion.p>
               </div>
 
-              {/* Body Text with WordBlurIn */}
-              <div className="max-w-xl fluid-body text-[#2B1D0E]/85">
-                <WordBlurIn
-                  text="Made with pure virgin coconut oil and fresh neem. Prepared by hand in Kerala for healthy hair, a clean scalp and clear skin."
-                  delay={0.3}
-                />
-              </div>
-
-              {/* Action Buttons */}
-              <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-4 w-full sm:w-auto pt-1 sm:pt-2">
+              {/* Step 6 in Sequence (1.80s → 1.90s): CTA Action Buttons */}
+              <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2.5 sm:gap-4 w-full sm:w-auto pt-1 sm:pt-1.5">
                 {/* Dark-Forest Primary CTA with Arrow Circle */}
                 <motion.a
                   ref={btnRef}
+                  initial={isReducedMotion ? false : { opacity: 0, y: 16 }}
+                  animate={isHeroReady ? { opacity: 1, y: 0 } : { opacity: 0, y: 16 }}
+                  transition={{
+                    duration: isReducedMotion ? 0 : 0.5,
+                    delay: isReducedMotion ? 0 : 1.80,
+                    ease: [0.22, 1, 0.36, 1],
+                  }}
                   style={{
                     x: isDesktop ? smoothBtnX : 0,
                     y: isDesktop ? smoothBtnY : 0,
@@ -276,50 +354,84 @@ export default function HeroSection() {
                   target="_blank"
                   rel="noopener noreferrer"
                   data-cursor="order"
-                  className="btn-shine relative group overflow-hidden inline-flex items-center justify-center gap-3 bg-[#16301F] hover:bg-[#2F5D3A] text-white px-7 sm:px-8 py-3.5 sm:py-4 rounded-full font-semibold shadow-xl shadow-[#16301F]/25 transition-colors active:scale-95 text-sm sm:text-base text-center"
+                  className="btn-shine relative group overflow-hidden inline-flex items-center justify-center gap-3 bg-[#16301F] hover:bg-[#2F5D3A] text-white px-6 sm:px-8 py-3 sm:py-3.5 rounded-full font-semibold shadow-xl shadow-[#16301F]/25 transition-colors active:scale-95 text-sm sm:text-base text-center"
                 >
                   <span>Get It Now – ₹{neemProduct.price}</span>
-                  <div className="w-8 h-8 rounded-full bg-[#25D366] text-white flex items-center justify-center shrink-0 shadow-sm group-hover:scale-110 transition-transform">
-                    <ArrowRight className="w-4 h-4" />
+                  <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-[#25D366] text-white flex items-center justify-center shrink-0 shadow-sm group-hover:scale-110 transition-transform">
+                    <ArrowRight className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
                   </div>
                 </motion.a>
 
                 {/* Outlined Explore Products */}
-                <Link
-                  href="/product"
-                  data-cursor="view"
-                  className="inline-flex items-center justify-center gap-2 px-6 sm:px-7 py-3.5 sm:py-4 rounded-full border-2 border-[#2F5D3A] text-[#2F5D3A] hover:bg-[#2F5D3A] hover:text-[#FDF6EC] font-semibold transition-all duration-300 text-sm sm:text-base text-center"
+                <motion.div
+                  initial={isReducedMotion ? false : { opacity: 0, y: 16 }}
+                  animate={isHeroReady ? { opacity: 1, y: 0 } : { opacity: 0, y: 16 }}
+                  transition={{
+                    duration: isReducedMotion ? 0 : 0.5,
+                    delay: isReducedMotion ? 0 : 1.90,
+                    ease: [0.22, 1, 0.36, 1],
+                  }}
                 >
-                  <span>Explore Products</span>
-                  <ArrowRight className="w-4 h-4" />
-                </Link>
+                  <Link
+                    href="/product"
+                    data-cursor="view"
+                    className="inline-flex items-center justify-center gap-2 px-5 sm:px-7 py-3 sm:py-3.5 rounded-full border-2 border-[#2F5D3A] text-[#2F5D3A] hover:bg-[#2F5D3A] hover:text-[#FDF6EC] font-semibold transition-all duration-300 text-sm sm:text-base text-center w-full sm:w-auto"
+                  >
+                    <span>Explore Products</span>
+                    <ArrowRight className="w-4 h-4" />
+                  </Link>
+                </motion.div>
               </div>
 
-              {/* Delivery across India with truck between thin lines */}
-              <div className="flex items-center gap-3 text-xs sm:text-sm text-[#2B1D0E]/75 pt-1 w-full max-w-md">
+              {/* Step 7 in Sequence (2.05s): Clean Delivery Row */}
+              <motion.div
+                initial={isReducedMotion ? false : { opacity: 0, y: 12 }}
+                animate={isHeroReady ? { opacity: 1, y: 0 } : { opacity: 0, y: 12 }}
+                transition={{
+                  duration: isReducedMotion ? 0 : 0.45,
+                  delay: isReducedMotion ? 0 : 2.05,
+                  ease: [0.22, 1, 0.36, 1],
+                }}
+                className="flex items-center gap-3 text-xs sm:text-sm text-[#2B1D0E]/75 pt-1 w-full max-w-md"
+              >
                 <div className="h-[1px] flex-1 bg-[#C9973A]/40" />
                 <span className="flex items-center gap-1.5 font-medium text-[#2F5D3A]">
                   <Truck className="w-4 h-4 text-[#C9973A]" />
                   <span>Delivery across India</span>
-                  <span className="text-[#C9973A]">•</span>
-                  <span>Kerala flat ₹50</span>
                 </span>
                 <div className="h-[1px] flex-1 bg-[#C9973A]/40" />
-              </div>
+              </motion.div>
             </div>
 
-            {/* Right Column: Positioned Arch Container with aspect-ratio 3/4 */}
+            {/* Right Column on Desktop / Order 2 on Mobile: Positioned Arch Container */}
             <div className="order-2 lg:col-span-5 relative flex items-center justify-center py-1 sm:py-2">
-              <div
+              {/* Step 1 in Sequence (0.00s → 0.45s): Arch Frame Reveal */}
+              <motion.div
+                initial={isReducedMotion ? false : { opacity: 0, clipPath: 'inset(100% 0% 0% 0%)' }}
+                animate={isHeroReady ? { opacity: 1, clipPath: 'inset(0% 0% 0% 0%)' } : { opacity: 0, clipPath: 'inset(100% 0% 0% 0%)' }}
+                transition={{
+                  duration: isReducedMotion ? 0 : 0.45,
+                  ease: [0.22, 1, 0.36, 1],
+                  delay: 0,
+                }}
                 onMouseMove={handleBottleMouseMove}
                 onMouseLeave={handleBottleMouseLeave}
-                className="relative mx-auto rounded-t-[14rem] sm:rounded-t-[18rem] lg:rounded-t-[22rem] bg-[#E8EFE3]/55 border-2 border-[#C9973A]/40 shadow-botanical backdrop-blur-[2px] overflow-hidden h-[min(44svh,21rem)] lg:h-[min(62vh,29rem)] w-auto aspect-[3/4] flex items-end justify-center perspective-1000"
+                className="relative mx-auto rounded-t-[14rem] sm:rounded-t-[18rem] lg:rounded-t-[22rem] bg-[#E8EFE3]/55 border-2 border-[#C9973A]/40 shadow-botanical backdrop-blur-[2px] overflow-hidden h-[min(38svh,19rem)] sm:h-[min(44svh,22rem)] lg:h-[min(62vh,29rem)] w-auto aspect-[3/4] flex items-end justify-center perspective-1000"
               >
-                {/* Rotating Stamp Badge */}
-                <div className="absolute top-3 right-3 sm:top-4 sm:right-4 z-30 pointer-events-none">
+                {/* Step 2d in Sequence (0.70s): Rotating Stamp Badge */}
+                <motion.div
+                  initial={isReducedMotion ? false : { opacity: 0, scale: 0.82 }}
+                  animate={isHeroReady ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.82 }}
+                  transition={{
+                    duration: isReducedMotion ? 0 : 0.5,
+                    delay: isReducedMotion ? 0 : 0.70,
+                    ease: [0.22, 1, 0.36, 1],
+                  }}
+                  className="absolute top-3 right-3 sm:top-4 sm:right-4 z-30 pointer-events-none"
+                >
                   <motion.div
                     variants={rotateSlow}
-                    animate="animate"
+                    animate={isReducedMotion ? undefined : 'animate'}
                     className="w-16 h-16 sm:w-20 sm:h-20 lg:w-24 lg:h-24 flex items-center justify-center bg-[#FDF6EC]/90 rounded-full shadow-botanical backdrop-blur-sm border border-[#C9973A]/40"
                   >
                     <svg viewBox="0 0 100 100" className="w-full h-full p-1">
@@ -338,33 +450,39 @@ export default function HeroSection() {
                       <Sparkles className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-[#C9973A]" />
                     </div>
                   </motion.div>
-                </div>
+                </motion.div>
 
-                {/* Floating Oil Drops on Desktop (Smaller than bottle, non-overlapping) */}
+                {/* Step 2c in Sequence (0.60s): Floating Oil Drops on Desktop */}
                 {isDesktop && (
                   <>
                     <motion.div
+                      initial={isReducedMotion ? false : { opacity: 0, y: -12 }}
+                      animate={isHeroReady ? { opacity: 1, y: 0 } : { opacity: 0, y: -12 }}
+                      transition={{ duration: isReducedMotion ? 0 : 0.45, delay: isReducedMotion ? 0 : 0.60 }}
                       style={{ x: leafX, y: leafY }}
                       className="absolute top-12 left-3 z-10 pointer-events-none drop-shadow-md"
                     >
                       <Image
                         src="/images/drop-1.png"
                         alt="Golden Oil Drop"
-                        width={24}
-                        height={32}
-                        className="w-6 h-8 object-contain"
+                        width={22}
+                        height={30}
+                        className="w-5 h-7 object-contain"
                       />
                     </motion.div>
                     <motion.div
+                      initial={isReducedMotion ? false : { opacity: 0, y: 12 }}
+                      animate={isHeroReady ? { opacity: 1, y: 0 } : { opacity: 0, y: 12 }}
+                      transition={{ duration: isReducedMotion ? 0 : 0.45, delay: isReducedMotion ? 0 : 0.65 }}
                       style={{ x: leafX, y: leafY }}
                       className="absolute bottom-28 right-3 z-10 pointer-events-none drop-shadow-md"
                     >
                       <Image
                         src="/images/drop-2.png"
                         alt="Pure Herbal Drop"
-                        width={20}
-                        height={26}
-                        className="w-5 h-6 object-contain"
+                        width={18}
+                        height={24}
+                        className="w-4 h-6 object-contain"
                       />
                     </motion.div>
                   </>
@@ -373,11 +491,25 @@ export default function HeroSection() {
                 {/* Inner Soft Gradient inside arch */}
                 <div className="absolute inset-2 rounded-t-[13rem] sm:rounded-t-[17rem] lg:rounded-t-[21rem] bg-gradient-to-b from-[#FDF6EC]/85 via-[#FDF6EC]/40 to-[#E8EFE3]/20 pointer-events-none z-0" />
 
-                {/* Subtle warm sunbeam glow behind bottle */}
-                <div className="absolute top-1/4 left-1/2 -translate-x-1/2 w-48 sm:w-64 h-48 sm:h-64 rounded-full bg-[#FFEBB8]/50 blur-3xl pointer-events-none z-0" />
+                {/* Step 2b in Sequence (0.45s): Subtle warm sunbeam glow behind bottle */}
+                <motion.div
+                  initial={isReducedMotion ? false : { opacity: 0, scale: 0.85 }}
+                  animate={isHeroReady ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.85 }}
+                  transition={{ duration: isReducedMotion ? 0 : 0.5, delay: isReducedMotion ? 0 : 0.45 }}
+                  className="absolute top-1/4 left-1/2 -translate-x-1/2 w-44 sm:w-60 h-44 sm:h-60 rounded-full bg-[#FFEBB8]/50 blur-3xl pointer-events-none z-0"
+                />
 
-                {/* Natural Wooden Slice Podium (Ellipse, ~86% of arch width) */}
-                <div className="absolute bottom-1.5 inset-x-[7%] h-[13%] flex items-center justify-center z-10 pointer-events-none">
+                {/* Step 2b in Sequence (0.45s): Natural Wooden Slice Podium */}
+                <motion.div
+                  initial={isReducedMotion ? false : { opacity: 0, scale: 0.95 }}
+                  animate={isHeroReady ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.95 }}
+                  transition={{
+                    duration: isReducedMotion ? 0 : 0.5,
+                    delay: isReducedMotion ? 0 : 0.45,
+                    ease: [0.22, 1, 0.36, 1],
+                  }}
+                  className="absolute bottom-1.5 inset-x-[7%] h-[13%] flex items-center justify-center z-10 pointer-events-none"
+                >
                   {/* Soft floor shadow */}
                   <div className="absolute bottom-0 w-full h-1/2 bg-[#2B1D0E]/25 rounded-[50%] blur-md" />
                   {/* Wooden slice base */}
@@ -385,12 +517,20 @@ export default function HeroSection() {
                     {/* Top natural ring */}
                     <div className="absolute inset-1 rounded-[50%] bg-[#EADCC7] border border-[#C9973A]/30" />
                   </div>
-                </div>
+                </motion.div>
 
-                {/* Soft Elliptical Contact Shadow under bottle */}
-                <div className="absolute bottom-[12.5%] left-1/2 -translate-x-1/2 w-[32%] h-2.5 rounded-[50%] bg-[#2B1D0E]/35 blur-[3px] z-10 pointer-events-none" />
+                {/* Step 2b in Sequence (0.45s): Soft Elliptical Contact Shadow under bottle */}
+                <motion.div
+                  initial={isReducedMotion ? false : { opacity: 0, scale: 0.7 }}
+                  animate={isHeroReady ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.7 }}
+                  transition={{
+                    duration: isReducedMotion ? 0 : 0.5,
+                    delay: isReducedMotion ? 0 : 0.45,
+                  }}
+                  className="absolute bottom-[12.5%] left-1/2 -translate-x-1/2 w-[32%] h-2.5 rounded-[50%] bg-[#2B1D0E]/35 blur-[3px] z-10 pointer-events-none"
+                />
 
-                {/* Real Bottle Layer: Absolutely positioned container, height 76%, centered */}
+                {/* Step 2a in Sequence (0.20s → 0.85s): Real Bottle Layer Entrance & Subtle Float */}
                 <div
                   onClick={handlePourDrop}
                   style={{
@@ -402,104 +542,131 @@ export default function HeroSection() {
                   }}
                   className="absolute z-20 cursor-pointer group"
                 >
+                  {/* Entrance Reveal Layer */}
                   <motion.div
-                    style={{
-                      x: isDesktop ? bottleX : 0,
-                      y: isDesktop ? bottleY : 0,
-                      rotateX: isDesktop ? smoothTiltX : 0,
-                      rotateY: isDesktop ? smoothTiltY : 0,
-                      transformStyle: 'preserve-3d',
+                    initial={isReducedMotion ? false : { opacity: 0, y: 40, scale: 0.88 }}
+                    animate={isHeroReady ? { opacity: 1, y: 0, scale: 1 } : { opacity: 0, y: 40, scale: 0.88 }}
+                    transition={{
+                      duration: isReducedMotion ? 0 : 0.65,
+                      delay: isReducedMotion ? 0 : 0.20,
+                      ease: [0.22, 1, 0.36, 1],
                     }}
                     className="relative w-full h-full"
                   >
+                    {/* Desktop 3D Tilt & Parallax Layer */}
                     <motion.div
-                      variants={floatY}
-                      animate="animate"
+                      style={{
+                        x: isDesktop ? bottleX : 0,
+                        y: isDesktop ? bottleY : 0,
+                        rotateX: isDesktop ? smoothTiltX : 0,
+                        rotateY: isDesktop ? smoothTiltY : 0,
+                        transformStyle: 'preserve-3d',
+                      }}
                       className="relative w-full h-full"
                     >
-                      <Image
-                        src="/images/bottle-neem.webp"
-                        alt="Elvia Herbals Pure Neem Oil 100ml"
-                        fill
-                        priority
-                        sizes="(max-width: 768px) 60vw, (max-width: 1200px) 35vw, 420px"
-                        className="object-contain select-none pointer-events-none drop-shadow-[0_8px_16px_rgba(43,29,14,0.18)]"
-                      />
+                      {/* Step 3: Subtle Continuous Float Layer (Kicks in at 0.85s) */}
+                      <motion.div
+                        animate={
+                          isReducedMotion
+                            ? {}
+                            : isHeroReady
+                            ? {
+                                y: [0, -8, 0],
+                                transition: {
+                                  delay: 0.85,
+                                  duration: 4.5,
+                                  repeat: Infinity,
+                                  ease: 'easeInOut',
+                                },
+                              }
+                            : {}
+                        }
+                        className="relative w-full h-full"
+                      >
+                        <Image
+                          src="/images/bottle-neem.webp"
+                          alt="Elvia Herbals Pure Neem Oil 100ml"
+                          fill
+                          priority
+                          sizes="(max-width: 768px) 60vw, (max-width: 1200px) 35vw, 420px"
+                          className="object-contain select-none pointer-events-none drop-shadow-[0_8px_16px_rgba(43,29,14,0.18)]"
+                        />
 
-                      {/* Interactive Ingredient Hotspots (Desktop fine pointer only) */}
-                      {isDesktop &&
-                        INGREDIENT_HOTSPOTS.map((spot) => {
-                          const isActive = activeHotspot === spot.id;
-                          return (
-                            <div
-                              key={spot.id}
-                              style={{ top: spot.top, left: spot.left }}
-                              className="absolute z-30 -translate-x-1/2 -translate-y-1/2 pointer-events-auto"
-                              onMouseEnter={(e) => {
-                                e.stopPropagation();
-                                setActiveHotspot(spot.id);
-                              }}
-                              onMouseLeave={(e) => {
-                                e.stopPropagation();
-                                setActiveHotspot(null);
-                              }}
-                            >
-                              {/* Glowing Pulsing Hotspot Dot */}
-                              <div className="relative w-6 h-6 flex items-center justify-center cursor-pointer">
-                                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#C9973A] opacity-60" />
-                                <span className="relative inline-flex rounded-full h-3.5 w-3.5 bg-[#C9973A] border-2 border-white shadow-sm" />
+                        {/* Interactive Ingredient Hotspots (Desktop fine pointer only) */}
+                        {isDesktop &&
+                          INGREDIENT_HOTSPOTS.map((spot) => {
+                            const isActive = activeHotspot === spot.id;
+                            return (
+                              <div
+                                key={spot.id}
+                                style={{ top: spot.top, left: spot.left }}
+                                className="absolute z-30 -translate-x-1/2 -translate-y-1/2 pointer-events-auto"
+                                onMouseEnter={(e) => {
+                                  e.stopPropagation();
+                                  setActiveHotspot(spot.id);
+                                }}
+                                onMouseLeave={(e) => {
+                                  e.stopPropagation();
+                                  setActiveHotspot(null);
+                                }}
+                              >
+                                {/* Glowing Pulsing Hotspot Dot */}
+                                <div className="relative w-6 h-6 flex items-center justify-center cursor-pointer">
+                                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#C9973A] opacity-60" />
+                                  <span className="relative inline-flex rounded-full h-3.5 w-3.5 bg-[#C9973A] border-2 border-white shadow-sm" />
+                                </div>
+
+                                {/* Tooltip Card with SVG Connector */}
+                                <AnimatePresence>
+                                  {isActive && (
+                                    <motion.div
+                                      initial={{ opacity: 0, scale: 0.9, y: 4 }}
+                                      animate={{ opacity: 1, scale: 1, y: 0 }}
+                                      exit={{ opacity: 0, scale: 0.9, y: 4 }}
+                                      transition={{ duration: 0.2 }}
+                                      className={`absolute top-1/2 -translate-y-1/2 pointer-events-none z-40 whitespace-nowrap p-3 rounded-2xl bg-[#FDF6EC]/96 backdrop-blur-md border border-[#C9973A]/40 shadow-botanical ${
+                                        spot.tooltipAlign === 'right'
+                                          ? 'left-8 text-left'
+                                          : 'right-8 text-right'
+                                      }`}
+                                    >
+                                      <div className="flex items-center gap-1.5 text-xs font-bold font-serif text-[#2F5D3A]">
+                                        <Sparkles className="w-3 h-3 text-[#C9973A]" />
+                                        <span>{spot.title}</span>
+                                      </div>
+                                      <div className="text-[10px] text-[#2B1D0E]/75 font-light mt-0.5">
+                                        {spot.detail}
+                                      </div>
+                                    </motion.div>
+                                  )}
+                                </AnimatePresence>
                               </div>
+                            );
+                          })}
 
-                              {/* Tooltip Card with SVG Connector */}
-                              <AnimatePresence>
-                                {isActive && (
-                                  <motion.div
-                                    initial={{ opacity: 0, scale: 0.9, y: 4 }}
-                                    animate={{ opacity: 1, scale: 1, y: 0 }}
-                                    exit={{ opacity: 0, scale: 0.9, y: 4 }}
-                                    transition={{ duration: 0.2 }}
-                                    className={`absolute top-1/2 -translate-y-1/2 pointer-events-none z-40 whitespace-nowrap p-3 rounded-2xl bg-[#FDF6EC]/96 backdrop-blur-md border border-[#C9973A]/40 shadow-botanical ${
-                                      spot.tooltipAlign === 'right'
-                                        ? 'left-8 text-left'
-                                        : 'right-8 text-right'
-                                    }`}
-                                  >
-                                    <div className="flex items-center gap-1.5 text-xs font-bold font-serif text-[#2F5D3A]">
-                                      <Sparkles className="w-3 h-3 text-[#C9973A]" />
-                                      <span>{spot.title}</span>
-                                    </div>
-                                    <div className="text-[10px] text-[#2B1D0E]/75 font-light mt-0.5">
-                                      {spot.detail}
-                                    </div>
-                                  </motion.div>
-                                )}
-                              </AnimatePresence>
-                            </div>
-                          );
-                        })}
+                        {/* "Pour a Drop" Animation */}
+                        <AnimatePresence>
+                          {isPouring && (
+                            <>
+                              {/* Falling Golden Drop */}
+                              <motion.div
+                                initial={{ top: '12%', opacity: 1, scale: 0.8 }}
+                                animate={{ top: '96%', opacity: [1, 1, 0], scale: [0.8, 1.2, 0.4] }}
+                                transition={{ duration: 0.65, ease: 'easeIn' }}
+                                className="absolute left-1/2 -translate-x-1/2 w-3.5 h-4.5 rounded-full bg-gradient-to-b from-[#C9973A] to-[#E5C07B] shadow-md z-40 pointer-events-none"
+                              />
 
-                      {/* "Pour a Drop" Animation */}
-                      <AnimatePresence>
-                        {isPouring && (
-                          <>
-                            {/* Falling Golden Drop */}
-                            <motion.div
-                              initial={{ top: '12%', opacity: 1, scale: 0.8 }}
-                              animate={{ top: '96%', opacity: [1, 1, 0], scale: [0.8, 1.2, 0.4] }}
-                              transition={{ duration: 0.65, ease: 'easeIn' }}
-                              className="absolute left-1/2 -translate-x-1/2 w-3.5 h-4.5 rounded-full bg-gradient-to-b from-[#C9973A] to-[#E5C07B] shadow-md z-40 pointer-events-none"
-                            />
-
-                            {/* Concentric Gold Ripples on Podium */}
-                            <motion.div
-                              initial={{ scale: 0, opacity: 0 }}
-                              animate={{ scale: [0, 2.2, 3.2], opacity: [0, 0.85, 0] }}
-                              transition={{ delay: 0.6, duration: 0.6, ease: 'easeOut' }}
-                              className="absolute -bottom-3 left-1/2 -translate-x-1/2 w-20 h-10 rounded-[50%] border-2 border-[#C9973A] z-20 pointer-events-none"
-                            />
-                          </>
-                        )}
-                      </AnimatePresence>
+                              {/* Concentric Gold Ripples on Podium */}
+                              <motion.div
+                                initial={{ scale: 0, opacity: 0 }}
+                                animate={{ scale: [0, 2.2, 3.2], opacity: [0, 0.85, 0] }}
+                                transition={{ delay: 0.6, duration: 0.6, ease: 'easeOut' }}
+                                className="absolute -bottom-3 left-1/2 -translate-x-1/2 w-20 h-10 rounded-[50%] border-2 border-[#C9973A] z-20 pointer-events-none"
+                              />
+                            </>
+                          )}
+                        </AnimatePresence>
+                      </motion.div>
                     </motion.div>
                   </motion.div>
                 </div>
@@ -518,15 +685,22 @@ export default function HeroSection() {
                     </motion.div>
                   )}
                 </AnimatePresence>
-              </div>
+              </motion.div>
             </div>
           </div>
         </Container>
 
         {/* Bottom Curved Wave Trust Strip (Deep Forest #16301F) */}
-        <div
+        <motion.div
           id="hero-trust-strip"
-          className="relative w-full bg-[#16301F] text-[#FDF6EC] pt-3.5 sm:pt-4 pb-4 sm:pb-4 pb-[calc(1rem+env(safe-area-inset-bottom,0px))] z-20 border-t border-[#C9973A]/30 compact-on-short-screens"
+          initial={isReducedMotion ? false : { opacity: 0, y: 20 }}
+          animate={isHeroReady ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
+          transition={{
+            duration: isReducedMotion ? 0 : 0.55,
+            delay: isReducedMotion ? 0 : 2.15,
+            ease: [0.22, 1, 0.36, 1],
+          }}
+          className="relative w-full bg-[#16301F] text-[#FDF6EC] pt-3 sm:pt-4 pb-3.5 sm:pb-4 pb-[calc(1rem+env(safe-area-inset-bottom,0px))] z-20 border-t border-[#C9973A]/30 compact-on-short-screens"
         >
           <Container>
             <div className="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4 lg:gap-6 items-center">
@@ -566,7 +740,7 @@ export default function HeroSection() {
               <span>Scroll to explore</span>
             </div>
           </Container>
-        </div>
+        </motion.div>
       </section>
     </div>
   );
