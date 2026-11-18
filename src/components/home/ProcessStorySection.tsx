@@ -3,6 +3,7 @@
 import { useRef, useState, useEffect } from 'react';
 import Image from 'next/image';
 import { motion, useScroll, useTransform, useMotionValue, useSpring } from 'framer-motion';
+import Container from '@/components/ui/Container';
 import OutlineToFill from '@/components/text/OutlineToFill';
 import ScriptDraw from '@/components/text/ScriptDraw';
 import { PRODUCTS, getWhatsAppOrderUrl } from '@/lib/constants';
@@ -162,7 +163,7 @@ export default function ProcessStorySection() {
       style={{
         position: 'relative',
         backgroundColor,
-        height: isDesktop && !prefersReducedMotion ? `calc(100vh + ${scrollDistance}px)` : 'auto',
+        height: isDesktop && !prefersReducedMotion ? `calc(100svh + ${scrollDistance}px)` : 'auto',
       }}
       className="relative border-b border-[#C9973A]/20 transition-colors duration-300"
     >
@@ -170,7 +171,7 @@ export default function ProcessStorySection() {
           DESKTOP PINNED HORIZONTAL SECTION (min-width: 1024px)
           ======================================================== */}
       {isDesktop && !prefersReducedMotion && (
-        <div className="sticky top-0 h-screen overflow-x-clip flex flex-col justify-between py-6 px-6 sm:px-10 z-10">
+        <div className="sticky top-0 h-[100svh] overflow-x-clip flex flex-col justify-between py-4 sm:py-6 z-10">
           {/* Subtle Ambient Parallax Leaves in Background */}
           <div className="absolute inset-0 pointer-events-none overflow-hidden z-0">
             <motion.div
@@ -192,12 +193,12 @@ export default function ProcessStorySection() {
           </div>
 
           {/* 1. Top Header Area (Inside Sticky Container, zero gap above) */}
-          <div className="max-w-7xl mx-auto w-full flex items-end justify-between relative z-10 pt-2 pb-3">
+          <Container className="w-full flex items-end justify-between relative z-10 pt-2 pb-3">
             <div>
               <span className="text-xs font-semibold tracking-widest text-[#2F5D3A] uppercase block">
                 Traditional Craftsmanship
               </span>
-              <h2 className="font-serif text-3xl sm:text-4xl lg:text-5xl font-bold text-[#2B1D0E] mt-1">
+              <h2 className="font-serif fluid-section-h2 font-bold text-[#2B1D0E] mt-1">
                 From Leaf to Bottle
               </h2>
             </div>
@@ -220,14 +221,14 @@ export default function ProcessStorySection() {
                 <span className="animate-pulse">→</span>
               </motion.div>
             </div>
-          </div>
+          </Container>
 
           {/* 2. Horizontal Moving Track */}
           <div className="relative w-full my-auto z-10 overflow-visible py-2">
             <motion.div
               ref={trackRef}
               style={{ x }}
-              className="flex items-center gap-8 pl-4 pr-16 w-max will-change-transform"
+              className="flex items-center gap-8 pl-8 pr-16 w-max will-change-transform"
             >
               {steps.map((step, idx) => {
                 const isActive = activeStep === idx;
@@ -243,7 +244,7 @@ export default function ProcessStorySection() {
                       opacity: isActive ? 1.0 : 0.72,
                     }}
                     transition={{ duration: 0.35, ease: 'easeOut' }}
-                    className={`w-[440px] h-[64vh] min-h-[440px] max-h-[540px] p-8 rounded-3xl flex flex-col justify-between shrink-0 relative overflow-hidden transition-shadow duration-300 ${
+                    className={`w-[28rem] 2xl:w-[32rem] h-[66svh] min-h-[26rem] max-h-[42rem] p-7 sm:p-8 rounded-3xl flex flex-col justify-between shrink-0 relative overflow-hidden transition-shadow duration-300 ${
                       isActive
                         ? 'bg-white/95 shadow-botanical-lg border-2 border-[#C9973A]/50'
                         : 'bg-white/75 shadow-botanical border border-[#C9973A]/25'
@@ -313,7 +314,7 @@ export default function ProcessStorySection() {
               })}
 
               {/* 5th Final End Panel: "Made by hand, with love" + WhatsApp Button */}
-              <div className="w-[420px] h-[64vh] min-h-[440px] max-h-[540px] p-8 rounded-3xl bg-[#2F5D3A] text-[#FDF6EC] shadow-botanical-lg flex flex-col justify-between shrink-0 relative overflow-hidden border border-[#C9973A]/40">
+              <div className="w-[26rem] 2xl:w-[30rem] h-[66svh] min-h-[26rem] max-h-[42rem] p-7 sm:p-8 rounded-3xl bg-[#2F5D3A] text-[#FDF6EC] shadow-botanical-lg flex flex-col justify-between shrink-0 relative overflow-hidden border border-[#C9973A]/40">
                 <div className="absolute top-0 right-0 w-64 h-64 bg-[#C9973A]/15 rounded-full blur-2xl pointer-events-none" />
 
                 <div className="space-y-4 relative z-10">
@@ -359,14 +360,14 @@ export default function ProcessStorySection() {
           </div>
 
           {/* 3. Bottom Progress Bar */}
-          <div className="max-w-7xl mx-auto w-full relative z-10 pt-2 pb-1">
+          <Container className="w-full relative z-10 pt-2 pb-1">
             <div className="w-full h-[2px] bg-[#C9973A]/20 rounded-full overflow-hidden relative">
               <motion.div
                 style={{ width: progressLineWidth }}
                 className="h-full bg-gradient-to-r from-[#2F5D3A] via-[#C9973A] to-[#25D366] rounded-full"
               />
             </div>
-          </div>
+          </Container>
         </div>
       )}
 

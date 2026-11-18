@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { FileText } from "lucide-react";
 import PageTransition from "@/components/PageTransition";
+import Container from "@/components/ui/Container";
 
 export const metadata: Metadata = {
   title: "Terms of Service",
@@ -47,8 +48,8 @@ const defaultContent = `
     We ship across India using trusted express courier services:
   </p>
   <ul class="list-disc list-inside text-[#2B1D0E]/80 space-y-1.5 text-sm pl-2">
-    <li><strong>Within Kerala:</strong> Flat ₹50 delivery charge per order; delivered within 2-3 business days.</li>
-    <li><strong>Rest of India:</strong> Standard ₹90 delivery charge (confirmed on WhatsApp); delivered within 4-6 business days.</li>
+    <li><strong>Within Kerala:</strong> Flat ₹50 delivery charge per order.</li>
+    <li><strong>Rest of India:</strong> Delivery charge confirmed directly on WhatsApp before dispatch.</li>
   </ul>
 </section>
 
@@ -71,7 +72,7 @@ export default function TermsPage() {
   return (
     <PageTransition>
       <div className="min-h-screen py-20">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+        <Container className="max-w-4xl">
           <div className="flex items-center gap-4 mb-8">
             <div className="w-12 h-12 rounded-2xl bg-[#E8EFE3] border border-[#4C8C4A]/30 flex items-center justify-center text-[#2F5D3A]">
               <FileText className="w-6 h-6" />
@@ -90,7 +91,7 @@ export default function TermsPage() {
             className="glass-panel p-8 sm:p-10 rounded-3xl border border-[#C9973A]/25 shadow-botanical space-y-8"
             dangerouslySetInnerHTML={{ __html: defaultContent }}
           />
-        </div>
+        </Container>
       </div>
     </PageTransition>
   );

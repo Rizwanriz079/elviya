@@ -5,19 +5,20 @@ import { motion } from 'framer-motion';
 import { Bell, Sparkles } from 'lucide-react';
 import { PRODUCTS, BRAND } from '@/lib/constants';
 import { clipRevealRight } from '@/lib/motion';
+import Container from '@/components/ui/Container';
 
 export default function ComingSoonSection() {
   const almond = PRODUCTS.find((p) => p.id === 'almond-oil')!;
 
   return (
     <section className="py-24 sm:py-32 relative overflow-hidden bg-[#F7EFE2] border-b border-[#C9973A]/20">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+      <Container className="relative z-10">
         <motion.div
           variants={clipRevealRight}
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true, margin: '-60px' }}
-          className="p-8 sm:p-12 md:p-14 rounded-3xl border border-[#C9973A]/30 shadow-botanical max-w-4xl mx-auto relative overflow-hidden bg-gradient-to-r from-[#FDF6EC] via-[#FDF6EC] to-[#1E3022]/90"
+          className="p-8 sm:p-12 md:p-14 rounded-3xl border border-[#C9973A]/30 shadow-botanical max-w-5xl 2xl:max-w-6xl mx-auto relative overflow-hidden bg-gradient-to-r from-[#FDF6EC] via-[#FDF6EC] to-[#1E3022]/90"
         >
           {/* Subtle Scene Texture Overlay */}
           <div
@@ -90,7 +91,7 @@ export default function ComingSoonSection() {
             </div>
           </div>
         </motion.div>
-      </div>
+      </Container>
     </section>
   );
 }

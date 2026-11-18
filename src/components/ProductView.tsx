@@ -22,6 +22,7 @@ import {
 } from '@/lib/constants';
 import SlotRoller from '@/components/text/SlotRoller';
 import MaskLines from '@/components/text/MaskLines';
+import Container from '@/components/ui/Container';
 import { drawPath } from '@/lib/motion';
 
 export function productUrl(id: string) {
@@ -54,7 +55,7 @@ export default function ProductView({ productId }: { productId: string }) {
   return (
     <div className="min-h-screen pb-24 page-top-padding">
       {/* 1. Breadcrumb - Inside Content below Navbar */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-6">
+      <Container className="mb-6">
         <nav aria-label="Breadcrumb" className="flex items-center gap-2 text-xs sm:text-sm text-[#2B1D0E]/70">
           <Link href="/" className="hover:text-[#2F5D3A] transition-colors">
             Home
@@ -66,10 +67,10 @@ export default function ProductView({ productId }: { productId: string }) {
           <ChevronRight className="w-3.5 h-3.5 text-[#C9973A]" />
           <span className="font-semibold text-[#2F5D3A]">{product.name}</span>
         </nav>
-      </div>
+      </Container>
 
       {/* Botanical Header Banner with MaskLines */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-10">
+      <Container className="mb-10">
         <div className="relative rounded-3xl p-6 sm:p-8 bg-[#FDF6EC] border border-[#C9973A]/25 overflow-hidden shadow-botanical">
           <div
             className="absolute inset-0 bg-cover bg-center opacity-30 mix-blend-multiply pointer-events-none"
@@ -92,10 +93,10 @@ export default function ProductView({ productId }: { productId: string }) {
             </div>
           </div>
         </div>
-      </div>
+      </Container>
 
       {/* 2. Product Selector Cards */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-10">
+      <Container className="mb-10">
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 max-w-2xl">
           {PRODUCTS.map((p) => {
             const isSelected = p.id === product.id;
@@ -157,10 +158,10 @@ export default function ProductView({ productId }: { productId: string }) {
             );
           })}
         </div>
-      </div>
+      </Container>
 
       {/* 3. Main Product Details View */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <Container>
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
           {/* Left Column: Image Gallery (Real photos only) */}
           <div className="lg:col-span-6 space-y-4">
@@ -561,7 +562,7 @@ export default function ProductView({ productId }: { productId: string }) {
             </div>
           </div>
         )}
-      </div>
+      </Container>
 
       {/* 5. Sticky Mobile Bottom Bar with Safe-Area Insets */}
       <div className="md:hidden fixed bottom-0 left-0 right-0 z-40 bg-[#FDF6EC]/98 backdrop-blur-xl border-t border-[#C9973A]/30 p-3.5 shadow-2xl pb-[calc(0.875rem+env(safe-area-inset-bottom,0px))]">

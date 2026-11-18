@@ -4,8 +4,9 @@ import { useState, useEffect, useRef } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { motion, useMotionValue, useSpring } from 'framer-motion';
-import { Truck, ArrowRight, ShieldCheck, Sparkles } from 'lucide-react';
+import { Truck, ArrowRight, Sparkles, Leaf, Hand, Droplets, Award } from 'lucide-react';
 import { PRODUCTS, getWhatsAppOrderUrl } from '@/lib/constants';
+import Container from '@/components/ui/Container';
 import ScriptDraw from '@/components/text/ScriptDraw';
 import GoldShimmer from '@/components/text/GoldShimmer';
 import WordBlurIn from '@/components/text/WordBlurIn';
@@ -42,8 +43,8 @@ export default function HeroSection() {
     const handleMouseMove = (e: MouseEvent) => {
       if (window.innerWidth < 1024) return;
       const { innerWidth, innerHeight } = window;
-      const x = (e.clientX - innerWidth / 2) / 30;
-      const y = (e.clientY - innerHeight / 2) / 30;
+      const x = (e.clientX - innerWidth / 2) / 35;
+      const y = (e.clientY - innerHeight / 2) / 35;
       mouseX.set(x);
       mouseY.set(y);
     };
@@ -71,7 +72,7 @@ export default function HeroSection() {
 
   return (
     <div className="relative overflow-hidden bg-[#FDF6EC]">
-      {/* Background Hero Scene with WebP */}
+      {/* Background Hero Scene with WebP (2x sharp asset) */}
       <div className="absolute inset-0 pointer-events-none z-0">
         <picture className="block relative w-full h-full">
           <source media="(min-width: 1024px)" srcSet="/images/hero-bg.webp" />
@@ -86,16 +87,16 @@ export default function HeroSection() {
         </picture>
       </div>
 
-      <section className="relative min-h-[92vh] flex flex-col justify-between page-top-padding pb-6 z-10">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full my-auto py-8">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8 items-center">
+      <section className="relative hero-svh flex flex-col justify-between page-top-padding z-10">
+        <Container className="w-full my-auto py-2 sm:py-4 flex-1 flex flex-col justify-center">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
             {/* Left Column: Headline, Script & CTAs */}
-            <div className="lg:col-span-7 flex flex-col items-start text-left space-y-6">
+            <div className="lg:col-span-7 flex flex-col items-start text-left space-y-4 sm:space-y-6">
               {/* ScriptDraw Line - Single Line, Never Wraps */}
               <ScriptDraw text="Made by hand, with love." withUnderline={true} />
 
-              {/* Kinetic 3-Line Headline */}
-              <h1 className="font-serif text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight text-[#2B1D0E] leading-[1.08]">
+              {/* Kinetic Fluid 3-Line Headline */}
+              <h1 className="font-serif fluid-hero-h1 font-bold tracking-tight text-[#2B1D0E]">
                 <span className="block overflow-hidden py-0.5">
                   <motion.span
                     initial={{ y: '100%', opacity: 0 }}
@@ -152,8 +153,8 @@ export default function HeroSection() {
                 </span>
               </h1>
 
-              {/* Body Text (Max 2 lines) with WordBlurIn */}
-              <div className="max-w-xl text-base sm:text-lg text-[#2B1D0E]/85 leading-relaxed">
+              {/* Body Text with WordBlurIn */}
+              <div className="max-w-xl fluid-body text-[#2B1D0E]/85">
                 <WordBlurIn
                   text="Made with pure virgin coconut oil and fresh neem. For healthy hair, a clean scalp and clear skin."
                   delay={0.3}
@@ -161,7 +162,7 @@ export default function HeroSection() {
               </div>
 
               {/* Action Buttons */}
-              <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-4 w-full sm:w-auto pt-2">
+              <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-4 w-full sm:w-auto pt-1 sm:pt-2">
                 {/* Dark-Forest Primary CTA with Arrow Circle */}
                 <motion.a
                   ref={btnRef}
@@ -175,7 +176,7 @@ export default function HeroSection() {
                   target="_blank"
                   rel="noopener noreferrer"
                   data-cursor="order"
-                  className="btn-shine relative group overflow-hidden inline-flex items-center justify-center gap-3 bg-[#16301F] hover:bg-[#2F5D3A] text-white px-8 py-4 rounded-full font-semibold shadow-xl shadow-[#16301F]/25 transition-colors active:scale-95 text-base text-center"
+                  className="btn-shine relative group overflow-hidden inline-flex items-center justify-center gap-3 bg-[#16301F] hover:bg-[#2F5D3A] text-white px-7 sm:px-8 py-3.5 sm:py-4 rounded-full font-semibold shadow-xl shadow-[#16301F]/25 transition-colors active:scale-95 text-sm sm:text-base text-center"
                 >
                   <span>Get It Now – ₹{neemProduct.price}</span>
                   <div className="w-8 h-8 rounded-full bg-[#25D366] text-white flex items-center justify-center shrink-0 shadow-sm group-hover:scale-110 transition-transform">
@@ -187,7 +188,7 @@ export default function HeroSection() {
                 <Link
                   href="/product"
                   data-cursor="view"
-                  className="inline-flex items-center justify-center gap-2 px-7 py-4 rounded-full border-2 border-[#2F5D3A] text-[#2F5D3A] hover:bg-[#2F5D3A] hover:text-[#FDF6EC] font-semibold transition-all duration-300 text-base"
+                  className="inline-flex items-center justify-center gap-2 px-6 sm:px-7 py-3.5 sm:py-4 rounded-full border-2 border-[#2F5D3A] text-[#2F5D3A] hover:bg-[#2F5D3A] hover:text-[#FDF6EC] font-semibold transition-all duration-300 text-sm sm:text-base text-center"
                 >
                   <span>Explore Products</span>
                   <ArrowRight className="w-4 h-4" />
@@ -195,7 +196,7 @@ export default function HeroSection() {
               </div>
 
               {/* Delivery across India with truck between thin lines */}
-              <div className="flex items-center gap-3 text-xs sm:text-sm text-[#2B1D0E]/75 pt-2 w-full max-w-md">
+              <div className="flex items-center gap-3 text-xs sm:text-sm text-[#2B1D0E]/75 pt-1 w-full max-w-md">
                 <div className="h-[1px] flex-1 bg-[#C9973A]/40" />
                 <span className="flex items-center gap-1.5 font-medium text-[#2F5D3A]">
                   <Truck className="w-4 h-4 text-[#C9973A]" />
@@ -207,15 +208,15 @@ export default function HeroSection() {
               </div>
             </div>
 
-            {/* Right Column: Scene + Real Bottle on Podium */}
-            <div className="lg:col-span-5 relative flex items-center justify-center py-6">
-              <div className="relative w-full max-w-[420px] aspect-[4/5] flex items-center justify-center">
-                {/* Rotating Stamp Badge (Never clipped, fully inside viewport) */}
-                <div className="absolute top-2 right-2 sm:top-4 sm:right-4 z-30">
+            {/* Right Column: Fluid Botanical Arch & Real Bottle ON Podium */}
+            <div className="lg:col-span-5 relative flex items-center justify-center py-2 sm:py-4">
+              <div className="relative w-full max-w-[28rem] 2xl:max-w-[34rem] aspect-[4/5] flex items-end justify-center mx-auto">
+                {/* Rotating Stamp Badge */}
+                <div className="absolute top-2 right-2 sm:top-3 sm:right-3 z-30 pointer-events-none">
                   <motion.div
                     variants={rotateSlow}
                     animate="animate"
-                    className="w-24 h-24 flex items-center justify-center bg-[#FDF6EC]/85 rounded-full shadow-botanical backdrop-blur-sm border border-[#C9973A]/40"
+                    className="w-20 h-20 sm:w-24 sm:h-24 flex items-center justify-center bg-[#FDF6EC]/90 rounded-full shadow-botanical backdrop-blur-sm border border-[#C9973A]/40"
                   >
                     <svg viewBox="0 0 100 100" className="w-full h-full p-1">
                       <path
@@ -263,72 +264,93 @@ export default function HeroSection() {
                   </>
                 )}
 
-                {/* Real Bottle on Podium with FloatY & Soft Contact Shadow */}
+                {/* Fluid Botanical Arch Window in DOM (scales with container) */}
+                <div className="absolute inset-x-4 top-0 bottom-6 sm:bottom-7 rounded-t-[14rem] sm:rounded-t-[17rem] 2xl:rounded-t-[20rem] bg-[#E8EFE3]/55 border-2 border-[#C9973A]/40 shadow-botanical backdrop-blur-[2px] overflow-hidden -z-10">
+                  {/* Inner Soft Gradient */}
+                  <div className="absolute inset-2 rounded-t-[13rem] sm:rounded-t-[16rem] 2xl:rounded-t-[19rem] bg-gradient-to-b from-[#FDF6EC]/85 via-[#FDF6EC]/40 to-[#E8EFE3]/20" />
+                  {/* Sunbeam Glow inside arch */}
+                  <div className="absolute top-1/4 left-1/2 -translate-x-1/2 w-48 sm:w-60 h-48 sm:h-60 rounded-full bg-[#FFEBB8]/40 blur-2xl pointer-events-none" />
+                </div>
+
+                {/* Natural Wooden Slice Podium */}
+                <div className="absolute bottom-0 inset-x-2 h-12 sm:h-14 flex items-center justify-center z-0 pointer-events-none">
+                  {/* Soft floor shadow */}
+                  <div className="absolute bottom-0 w-4/5 h-5 bg-[#2B1D0E]/25 rounded-full blur-md" />
+                  {/* Wooden slice base */}
+                  <div className="relative w-full h-9 sm:h-11 rounded-[50%] bg-gradient-to-r from-[#CABAA0] via-[#E2D4BE] to-[#A8967C] border border-[#C9973A]/50 shadow-md">
+                    {/* Top natural ring */}
+                    <div className="absolute inset-1 rounded-[50%] bg-[#EADCC7] border border-[#C9973A]/30" />
+                  </div>
+                </div>
+
+                {/* Real Bottle sitting directly ON the podium plate */}
                 <motion.div
                   style={{
                     x: isDesktop ? bottleX : 0,
                     y: isDesktop ? bottleY : 0,
                   }}
-                  className="relative w-full h-full flex flex-col items-center justify-center z-10"
+                  className="relative z-10 w-full h-[88%] flex flex-col items-center justify-end pb-2 sm:pb-3"
                 >
                   <motion.div
                     variants={floatY}
                     animate="animate"
-                    className="relative w-64 sm:w-72 h-80 sm:h-96 z-10"
+                    className="relative w-48 sm:w-56 md:w-64 lg:w-72 2xl:w-80 h-full max-h-[28rem] 2xl:max-h-[34rem]"
                   >
                     <Image
                       src="/images/bottle-neem.png"
                       alt="Elvia Herbals Pure Neem Oil 100ml"
                       fill
-                      sizes="(max-width: 1024px) 80vw, 420px"
-                      className="object-contain"
+                      sizes="(max-width: 640px) 70vw, (max-width: 1024px) 45vw, (max-width: 1920px) 30vw, 36rem"
+                      className="object-contain object-bottom"
                       priority
                     />
                   </motion.div>
-
-                  {/* Soft Contact Shadow under bottle */}
-                  <div className="w-44 h-7 rounded-full bg-[#2B1D0E]/20 blur-md -mt-4 z-0" />
+                  {/* Soft Contact Shadow directly on the podium top */}
+                  <div className="w-36 sm:w-44 h-4 rounded-full bg-[#2B1D0E]/30 blur-[3px] -mt-2 z-0" />
                 </motion.div>
               </div>
             </div>
           </div>
-        </div>
+        </Container>
 
         {/* Bottom Curved Wave Trust Strip (Deep Forest #16301F) */}
-        <div className="relative w-full bg-[#16301F] text-[#FDF6EC] pt-8 pb-7 z-20 border-t border-[#C9973A]/30">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-6 items-center">
+        <div className="relative w-full bg-[#16301F] text-[#FDF6EC] pt-4 sm:pt-6 pb-4 sm:pb-5 z-20 border-t border-[#C9973A]/30 compact-on-short-screens">
+          <Container>
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6 items-center">
               {[
-                { label: '100% Pure', desc: 'No chemicals or mineral oils' },
-                { label: 'Handmade', desc: 'Crafted with care in Kerala' },
-                { label: 'Small Batches', desc: 'Fresh botanical quality' },
-                { label: 'Premium Quality', desc: 'Virgin coconut oil & neem' },
-              ].map((item, idx) => (
-                <div
-                  key={idx}
-                  className="flex items-center gap-3.5 border-l border-[#C9973A]/25 pl-4 sm:pl-6"
-                >
-                  <div className="w-10 h-10 rounded-xl bg-[#E8EFE3]/10 flex items-center justify-center text-[#E0B35C] border border-[#C9973A]/30 shrink-0">
-                    <ShieldCheck className="w-5 h-5" />
+                { icon: Leaf, label: '100% Pure', desc: 'Zero chemicals, zero preservatives' },
+                { icon: Hand, label: 'Handmade', desc: 'Made by hand in Kerala' },
+                { icon: Droplets, label: 'Small Batches', desc: 'Small batch artisan care' },
+                { icon: Award, label: 'Premium Quality', desc: 'Virgin coconut oil & fresh neem' },
+              ].map((item, idx) => {
+                const IconComponent = item.icon;
+                return (
+                  <div
+                    key={idx}
+                    className="flex items-center gap-3 sm:gap-3.5 border-l border-[#C9973A]/25 pl-3 sm:pl-5"
+                  >
+                    <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-xl bg-[#E8EFE3]/10 flex items-center justify-center text-[#E0B35C] border border-[#C9973A]/30 shrink-0">
+                      <IconComponent className="w-4 h-4 sm:w-5 sm:h-5" />
+                    </div>
+                    <div>
+                      <h2 className="font-serif font-bold text-xs sm:text-sm lg:text-base text-[#FDF6EC] leading-tight">
+                        {item.label}
+                      </h2>
+                      <p className="text-[10px] sm:text-[11px] text-[#E8EFE3]/75 mt-0.5">{item.desc}</p>
+                    </div>
                   </div>
-                  <div>
-                    <h2 className="font-serif font-bold text-sm sm:text-base text-[#FDF6EC] leading-tight">
-                      {item.label}
-                    </h2>
-                    <p className="text-[11px] text-[#E8EFE3]/75 mt-0.5">{item.desc}</p>
-                  </div>
-                </div>
-              ))}
+                );
+              })}
             </div>
 
-            {/* Scroll Mouse Hint */}
-            <div className="flex items-center justify-center gap-2 pt-6 text-[10px] uppercase tracking-widest text-[#E8EFE3]/60">
-              <span className="w-4 h-6 rounded-full border border-[#C9973A]/50 flex items-start justify-center p-1">
-                <span className="w-1 h-1.5 rounded-full bg-[#C9973A] animate-bounce" />
+            {/* Scroll Mouse Hint (Hidden on short screens to save space) */}
+            <div className="hide-on-short-screens flex items-center justify-center gap-2 pt-3 sm:pt-4 text-[10px] uppercase tracking-widest text-[#E8EFE3]/60">
+              <span className="w-3.5 h-5 rounded-full border border-[#C9973A]/50 flex items-start justify-center p-0.5">
+                <span className="w-1 h-1 rounded-full bg-[#C9973A] animate-bounce" />
               </span>
               <span>Scroll to explore</span>
             </div>
-          </div>
+          </Container>
         </div>
       </section>
     </div>

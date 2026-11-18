@@ -4,6 +4,7 @@ import { useState, useRef, useEffect } from 'react';
 import { motion, useMotionValue, useSpring, useTransform, Variants } from 'framer-motion';
 import { Sparkles, Shield, Heart, Truck } from 'lucide-react';
 import { clipRevealLeft, scaleIn, rotateIn, cardStackIn, fadeUp } from '@/lib/motion';
+import Container from '@/components/ui/Container';
 
 function TiltBentoCard({
   children,
@@ -101,7 +102,7 @@ export default function WhyChooseSection() {
       />
       <div className="absolute top-10 right-10 w-96 h-96 rounded-full bg-[#C9973A]/10 blur-3xl pointer-events-none" />
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+      <Container className="relative z-10">
         <div className="text-center max-w-2xl mx-auto mb-16">
           <motion.span
             variants={fadeUp}
@@ -118,7 +119,7 @@ export default function WhyChooseSection() {
             whileInView="visible"
             viewport={{ once: true }}
             custom={1}
-            className="font-serif text-3xl sm:text-4xl md:text-5xl font-bold text-[#2B1D0E] mt-2 mb-4"
+            className="font-serif fluid-section-h2 font-bold text-[#2B1D0E] mt-2 mb-4"
           >
             Why Choose Elvia Herbals?
           </motion.h2>
@@ -258,11 +259,11 @@ export default function WhyChooseSection() {
 
             <div className="pt-6 mt-6 border-t border-[#C9973A]/15 flex items-center justify-between text-xs text-[#2F5D3A] font-semibold relative z-10">
               <span>Kerala: +₹50 (Total ₹319)</span>
-              <span>Fast WhatsApp Dispatch ✦</span>
+              <span>Direct WhatsApp Order ✦</span>
             </div>
           </TiltBentoCard>
         </div>
-      </div>
+      </Container>
     </section>
   );
 }

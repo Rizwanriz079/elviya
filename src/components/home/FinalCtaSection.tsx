@@ -8,6 +8,7 @@ import { ArrowRight, Sparkles } from 'lucide-react';
 import { PRODUCTS, getWhatsAppOrderUrl } from '@/lib/constants';
 import CharStagger from '@/components/text/CharStagger';
 import { floatY } from '@/lib/motion';
+import Container from '@/components/ui/Container';
 
 export default function FinalCtaSection() {
   const neem = PRODUCTS.find((p) => p.id === 'neem-oil')!;
@@ -82,7 +83,7 @@ export default function FinalCtaSection() {
         />
       </motion.div>
 
-      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10 space-y-8">
+      <Container className="text-center relative z-10 space-y-8">
         <motion.div
           initial={{ opacity: 0, y: 15 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -93,7 +94,7 @@ export default function FinalCtaSection() {
           Pure Homemade Herbal Oils
         </motion.div>
 
-        <h2 className="font-serif text-3xl sm:text-5xl md:text-6xl font-bold tracking-tight text-white max-w-3xl mx-auto leading-tight">
+        <h2 className="font-serif fluid-section-h2 font-bold tracking-tight text-white max-w-4xl mx-auto leading-tight">
           Ready to Experience{' '}
           <CharStagger
             text="Pure Goodness?"
@@ -136,7 +137,7 @@ export default function FinalCtaSection() {
             <ArrowRight className="w-4 h-4" />
           </Link>
         </div>
-      </div>
+      </Container>
     </section>
   );
 }
