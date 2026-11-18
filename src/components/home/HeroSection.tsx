@@ -212,8 +212,8 @@ export default function HeroSection() {
       <section id="hero-section" className="relative hero-svh flex flex-col justify-between page-top-padding z-10">
         <Container className="w-full my-auto py-1.5 sm:py-3 flex-1 flex flex-col justify-center">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-5 lg:gap-8 items-center">
-            {/* Left Column on Desktop / Order 1 on Mobile: Headline, Script & CTAs */}
-            <div className="order-1 lg:col-span-7 flex flex-col items-start text-left space-y-2 sm:space-y-3 lg:space-y-4">
+            {/* Left Column on Desktop (order-1) / Bottom on Mobile (order-2): Headline, Script & CTAs */}
+            <div className="order-2 lg:order-1 lg:col-span-7 flex flex-col items-start text-left space-y-2 sm:space-y-3 lg:space-y-4">
               {/* Step 3 in Sequence (0.85s): Brand Line - Single Line, Never Wraps */}
               <motion.div
                 initial={isReducedMotion ? false : { opacity: 0, y: 18 }}
@@ -403,8 +403,8 @@ export default function HeroSection() {
               </motion.div>
             </div>
 
-            {/* Right Column on Desktop / Order 2 on Mobile: Positioned Arch Container */}
-            <div className="order-2 lg:col-span-5 relative flex items-center justify-center py-1 sm:py-2">
+            {/* Right Column on Desktop (order-2) / Top on Mobile (order-1): Positioned Arch Container */}
+            <div className="order-1 lg:order-2 lg:col-span-5 relative flex items-center justify-center py-1 sm:py-2">
               {/* Step 1 in Sequence (0.00s → 0.45s): Arch Frame Reveal */}
               <motion.div
                 initial={isReducedMotion ? false : { opacity: 0, clipPath: 'inset(100% 0% 0% 0%)' }}
@@ -416,7 +416,7 @@ export default function HeroSection() {
                 }}
                 onMouseMove={handleBottleMouseMove}
                 onMouseLeave={handleBottleMouseLeave}
-                className="relative mx-auto rounded-t-[14rem] sm:rounded-t-[18rem] lg:rounded-t-[22rem] bg-[#E8EFE3]/55 border-2 border-[#C9973A]/40 shadow-botanical backdrop-blur-[2px] overflow-hidden h-[min(38svh,19rem)] sm:h-[min(44svh,22rem)] lg:h-[min(62vh,29rem)] w-auto aspect-[3/4] flex items-end justify-center perspective-1000"
+                className="relative mx-auto rounded-t-[14rem] sm:rounded-t-[18rem] lg:rounded-t-[22rem] bg-[#E8EFE3]/55 border-2 border-[#C9973A]/40 shadow-botanical backdrop-blur-[2px] overflow-hidden h-[min(34svh,17rem)] sm:h-[min(42svh,21rem)] lg:h-[min(62vh,29rem)] w-auto aspect-[3/4] flex items-end justify-center perspective-1000"
               >
                 {/* Step 2d in Sequence (0.70s): Rotating Stamp Badge */}
                 <motion.div
