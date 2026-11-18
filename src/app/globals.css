@@ -97,12 +97,19 @@ html {
 
 /* Fluid Hero Heights */
 .hero-svh {
-  height: 100svh;
-  min-height: 38rem;
-  max-height: 70rem;
+  min-height: 100svh;
+  height: auto;
 }
 
-@media (max-height: 720px) {
+@media (min-width: 1024px) {
+  .hero-svh {
+    height: 100svh;
+    min-height: 38rem;
+    max-height: 70rem;
+  }
+}
+
+@media (max-height: 720px) and (min-width: 1024px) {
   .hero-svh {
     min-height: 32rem;
   }

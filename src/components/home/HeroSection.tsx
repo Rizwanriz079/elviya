@@ -35,8 +35,8 @@ const INGREDIENT_HOTSPOTS: Hotspot[] = [
     id: 'cap',
     title: 'Virgin Coconut Oil',
     detail: 'Cold-pressed carrier base',
-    top: '20%',
-    left: '52%',
+    top: '14%',
+    left: '50%',
     tooltipAlign: 'right',
   },
   {
@@ -44,23 +44,23 @@ const INGREDIENT_HOTSPOTS: Hotspot[] = [
     title: 'Fresh Neem',
     detail: 'Direct botanical leaf infusion',
     top: '44%',
-    left: '42%',
+    left: '50%',
     tooltipAlign: 'left',
   },
   {
     id: 'handmade',
     title: 'Handmade with Love',
     detail: 'Crafted traditionally by hand',
-    top: '62%',
-    left: '60%',
+    top: '68%',
+    left: '50%',
     tooltipAlign: 'right',
   },
   {
     id: 'batches',
     title: 'Small Batches',
     detail: 'Prepared fresh in Kerala',
-    top: '78%',
-    left: '38%',
+    top: '88%',
+    left: '50%',
     tooltipAlign: 'left',
   },
 ];
@@ -185,7 +185,7 @@ export default function HeroSection() {
         <Container className="w-full my-auto py-2 sm:py-4 flex-1 flex flex-col justify-center">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
             {/* Left Column: Headline, Script, SlotRoller & CTAs */}
-            <div className="lg:col-span-7 flex flex-col items-start text-left space-y-4 sm:space-y-6">
+            <div className="lg:col-span-7 flex flex-col items-start text-left space-y-3 sm:space-y-5 lg:space-y-6">
               {/* ScriptDraw Line - Single Line, Never Wraps */}
               <ScriptDraw text="Made by hand, with love." withUnderline={true} />
 
@@ -313,14 +313,14 @@ export default function HeroSection() {
               <div
                 onMouseMove={handleBottleMouseMove}
                 onMouseLeave={handleBottleMouseLeave}
-                className="relative w-full max-w-[28rem] 2xl:max-w-[34rem] aspect-[4/5] flex items-end justify-center mx-auto perspective-1000"
+                className="relative w-full max-w-[17rem] sm:max-w-[22rem] lg:max-w-[28rem] 2xl:max-w-[34rem] h-64 sm:h-76 lg:h-auto lg:aspect-[4/5] flex items-end justify-center mx-auto perspective-1000"
               >
                 {/* Rotating Stamp Badge */}
                 <div className="absolute top-2 right-2 sm:top-3 sm:right-3 z-30 pointer-events-none">
                   <motion.div
                     variants={rotateSlow}
                     animate="animate"
-                    className="w-20 h-20 sm:w-24 sm:h-24 flex items-center justify-center bg-[#FDF6EC]/90 rounded-full shadow-botanical backdrop-blur-sm border border-[#C9973A]/40"
+                    className="w-16 h-16 sm:w-20 sm:h-20 lg:w-24 lg:h-24 flex items-center justify-center bg-[#FDF6EC]/90 rounded-full shadow-botanical backdrop-blur-sm border border-[#C9973A]/40"
                   >
                     <svg viewBox="0 0 100 100" className="w-full h-full p-1">
                       <path
@@ -335,7 +335,7 @@ export default function HeroSection() {
                       </text>
                     </svg>
                     <div className="absolute inset-0 flex items-center justify-center text-[#4C8C4A]">
-                      <Sparkles className="w-4 h-4 text-[#C9973A]" />
+                      <Sparkles className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-[#C9973A]" />
                     </div>
                   </motion.div>
                 </div>
@@ -369,19 +369,19 @@ export default function HeroSection() {
                 )}
 
                 {/* Fluid Botanical Arch Window in DOM (scales with container) */}
-                <div className="absolute inset-x-4 top-0 bottom-6 sm:bottom-7 rounded-t-[14rem] sm:rounded-t-[17rem] 2xl:rounded-t-[20rem] bg-[#E8EFE3]/55 border-2 border-[#C9973A]/40 shadow-botanical backdrop-blur-[2px] overflow-hidden -z-10">
+                <div className="absolute inset-x-4 top-0 bottom-6 sm:bottom-7 rounded-t-[8rem] sm:rounded-t-[11rem] lg:rounded-t-[17rem] 2xl:rounded-t-[20rem] bg-[#E8EFE3]/55 border-2 border-[#C9973A]/40 shadow-botanical backdrop-blur-[2px] overflow-hidden -z-10">
                   {/* Inner Soft Gradient */}
-                  <div className="absolute inset-2 rounded-t-[13rem] sm:rounded-t-[16rem] 2xl:rounded-t-[19rem] bg-gradient-to-b from-[#FDF6EC]/85 via-[#FDF6EC]/40 to-[#E8EFE3]/20" />
+                  <div className="absolute inset-2 rounded-t-[7.5rem] sm:rounded-t-[10.5rem] lg:rounded-t-[16rem] 2xl:rounded-t-[19rem] bg-gradient-to-b from-[#FDF6EC]/85 via-[#FDF6EC]/40 to-[#E8EFE3]/20" />
                   {/* Sunbeam Glow inside arch */}
                   <div className="absolute top-1/4 left-1/2 -translate-x-1/2 w-48 sm:w-60 h-48 sm:h-60 rounded-full bg-[#FFEBB8]/40 blur-2xl pointer-events-none" />
                 </div>
 
                 {/* Natural Wooden Slice Podium */}
-                <div className="absolute bottom-0 inset-x-2 h-12 sm:h-14 flex items-center justify-center z-0 pointer-events-none">
+                <div className="absolute bottom-0 inset-x-2 h-10 sm:h-12 lg:h-14 flex items-center justify-center z-0 pointer-events-none">
                   {/* Soft floor shadow */}
-                  <div className="absolute bottom-0 w-4/5 h-5 bg-[#2B1D0E]/25 rounded-full blur-md" />
+                  <div className="absolute bottom-0 w-4/5 h-4 sm:h-5 bg-[#2B1D0E]/25 rounded-full blur-md" />
                   {/* Wooden slice base */}
-                  <div className="relative w-full h-9 sm:h-11 rounded-[50%] bg-gradient-to-r from-[#CABAA0] via-[#E2D4BE] to-[#A8967C] border border-[#C9973A]/50 shadow-md">
+                  <div className="relative w-full h-8 sm:h-10 lg:h-11 rounded-[50%] bg-gradient-to-r from-[#CABAA0] via-[#E2D4BE] to-[#A8967C] border border-[#C9973A]/50 shadow-md">
                     {/* Top natural ring */}
                     <div className="absolute inset-1 rounded-[50%] bg-[#EADCC7] border border-[#C9973A]/30" />
                   </div>
@@ -397,12 +397,12 @@ export default function HeroSection() {
                     transformStyle: 'preserve-3d',
                   }}
                   onClick={handlePourDrop}
-                  className="relative z-10 w-full h-[88%] flex flex-col items-center justify-end pb-2 sm:pb-3 cursor-pointer group"
+                  className="relative z-10 w-full h-[90%] flex flex-col items-center justify-end pb-2 sm:pb-3 cursor-pointer group"
                 >
                   <motion.div
                     variants={floatY}
                     animate="animate"
-                    className="relative w-48 sm:w-56 md:w-64 lg:w-72 2xl:w-80 h-full max-h-[28rem] 2xl:max-h-[34rem]"
+                    className="relative h-full aspect-[272/1236] max-h-[28rem] 2xl:max-h-[34rem]"
                   >
                     <Image
                       src="/images/bottle-neem.png"
@@ -471,10 +471,10 @@ export default function HeroSection() {
                         <>
                           {/* Falling Golden Drop */}
                           <motion.div
-                            initial={{ top: '18%', opacity: 1, scale: 0.8 }}
-                            animate={{ top: '88%', opacity: [1, 1, 0], scale: [0.8, 1.2, 0.4] }}
+                            initial={{ top: '14%', opacity: 1, scale: 0.8 }}
+                            animate={{ top: '92%', opacity: [1, 1, 0], scale: [0.8, 1.2, 0.4] }}
                             transition={{ duration: 0.65, ease: 'easeIn' }}
-                            className="absolute left-1/2 -translate-x-1/2 w-4 h-5 rounded-full bg-gradient-to-b from-[#C9973A] to-[#E5C07B] shadow-md z-40 pointer-events-none"
+                            className="absolute left-1/2 -translate-x-1/2 w-3.5 h-4.5 rounded-full bg-gradient-to-b from-[#C9973A] to-[#E5C07B] shadow-md z-40 pointer-events-none"
                           />
 
                           {/* Concentric Gold Ripples on Podium */}
@@ -490,7 +490,7 @@ export default function HeroSection() {
                   </motion.div>
 
                   {/* Soft Contact Shadow directly on the podium top */}
-                  <div className="w-36 sm:w-44 h-4 rounded-full bg-[#2B1D0E]/30 blur-[3px] -mt-2 z-0" />
+                  <div className="w-24 sm:w-32 lg:w-40 h-3 rounded-full bg-[#2B1D0E]/30 blur-[3px] -mt-1.5 z-0" />
                 </motion.div>
 
                 {/* "100% Pure Neem Infusion" Sparkle Toast */}

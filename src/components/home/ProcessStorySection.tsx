@@ -154,8 +154,20 @@ export default function ProcessStorySection() {
     },
   ];
 
-  // Mobile Snap Carousel Active Index
+  // Mobile Snap Carousel Active Index & Ref
+  const mobileTrackRef = useRef<HTMLDivElement>(null);
   const [mobileStepIndex, setMobileStepIndex] = useState(0);
+
+  const scrollToMobileStep = (index: number) => {
+    if (!mobileTrackRef.current) return;
+    const el = mobileTrackRef.current;
+    const cards = el.querySelectorAll<HTMLElement>('[data-snap-card]');
+    if (cards[index]) {
+      cards[index].scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
+      setMobileStepIndex(index);
+      setHasSwiped(true);
+    }
+  };
 
   return (
     <motion.section
@@ -391,6 +403,7 @@ export default function ProcessStorySection() {
 
           {/* Swipe Snap Track */}
           <div
+            ref={mobileTrackRef}
             onScroll={(e) => {
               if (!hasSwiped) setHasSwiped(true);
               const el = e.currentTarget;
@@ -403,6 +416,7 @@ export default function ProcessStorySection() {
             {steps.map((step) => (
               <div
                 key={step.num}
+                data-snap-card
                 className="w-[82vw] max-w-[340px] snap-center shrink-0 bg-white/95 p-6 rounded-3xl shadow-botanical border border-[#C9973A]/25 flex flex-col justify-between relative overflow-hidden"
               >
                 {/* Outlined Step Number */}
@@ -444,7 +458,10 @@ export default function ProcessStorySection() {
             ))}
 
             {/* 5th Mobile End Card */}
-            <div className="w-[82vw] max-w-[340px] snap-center shrink-0 bg-[#2F5D3A] text-[#FDF6EC] p-6 rounded-3xl shadow-botanical border border-[#C9973A]/40 flex flex-col justify-between">
+            <div
+              data-snap-card
+              className="w-[82vw] max-w-[340px] snap-center shrink-0 bg-[#2F5D3A] text-[#FDF6EC] p-6 rounded-3xl shadow-botanical border border-[#C9973A]/40 flex flex-col justify-between"
+            >
               <div>
                 <span className="text-[11px] uppercase tracking-wider text-[#E5C07B] font-bold block mb-2">
                   Pure Herbal Oils
@@ -471,16 +488,23 @@ export default function ProcessStorySection() {
             </div>
           </div>
 
-          {/* Mobile Dot Indicators & Swipe Hint */}
+          {/* Mobile Dot Indicators & Interactive Tap Controls */}
           <div className="flex flex-col items-center gap-2 mt-4">
             <div className="flex items-center gap-2">
               {[...steps, { num: '05' }].map((_, i) => (
-                <div
+                <button
                   key={i}
-                  className={`h-2 rounded-full transition-all duration-300 ${
-                    mobileStepIndex === i ? 'w-6 bg-[#2F5D3A]' : 'w-2 bg-[#C9973A]/30'
-                  }`}
-                />
+                  type="button"
+                  onClick={() => scrollToMobileStep(i)}
+                  aria-label={`Jump to process step ${i + 1}`}
+                  className="p-1 cursor-pointer focus:outline-hidden"
+                >
+                  <span
+                    className={`block h-2 rounded-full transition-all duration-300 ${
+                      mobileStepIndex === i ? 'w-6 bg-[#2F5D3A]' : 'w-2 bg-[#C9973A]/30'
+                    }`}
+                  />
+                </button>
               ))}
             </div>
             {!hasSwiped && (
