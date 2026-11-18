@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 64" fill="none">
+  <path
+    d="M24 4C24 4 4 24 4 40C4 51.0457 12.9543 60 24 60C35.0457 60 44 51.0457 44 40C44 24 24 4 24 4Z"
+    stroke="#C9973A"
+    stroke-width="2.2"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+  />
+  <path
+    d="M24 12V52"
+    stroke="#C9973A"
+    stroke-width="1.8"
+    stroke-linecap="round"
+  />
+  <path
+    d="M24 24C18 28 15 32 14 36M24 34C18 38 16 42 15 46M24 24C30 28 33 32 34 36M24 34C30 38 32 42 33 46"
+    stroke="#C9973A"
+    stroke-width="1.2"
+    stroke-linecap="round"
+    opacity="0.8"
+  />
+</svg>
