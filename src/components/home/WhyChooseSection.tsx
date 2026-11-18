@@ -94,7 +94,7 @@ function TiltBentoCard({
 
 export default function WhyChooseSection() {
   return (
-    <section className="py-24 sm:py-32 relative overflow-hidden bg-[#E8EFE3]">
+    <section className="py-24 sm:py-32 relative overflow-hidden bg-[#E8EFE3] section-deferred">
       {/* Background Texture & Ambient Glow */}
       <div
         className="absolute inset-0 bg-cover bg-center opacity-35 mix-blend-multiply pointer-events-none"

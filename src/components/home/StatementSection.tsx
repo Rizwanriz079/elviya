@@ -58,7 +58,7 @@ export default function StatementSection() {
     <section
       ref={containerRef}
       style={{ position: 'relative' }}
-      className="py-24 sm:py-36 relative bg-[#FDF6EC] overflow-hidden border-b border-[#C9973A]/20"
+      className="py-24 sm:py-36 relative bg-[#FDF6EC] overflow-hidden border-b border-[#C9973A]/20 section-deferred"
     >
       {/* Drifting Gold Leaf on Side (Desktop Only) */}
       <motion.div

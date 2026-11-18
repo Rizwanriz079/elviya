@@ -53,7 +53,7 @@ export default function BenefitsSection() {
   const current = tabData[activeTab];
 
   return (
-    <section className="py-24 sm:py-32 relative overflow-hidden bg-[#FDF6EC]">
+    <section className="py-24 sm:py-32 relative overflow-hidden bg-[#FDF6EC] section-deferred">
       {/* Background Leaves Texture */}
       <div
         className="absolute inset-0 bg-cover bg-center opacity-30 mix-blend-multiply pointer-events-none"

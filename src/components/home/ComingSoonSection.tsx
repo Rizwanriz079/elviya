@@ -11,7 +11,7 @@ export default function ComingSoonSection() {
   const almond = PRODUCTS.find((p) => p.id === 'almond-oil')!;
 
   return (
-    <section className="py-24 sm:py-32 relative overflow-hidden bg-[#F7EFE2] border-b border-[#C9973A]/20">
+    <section className="py-24 sm:py-32 relative overflow-hidden bg-[#F7EFE2] border-b border-[#C9973A]/20 section-deferred">
       <Container className="relative z-10">
         <motion.div
           variants={clipRevealRight}

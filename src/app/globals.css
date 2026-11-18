@@ -144,26 +144,66 @@ h1, h2, h3, h4, h5, h6 {
   font-family: var(--font-caveat);
 }
 
-/* Glassmorphism Styles */
+/* Glassmorphism Styles (Optimized: light blur on fine pointer desktop, opaque tint on mobile for 60fps) */
 .glass-panel {
-  background: rgba(253, 246, 236, 0.75);
-  backdrop-filter: blur(14px);
-  -webkit-backdrop-filter: blur(14px);
+  background: rgba(253, 246, 236, 0.94);
   border: 1px solid rgba(201, 151, 58, 0.22);
 }
 
 .glass-panel-leaf {
-  background: rgba(232, 239, 227, 0.8);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
+  background: rgba(232, 239, 227, 0.92);
   border: 1px solid rgba(76, 140, 74, 0.25);
 }
 
 .glass-panel-dark {
-  background: rgba(30, 63, 39, 0.92);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
+  background: rgba(30, 63, 39, 0.96);
   border: 1px solid rgba(201, 151, 58, 0.3);
+}
+
+@media (pointer: fine) and (hover: hover) {
+  html:not(.lite-mode) .glass-panel {
+    background: rgba(253, 246, 236, 0.82);
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+  }
+
+  html:not(.lite-mode) .glass-panel-leaf {
+    background: rgba(232, 239, 227, 0.85);
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+  }
+
+  html:not(.lite-mode) .glass-panel-dark {
+    background: rgba(30, 63, 39, 0.92);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+  }
+}
+
+/* Offscreen Deferred Rendering */
+.section-deferred {
+  content-visibility: auto;
+  contain-intrinsic-size: 800px;
+}
+
+/* Lite Mode & Reduced Motion Overrides */
+.lite-mode * {
+  animation-duration: 0.2s !important;
+  transition-duration: 0.2s !important;
+}
+
+.lite-mode .shadow-botanical,
+.lite-mode .shadow-botanical-lg {
+  box-shadow: 0 4px 12px rgba(43, 29, 14, 0.05) !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, ::before, ::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
 }
 
 /* Botanical Soft Shadows */

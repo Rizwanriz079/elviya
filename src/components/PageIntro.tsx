@@ -9,6 +9,12 @@ export default function PageIntro() {
 
   const handleComplete = useCallback(() => {
     sessionStorage.setItem('elvia_intro_shown', 'true');
+    if (typeof document !== 'undefined') {
+      document.documentElement.dataset.splashActive = 'false';
+    }
+    if (typeof window !== 'undefined') {
+      window.dispatchEvent(new CustomEvent('elvia:splash-end'));
+    }
     setShow(false);
   }, []);
 
@@ -17,6 +23,9 @@ export default function PageIntro() {
     const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
     if (!hasSeenIntro && !prefersReducedMotion) {
+      document.documentElement.dataset.splashActive = 'true';
+      window.dispatchEvent(new CustomEvent('elvia:splash-start'));
+
       const showTimer = setTimeout(() => {
         setShow(true);
       }, 0);

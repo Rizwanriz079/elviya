@@ -1,6 +1,6 @@
 'use client';
 
-import { useRef, useState, useEffect } from 'react';
+import { useRef, useSyncExternalStore } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { motion, useMotionValue, useSpring } from 'framer-motion';
@@ -9,10 +9,20 @@ import { PRODUCTS, getWhatsAppOrderUrl } from '@/lib/constants';
 import CharStagger from '@/components/text/CharStagger';
 import { floatY } from '@/lib/motion';
 import Container from '@/components/ui/Container';
+import { usePerfMode } from '@/lib/perf';
+
+const subscribeResize = (callback: () => void) => {
+  window.addEventListener('resize', callback);
+  return () => window.removeEventListener('resize', callback);
+};
+const getDesktopWidth = () => window.innerWidth >= 1024;
+const getServerDesktopWidth = () => false;
 
 export default function FinalCtaSection() {
   const neem = PRODUCTS.find((p) => p.id === 'neem-oil')!;
-  const [isDesktop, setIsDesktop] = useState(false);
+  const { isLite, isFinePointer, isReducedMotion } = usePerfMode();
+  const hasDesktopWidth = useSyncExternalStore(subscribeResize, getDesktopWidth, getServerDesktopWidth);
+  const isDesktop = !isLite && isFinePointer && !isReducedMotion && hasDesktopWidth;
 
   // Magnetic button physics
   const btnRef = useRef<HTMLAnchorElement>(null);
@@ -20,15 +30,6 @@ export default function FinalCtaSection() {
   const btnY = useMotionValue(0);
   const smoothBtnX = useSpring(btnX, { stiffness: 350, damping: 25 });
   const smoothBtnY = useSpring(btnY, { stiffness: 350, damping: 25 });
-
-  useEffect(() => {
-    const checkDesktop = () => {
-      setIsDesktop(window.innerWidth >= 1024 && window.matchMedia('(pointer: fine)').matches);
-    };
-    checkDesktop();
-    window.addEventListener('resize', checkDesktop);
-    return () => window.removeEventListener('resize', checkDesktop);
-  }, []);
 
   const handleMagneticMove = (e: React.MouseEvent<HTMLAnchorElement>) => {
     if (!isDesktop || !btnRef.current) return;
@@ -47,7 +48,7 @@ export default function FinalCtaSection() {
   };
 
   return (
-    <section className="py-24 sm:py-36 relative overflow-hidden bg-gradient-to-br from-[#C9973A] via-[#B8872F] to-[#8C641E] text-[#FDF6EC]">
+    <section className="py-24 sm:py-36 relative overflow-hidden bg-gradient-to-br from-[#C9973A] via-[#B8872F] to-[#8C641E] text-[#FDF6EC] section-deferred">
       {/* Background Texture & Ambient Glow */}
       <div
         className="absolute inset-0 bg-cover bg-center opacity-30 mix-blend-overlay pointer-events-none"

@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useRef } from 'react';
+import { useEffect, useRef, useSyncExternalStore } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { motion, useMotionValue, useSpring } from 'framer-motion';
@@ -11,10 +11,20 @@ import ScriptDraw from '@/components/text/ScriptDraw';
 import GoldShimmer from '@/components/text/GoldShimmer';
 import WordBlurIn from '@/components/text/WordBlurIn';
 import { floatY, rotateSlow } from '@/lib/motion';
+import { usePerfMode } from '@/lib/perf';
+
+const subscribeResize = (callback: () => void) => {
+  window.addEventListener('resize', callback);
+  return () => window.removeEventListener('resize', callback);
+};
+const getDesktopWidth = () => window.innerWidth >= 1024;
+const getServerDesktopWidth = () => false;
 
 export default function HeroSection() {
   const neemProduct = PRODUCTS.find((p) => p.id === 'neem-oil')!;
-  const [isDesktop, setIsDesktop] = useState(false);
+  const { isLite, isFinePointer, isReducedMotion } = usePerfMode();
+  const hasDesktopWidth = useSyncExternalStore(subscribeResize, getDesktopWidth, getServerDesktopWidth);
+  const isDesktop = !isLite && isFinePointer && !isReducedMotion && hasDesktopWidth;
 
   // Parallax layers on desktop
   const mouseX = useMotionValue(0);
@@ -34,14 +44,9 @@ export default function HeroSection() {
   const smoothBtnY = useSpring(btnY, { stiffness: 350, damping: 25 });
 
   useEffect(() => {
-    const checkDesktop = () => {
-      setIsDesktop(window.innerWidth >= 1024 && window.matchMedia('(pointer: fine)').matches);
-    };
-    checkDesktop();
-    window.addEventListener('resize', checkDesktop);
+    if (!isDesktop) return;
 
     const handleMouseMove = (e: MouseEvent) => {
-      if (window.innerWidth < 1024) return;
       const { innerWidth, innerHeight } = window;
       const x = (e.clientX - innerWidth / 2) / 35;
       const y = (e.clientY - innerHeight / 2) / 35;
@@ -51,10 +56,9 @@ export default function HeroSection() {
 
     window.addEventListener('mousemove', handleMouseMove);
     return () => {
-      window.removeEventListener('resize', checkDesktop);
       window.removeEventListener('mousemove', handleMouseMove);
     };
-  }, [mouseX, mouseY]);
+  }, [mouseX, mouseY, isDesktop]);
 
   const handleMagneticMove = (e: React.MouseEvent<HTMLAnchorElement>) => {
     if (!isDesktop || !btnRef.current) return;
