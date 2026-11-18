@@ -1,14 +1,15 @@
 'use client';
 
-import { useEffect, useRef, useSyncExternalStore } from 'react';
+import { useState, useEffect, useRef, useSyncExternalStore } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { motion, useMotionValue, useSpring } from 'framer-motion';
+import { motion, useMotionValue, useSpring, AnimatePresence } from 'framer-motion';
 import { Truck, ArrowRight, Sparkles, Leaf, Hand, Droplets, Award } from 'lucide-react';
 import { PRODUCTS, getWhatsAppOrderUrl } from '@/lib/constants';
 import Container from '@/components/ui/Container';
 import ScriptDraw from '@/components/text/ScriptDraw';
 import GoldShimmer from '@/components/text/GoldShimmer';
+import SlotRoller from '@/components/text/SlotRoller';
 import WordBlurIn from '@/components/text/WordBlurIn';
 import { floatY, rotateSlow } from '@/lib/motion';
 import { usePerfMode } from '@/lib/perf';
@@ -20,21 +21,78 @@ const subscribeResize = (callback: () => void) => {
 const getDesktopWidth = () => window.innerWidth >= 1024;
 const getServerDesktopWidth = () => false;
 
+interface Hotspot {
+  id: string;
+  title: string;
+  detail: string;
+  top: string;
+  left: string;
+  tooltipAlign: 'left' | 'right';
+}
+
+const INGREDIENT_HOTSPOTS: Hotspot[] = [
+  {
+    id: 'cap',
+    title: 'Virgin Coconut Oil',
+    detail: 'Cold-pressed carrier base',
+    top: '20%',
+    left: '52%',
+    tooltipAlign: 'right',
+  },
+  {
+    id: 'neem',
+    title: 'Fresh Neem',
+    detail: 'Direct botanical leaf infusion',
+    top: '44%',
+    left: '42%',
+    tooltipAlign: 'left',
+  },
+  {
+    id: 'handmade',
+    title: 'Handmade with Love',
+    detail: 'Crafted traditionally by hand',
+    top: '62%',
+    left: '60%',
+    tooltipAlign: 'right',
+  },
+  {
+    id: 'batches',
+    title: 'Small Batches',
+    detail: 'Prepared fresh in Kerala',
+    top: '78%',
+    left: '38%',
+    tooltipAlign: 'left',
+  },
+];
+
 export default function HeroSection() {
   const neemProduct = PRODUCTS.find((p) => p.id === 'neem-oil')!;
   const { isLite, isFinePointer, isReducedMotion } = usePerfMode();
   const hasDesktopWidth = useSyncExternalStore(subscribeResize, getDesktopWidth, getServerDesktopWidth);
   const isDesktop = !isLite && isFinePointer && !isReducedMotion && hasDesktopWidth;
 
-  // Parallax layers on desktop
+  // Active Hotspot state
+  const [activeHotspot, setActiveHotspot] = useState<string | null>(null);
+
+  // Pour-a-drop interactive state
+  const [isPouring, setIsPouring] = useState(false);
+  const [showSparkleBadge, setShowSparkleBadge] = useState(false);
+
+  // Mouse Parallax & 3D Tilt layers on desktop
   const mouseX = useMotionValue(0);
   const mouseY = useMotionValue(0);
 
-  // Smooth springs for bottle, leaves, and background
+  // Smooth springs for multi-plane depth
   const bottleX = useSpring(mouseX, { damping: 30, stiffness: 100 });
   const bottleY = useSpring(mouseY, { damping: 30, stiffness: 100 });
   const leafX = useSpring(mouseX, { damping: 25, stiffness: 160 });
   const leafY = useSpring(mouseY, { damping: 25, stiffness: 160 });
+
+  // 3D Card Tilt
+  const tiltX = useMotionValue(0);
+  const tiltY = useMotionValue(0);
+  const smoothTiltX = useSpring(tiltX, { stiffness: 240, damping: 22 });
+  const smoothTiltY = useSpring(tiltY, { stiffness: 240, damping: 22 });
 
   // Magnetic button physics
   const btnRef = useRef<HTMLAnchorElement>(null);
@@ -59,6 +117,38 @@ export default function HeroSection() {
       window.removeEventListener('mousemove', handleMouseMove);
     };
   }, [mouseX, mouseY, isDesktop]);
+
+  const handleBottleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (!isDesktop) return;
+    const rect = e.currentTarget.getBoundingClientRect();
+    const x = e.clientX - rect.left - rect.width / 2;
+    const y = e.clientY - rect.top - rect.height / 2;
+    // Max 6 degrees 3D tilt
+    const rotX = -(y / (rect.height / 2)) * 6;
+    const rotY = (x / (rect.width / 2)) * 6;
+    tiltX.set(rotX);
+    tiltY.set(rotY);
+  };
+
+  const handleBottleMouseLeave = () => {
+    tiltX.set(0);
+    tiltY.set(0);
+    setActiveHotspot(null);
+  };
+
+  const handlePourDrop = () => {
+    if (isPouring) return;
+    setIsPouring(true);
+    setShowSparkleBadge(true);
+
+    setTimeout(() => {
+      setIsPouring(false);
+    }, 1200);
+
+    setTimeout(() => {
+      setShowSparkleBadge(false);
+    }, 2400);
+  };
 
   const handleMagneticMove = (e: React.MouseEvent<HTMLAnchorElement>) => {
     if (!isDesktop || !btnRef.current) return;
@@ -94,7 +184,7 @@ export default function HeroSection() {
       <section className="relative hero-svh flex flex-col justify-between page-top-padding z-10">
         <Container className="w-full my-auto py-2 sm:py-4 flex-1 flex flex-col justify-center">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
-            {/* Left Column: Headline, Script & CTAs */}
+            {/* Left Column: Headline, Script, SlotRoller & CTAs */}
             <div className="lg:col-span-7 flex flex-col items-start text-left space-y-4 sm:space-y-6">
               {/* ScriptDraw Line - Single Line, Never Wraps */}
               <ScriptDraw text="Made by hand, with love." withUnderline={true} />
@@ -157,10 +247,16 @@ export default function HeroSection() {
                 </span>
               </h1>
 
+              {/* SlotRoller Mechanical Vertical Word Carousel */}
+              <div className="flex items-center gap-2 text-base sm:text-lg md:text-xl font-medium text-[#2F5D3A] font-serif pt-0.5">
+                <span>Traditionally used for</span>
+                <SlotRoller words={['Hair Care', 'Scalp Care', 'Skin Care']} />
+              </div>
+
               {/* Body Text with WordBlurIn */}
               <div className="max-w-xl fluid-body text-[#2B1D0E]/85">
                 <WordBlurIn
-                  text="Made with pure virgin coconut oil and fresh neem. For healthy hair, a clean scalp and clear skin."
+                  text="Made with pure virgin coconut oil and fresh neem. Prepared by hand in Kerala for healthy hair, a clean scalp and clear skin."
                   delay={0.3}
                 />
               </div>
@@ -212,9 +308,13 @@ export default function HeroSection() {
               </div>
             </div>
 
-            {/* Right Column: Fluid Botanical Arch & Real Bottle ON Podium */}
+            {/* Right Column: Fluid Botanical Arch & Real Bottle ON Natural Podium */}
             <div className="lg:col-span-5 relative flex items-center justify-center py-2 sm:py-4">
-              <div className="relative w-full max-w-[28rem] 2xl:max-w-[34rem] aspect-[4/5] flex items-end justify-center mx-auto">
+              <div
+                onMouseMove={handleBottleMouseMove}
+                onMouseLeave={handleBottleMouseLeave}
+                className="relative w-full max-w-[28rem] 2xl:max-w-[34rem] aspect-[4/5] flex items-end justify-center mx-auto perspective-1000"
+              >
                 {/* Rotating Stamp Badge */}
                 <div className="absolute top-2 right-2 sm:top-3 sm:right-3 z-30 pointer-events-none">
                   <motion.div
@@ -287,13 +387,17 @@ export default function HeroSection() {
                   </div>
                 </div>
 
-                {/* Real Bottle sitting directly ON the podium plate */}
+                {/* Real Bottle sitting directly ON the podium plate with 3D Tilt */}
                 <motion.div
                   style={{
                     x: isDesktop ? bottleX : 0,
                     y: isDesktop ? bottleY : 0,
+                    rotateX: isDesktop ? smoothTiltX : 0,
+                    rotateY: isDesktop ? smoothTiltY : 0,
+                    transformStyle: 'preserve-3d',
                   }}
-                  className="relative z-10 w-full h-[88%] flex flex-col items-center justify-end pb-2 sm:pb-3"
+                  onClick={handlePourDrop}
+                  className="relative z-10 w-full h-[88%] flex flex-col items-center justify-end pb-2 sm:pb-3 cursor-pointer group"
                 >
                   <motion.div
                     variants={floatY}
@@ -305,13 +409,104 @@ export default function HeroSection() {
                       alt="Elvia Herbals Pure Neem Oil 100ml"
                       fill
                       sizes="(max-width: 640px) 70vw, (max-width: 1024px) 45vw, (max-width: 1920px) 30vw, 36rem"
-                      className="object-contain object-bottom"
+                      className="object-contain object-bottom select-none"
                       priority
                     />
+
+                    {/* Interactive Ingredient Hotspots (Desktop fine pointer only) */}
+                    {isDesktop &&
+                      INGREDIENT_HOTSPOTS.map((spot) => {
+                        const isActive = activeHotspot === spot.id;
+                        return (
+                          <div
+                            key={spot.id}
+                            style={{ top: spot.top, left: spot.left }}
+                            className="absolute z-30 -translate-x-1/2 -translate-y-1/2"
+                            onMouseEnter={(e) => {
+                              e.stopPropagation();
+                              setActiveHotspot(spot.id);
+                            }}
+                            onMouseLeave={(e) => {
+                              e.stopPropagation();
+                              setActiveHotspot(null);
+                            }}
+                          >
+                            {/* Glowing Pulsing Hotspot Dot */}
+                            <div className="relative w-6 h-6 flex items-center justify-center cursor-pointer">
+                              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#C9973A] opacity-60" />
+                              <span className="relative inline-flex rounded-full h-3.5 w-3.5 bg-[#C9973A] border-2 border-white shadow-sm" />
+                            </div>
+
+                            {/* Tooltip Card with SVG Connector */}
+                            <AnimatePresence>
+                              {isActive && (
+                                <motion.div
+                                  initial={{ opacity: 0, scale: 0.9, y: 4 }}
+                                  animate={{ opacity: 1, scale: 1, y: 0 }}
+                                  exit={{ opacity: 0, scale: 0.9, y: 4 }}
+                                  transition={{ duration: 0.2 }}
+                                  className={`absolute top-1/2 -translate-y-1/2 pointer-events-none z-40 whitespace-nowrap p-3 rounded-2xl bg-[#FDF6EC]/96 backdrop-blur-md border border-[#C9973A]/40 shadow-botanical ${
+                                    spot.tooltipAlign === 'right'
+                                      ? 'left-8 text-left'
+                                      : 'right-8 text-right'
+                                  }`}
+                                >
+                                  <div className="flex items-center gap-1.5 text-xs font-bold font-serif text-[#2F5D3A]">
+                                    <Sparkles className="w-3 h-3 text-[#C9973A]" />
+                                    <span>{spot.title}</span>
+                                  </div>
+                                  <div className="text-[10px] text-[#2B1D0E]/75 font-light mt-0.5">
+                                    {spot.detail}
+                                  </div>
+                                </motion.div>
+                              )}
+                            </AnimatePresence>
+                          </div>
+                        );
+                      })}
+
+                    {/* "Pour a Drop" Animation */}
+                    <AnimatePresence>
+                      {isPouring && (
+                        <>
+                          {/* Falling Golden Drop */}
+                          <motion.div
+                            initial={{ top: '18%', opacity: 1, scale: 0.8 }}
+                            animate={{ top: '88%', opacity: [1, 1, 0], scale: [0.8, 1.2, 0.4] }}
+                            transition={{ duration: 0.65, ease: 'easeIn' }}
+                            className="absolute left-1/2 -translate-x-1/2 w-4 h-5 rounded-full bg-gradient-to-b from-[#C9973A] to-[#E5C07B] shadow-md z-40 pointer-events-none"
+                          />
+
+                          {/* Concentric Gold Ripples on Podium */}
+                          <motion.div
+                            initial={{ scale: 0, opacity: 0 }}
+                            animate={{ scale: [0, 2.2, 3.2], opacity: [0, 0.85, 0] }}
+                            transition={{ delay: 0.6, duration: 0.6, ease: 'easeOut' }}
+                            className="absolute bottom-2 left-1/2 -translate-x-1/2 w-16 h-8 rounded-[50%] border-2 border-[#C9973A] z-20 pointer-events-none"
+                          />
+                        </>
+                      )}
+                    </AnimatePresence>
                   </motion.div>
+
                   {/* Soft Contact Shadow directly on the podium top */}
                   <div className="w-36 sm:w-44 h-4 rounded-full bg-[#2B1D0E]/30 blur-[3px] -mt-2 z-0" />
                 </motion.div>
+
+                {/* "100% Pure Neem Infusion" Sparkle Toast */}
+                <AnimatePresence>
+                  {showSparkleBadge && (
+                    <motion.div
+                      initial={{ opacity: 0, y: 10, scale: 0.9 }}
+                      animate={{ opacity: 1, y: 0, scale: 1 }}
+                      exit={{ opacity: 0, y: -10, scale: 0.9 }}
+                      className="absolute bottom-16 z-40 px-4 py-2 rounded-full bg-[#16301F]/90 text-[#FDF6EC] border border-[#C9973A]/50 backdrop-blur-md shadow-botanical-lg flex items-center gap-2 text-xs font-semibold pointer-events-none"
+                    >
+                      <Sparkles className="w-3.5 h-3.5 text-[#E5C07B] animate-spin" />
+                      <span>100% Pure Botanical Neem Oil</span>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
               </div>
             </div>
           </div>
