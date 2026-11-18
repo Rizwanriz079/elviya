@@ -56,6 +56,20 @@ export default function FeaturedProductSection() {
       style={{ position: 'relative' }}
       className="py-24 sm:py-32 relative overflow-hidden bg-[#16301F] text-[#FDF6EC]"
     >
+      {/* Top Botanical Wave Divider */}
+      <div className="absolute top-0 left-0 right-0 overflow-hidden leading-none z-10 pointer-events-none -translate-y-[1px]">
+        <svg viewBox="0 0 1200 120" preserveAspectRatio="none" className="relative block w-full h-6 sm:h-10 text-[#FDF6EC] fill-current">
+          <path d="M0,0 C150,85 350,-35 500,40 C650,115 900,10 1200,50 L1200,0 L0,0 Z" />
+        </svg>
+      </div>
+
+      {/* Bottom Botanical Wave Divider */}
+      <div className="absolute bottom-0 left-0 right-0 overflow-hidden leading-none z-10 pointer-events-none translate-y-[1px]">
+        <svg viewBox="0 0 1200 120" preserveAspectRatio="none" className="relative block w-full h-6 sm:h-10 text-[#FDF6EC] fill-current">
+          <path d="M0,50 C300,95 550,-10 700,65 C850,140 1050,25 1200,50 L1200,120 L0,120 Z" />
+        </svg>
+      </div>
+
       {/* Background Texture & Ambient Glow */}
       <div
         className="absolute inset-0 bg-cover bg-center opacity-30 mix-blend-overlay pointer-events-none"

@@ -6,6 +6,7 @@ import WhatsAppButton from "@/components/WhatsAppButton";
 import SmoothScroll from "@/components/SmoothScroll";
 import CustomCursor from "@/components/CustomCursor";
 import FloatingParticles from "@/components/FloatingParticles";
+import OilDropStoryLine from "@/components/ui/OilDropStoryLine";
 import PageIntro from "@/components/PageIntro";
 import { OrganizationSchema, WebsiteSchema } from "@/components/StructuredData";
 
@@ -96,6 +97,7 @@ export default function RootLayout({
         <PageIntro />
         <CustomCursor />
         <FloatingParticles />
+        <OilDropStoryLine />
         <SmoothScroll>
           <Header />
           <main className="min-h-screen relative z-10">
