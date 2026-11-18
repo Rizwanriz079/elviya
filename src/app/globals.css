@@ -79,9 +79,15 @@ html {
 
 /* Fluid Typography */
 .fluid-hero-h1 {
-  font-size: clamp(2.75rem, 6.2vw + 0.5rem, 9rem);
-  line-height: 1.05;
+  font-size: clamp(2.25rem, 3.8vw + 0.2rem, 4.75rem);
+  line-height: 0.95;
   letter-spacing: -0.02em;
+}
+
+@media (max-height: 820px) and (min-width: 1024px) {
+  .fluid-hero-h1 {
+    font-size: clamp(2rem, 3.2vw + 0.2rem, 3.5rem);
+  }
 }
 
 .fluid-section-h2 {
@@ -104,8 +110,8 @@ html {
 @media (min-width: 1024px) {
   .hero-svh {
     height: 100svh;
-    min-height: 38rem;
-    max-height: 70rem;
+    min-height: 36rem;
+    max-height: 62rem;
   }
 }
 
@@ -138,6 +144,12 @@ body {
 /* Page Top Spacing to guarantee nothing sits under navbar */
 .page-top-padding {
   padding-top: calc(var(--nav-h) + 24px);
+}
+
+@media (max-height: 820px) and (min-width: 1024px) {
+  .page-top-padding {
+    padding-top: calc(var(--nav-h) + 8px);
+  }
 }
 
 /* Typography Defaults */
@@ -187,10 +199,9 @@ h1, h2, h3, h4, h5, h6 {
   }
 }
 
-/* Offscreen Deferred Rendering */
+/* Offscreen Deferred Rendering (Safe for smooth scroll) */
 .section-deferred {
-  content-visibility: auto;
-  contain-intrinsic-size: 800px;
+  /* content-visibility omitted to prevent dynamic height jumps during pinned sticky scroll */
 }
 
 /* Lite Mode & Reduced Motion Overrides */

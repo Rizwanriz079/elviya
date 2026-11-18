@@ -23,6 +23,30 @@ export default function WhatsAppButton({
   const [isHovered, setIsHovered] = useState(false);
   const [showTimedTooltip, setShowTimedTooltip] = useState(false);
   const pathname = usePathname();
+  const isHome = pathname === '/';
+  const [isHeroInView, setIsHeroInView] = useState(isHome);
+
+  // Hide floating button while hero section / trust strip are visible
+  useEffect(() => {
+    if (variant !== 'floating') return;
+
+    const target = document.getElementById('hero-trust-strip') || document.getElementById('hero-section');
+    if (!target) {
+      return;
+    }
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        setIsHeroInView(entry.isIntersecting);
+      },
+      { threshold: 0.05 }
+    );
+
+    observer.observe(target);
+    return () => {
+      observer.disconnect();
+    };
+  }, [variant, pathname]);
 
   // Show tooltip once after 8 seconds for 4 seconds
   useEffect(() => {
@@ -46,8 +70,12 @@ export default function WhatsAppButton({
 
     return (
       <div
-        className={`fixed z-40 items-center gap-3 transition-opacity duration-300 ${
+        className={`fixed z-40 items-center gap-3 transition-all duration-500 ${
           isProductPage ? 'hidden md:flex' : 'flex'
+        } ${
+          isHeroInView
+            ? 'opacity-0 pointer-events-none translate-y-4 scale-90'
+            : 'opacity-100 pointer-events-auto translate-y-0 scale-100'
         }`}
         style={{
           bottom: 'calc(1.5rem + env(safe-area-inset-bottom, 0px))',

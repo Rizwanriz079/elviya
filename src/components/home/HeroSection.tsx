@@ -181,11 +181,11 @@ export default function HeroSection() {
         </picture>
       </div>
 
-      <section className="relative hero-svh flex flex-col justify-between page-top-padding z-10">
-        <Container className="w-full my-auto py-2 sm:py-4 flex-1 flex flex-col justify-center">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
+      <section id="hero-section" className="relative hero-svh flex flex-col justify-between page-top-padding z-10">
+        <Container className="w-full my-auto py-2 sm:py-3 flex-1 flex flex-col justify-center">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8 items-center">
             {/* Left Column: Headline, Script, SlotRoller & CTAs */}
-            <div className="lg:col-span-7 flex flex-col items-start text-left space-y-3 sm:space-y-5 lg:space-y-6">
+            <div className="order-1 lg:col-span-7 flex flex-col items-start text-left space-y-2.5 sm:space-y-4 lg:space-y-5">
               {/* ScriptDraw Line - Single Line, Never Wraps */}
               <ScriptDraw text="Made by hand, with love." withUnderline={true} />
 
@@ -308,15 +308,15 @@ export default function HeroSection() {
               </div>
             </div>
 
-            {/* Right Column: Fluid Botanical Arch & Real Bottle ON Natural Podium */}
-            <div className="lg:col-span-5 relative flex items-center justify-center py-2 sm:py-4">
+            {/* Right Column: Positioned Arch Container with aspect-ratio 3/4 */}
+            <div className="order-2 lg:col-span-5 relative flex items-center justify-center py-1 sm:py-2">
               <div
                 onMouseMove={handleBottleMouseMove}
                 onMouseLeave={handleBottleMouseLeave}
-                className="relative w-full max-w-[17rem] sm:max-w-[22rem] lg:max-w-[28rem] 2xl:max-w-[34rem] h-64 sm:h-76 lg:h-auto lg:aspect-[4/5] flex items-end justify-center mx-auto perspective-1000"
+                className="relative mx-auto rounded-t-[14rem] sm:rounded-t-[18rem] lg:rounded-t-[22rem] bg-[#E8EFE3]/55 border-2 border-[#C9973A]/40 shadow-botanical backdrop-blur-[2px] overflow-hidden h-[min(44svh,21rem)] lg:h-[min(62vh,29rem)] w-auto aspect-[3/4] flex items-end justify-center perspective-1000"
               >
                 {/* Rotating Stamp Badge */}
-                <div className="absolute top-2 right-2 sm:top-3 sm:right-3 z-30 pointer-events-none">
+                <div className="absolute top-3 right-3 sm:top-4 sm:right-4 z-30 pointer-events-none">
                   <motion.div
                     variants={rotateSlow}
                     animate="animate"
@@ -340,158 +340,169 @@ export default function HeroSection() {
                   </motion.div>
                 </div>
 
-                {/* Floating Oil Drops on Desktop */}
+                {/* Floating Oil Drops on Desktop (Smaller than bottle, non-overlapping) */}
                 {isDesktop && (
                   <>
                     <motion.div
                       style={{ x: leafX, y: leafY }}
-                      className="absolute top-16 left-2 z-20 pointer-events-none drop-shadow-md"
+                      className="absolute top-12 left-3 z-10 pointer-events-none drop-shadow-md"
                     >
                       <Image
                         src="/images/drop-1.png"
                         alt="Golden Oil Drop"
-                        width={38}
-                        height={48}
+                        width={24}
+                        height={32}
+                        className="w-6 h-8 object-contain"
                       />
                     </motion.div>
                     <motion.div
                       style={{ x: leafX, y: leafY }}
-                      className="absolute bottom-24 right-0 z-20 pointer-events-none drop-shadow-md"
+                      className="absolute bottom-28 right-3 z-10 pointer-events-none drop-shadow-md"
                     >
                       <Image
                         src="/images/drop-2.png"
                         alt="Pure Herbal Drop"
-                        width={30}
-                        height={38}
+                        width={20}
+                        height={26}
+                        className="w-5 h-6 object-contain"
                       />
                     </motion.div>
                   </>
                 )}
 
-                {/* Fluid Botanical Arch Window in DOM (scales with container) */}
-                <div className="absolute inset-x-4 top-0 bottom-6 sm:bottom-7 rounded-t-[8rem] sm:rounded-t-[11rem] lg:rounded-t-[17rem] 2xl:rounded-t-[20rem] bg-[#E8EFE3]/55 border-2 border-[#C9973A]/40 shadow-botanical backdrop-blur-[2px] overflow-hidden -z-10">
-                  {/* Inner Soft Gradient */}
-                  <div className="absolute inset-2 rounded-t-[7.5rem] sm:rounded-t-[10.5rem] lg:rounded-t-[16rem] 2xl:rounded-t-[19rem] bg-gradient-to-b from-[#FDF6EC]/85 via-[#FDF6EC]/40 to-[#E8EFE3]/20" />
-                  {/* Sunbeam Glow inside arch */}
-                  <div className="absolute top-1/4 left-1/2 -translate-x-1/2 w-48 sm:w-60 h-48 sm:h-60 rounded-full bg-[#FFEBB8]/40 blur-2xl pointer-events-none" />
-                </div>
+                {/* Inner Soft Gradient inside arch */}
+                <div className="absolute inset-2 rounded-t-[13rem] sm:rounded-t-[17rem] lg:rounded-t-[21rem] bg-gradient-to-b from-[#FDF6EC]/85 via-[#FDF6EC]/40 to-[#E8EFE3]/20 pointer-events-none z-0" />
 
-                {/* Natural Wooden Slice Podium */}
-                <div className="absolute bottom-0 inset-x-2 h-10 sm:h-12 lg:h-14 flex items-center justify-center z-0 pointer-events-none">
+                {/* Subtle warm sunbeam glow behind bottle */}
+                <div className="absolute top-1/4 left-1/2 -translate-x-1/2 w-48 sm:w-64 h-48 sm:h-64 rounded-full bg-[#FFEBB8]/50 blur-3xl pointer-events-none z-0" />
+
+                {/* Natural Wooden Slice Podium (Ellipse, ~86% of arch width) */}
+                <div className="absolute bottom-1.5 inset-x-[7%] h-[13%] flex items-center justify-center z-10 pointer-events-none">
                   {/* Soft floor shadow */}
-                  <div className="absolute bottom-0 w-4/5 h-4 sm:h-5 bg-[#2B1D0E]/25 rounded-full blur-md" />
+                  <div className="absolute bottom-0 w-full h-1/2 bg-[#2B1D0E]/25 rounded-[50%] blur-md" />
                   {/* Wooden slice base */}
-                  <div className="relative w-full h-8 sm:h-10 lg:h-11 rounded-[50%] bg-gradient-to-r from-[#CABAA0] via-[#E2D4BE] to-[#A8967C] border border-[#C9973A]/50 shadow-md">
+                  <div className="relative w-full h-full rounded-[50%] bg-gradient-to-r from-[#CABAA0] via-[#E2D4BE] to-[#A8967C] border border-[#C9973A]/50 shadow-md">
                     {/* Top natural ring */}
                     <div className="absolute inset-1 rounded-[50%] bg-[#EADCC7] border border-[#C9973A]/30" />
                   </div>
                 </div>
 
-                {/* Real Bottle sitting directly ON the podium plate with 3D Tilt */}
-                <motion.div
-                  style={{
-                    x: isDesktop ? bottleX : 0,
-                    y: isDesktop ? bottleY : 0,
-                    rotateX: isDesktop ? smoothTiltX : 0,
-                    rotateY: isDesktop ? smoothTiltY : 0,
-                    transformStyle: 'preserve-3d',
-                  }}
+                {/* Soft Elliptical Contact Shadow under bottle */}
+                <div className="absolute bottom-[12.5%] left-1/2 -translate-x-1/2 w-[32%] h-2.5 rounded-[50%] bg-[#2B1D0E]/35 blur-[3px] z-10 pointer-events-none" />
+
+                {/* Real Bottle Layer: Absolutely positioned container, height 76%, centered */}
+                <div
                   onClick={handlePourDrop}
-                  className="relative z-10 w-full h-[90%] flex flex-col items-center justify-end pb-2 sm:pb-3 cursor-pointer group"
+                  style={{
+                    bottom: '13%',
+                    left: '50%',
+                    transform: 'translateX(-50%)',
+                    height: '76%',
+                    aspectRatio: '265 / 1226',
+                  }}
+                  className="absolute z-20 cursor-pointer group"
                 >
                   <motion.div
-                    variants={floatY}
-                    animate="animate"
-                    className="relative h-full aspect-[272/1236] max-h-[28rem] 2xl:max-h-[34rem]"
+                    style={{
+                      x: isDesktop ? bottleX : 0,
+                      y: isDesktop ? bottleY : 0,
+                      rotateX: isDesktop ? smoothTiltX : 0,
+                      rotateY: isDesktop ? smoothTiltY : 0,
+                      transformStyle: 'preserve-3d',
+                    }}
+                    className="relative w-full h-full"
                   >
-                    <Image
-                      src="/images/bottle-neem.png"
-                      alt="Elvia Herbals Pure Neem Oil 100ml"
-                      fill
-                      sizes="(max-width: 640px) 70vw, (max-width: 1024px) 45vw, (max-width: 1920px) 30vw, 36rem"
-                      className="object-contain object-bottom select-none"
-                      priority
-                    />
+                    <motion.div
+                      variants={floatY}
+                      animate="animate"
+                      className="relative w-full h-full"
+                    >
+                      <Image
+                        src="/images/bottle-neem.webp"
+                        alt="Elvia Herbals Pure Neem Oil 100ml"
+                        fill
+                        priority
+                        sizes="(max-width: 768px) 60vw, (max-width: 1200px) 35vw, 420px"
+                        className="object-contain select-none pointer-events-none drop-shadow-[0_8px_16px_rgba(43,29,14,0.18)]"
+                      />
 
-                    {/* Interactive Ingredient Hotspots (Desktop fine pointer only) */}
-                    {isDesktop &&
-                      INGREDIENT_HOTSPOTS.map((spot) => {
-                        const isActive = activeHotspot === spot.id;
-                        return (
-                          <div
-                            key={spot.id}
-                            style={{ top: spot.top, left: spot.left }}
-                            className="absolute z-30 -translate-x-1/2 -translate-y-1/2"
-                            onMouseEnter={(e) => {
-                              e.stopPropagation();
-                              setActiveHotspot(spot.id);
-                            }}
-                            onMouseLeave={(e) => {
-                              e.stopPropagation();
-                              setActiveHotspot(null);
-                            }}
-                          >
-                            {/* Glowing Pulsing Hotspot Dot */}
-                            <div className="relative w-6 h-6 flex items-center justify-center cursor-pointer">
-                              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#C9973A] opacity-60" />
-                              <span className="relative inline-flex rounded-full h-3.5 w-3.5 bg-[#C9973A] border-2 border-white shadow-sm" />
+                      {/* Interactive Ingredient Hotspots (Desktop fine pointer only) */}
+                      {isDesktop &&
+                        INGREDIENT_HOTSPOTS.map((spot) => {
+                          const isActive = activeHotspot === spot.id;
+                          return (
+                            <div
+                              key={spot.id}
+                              style={{ top: spot.top, left: spot.left }}
+                              className="absolute z-30 -translate-x-1/2 -translate-y-1/2 pointer-events-auto"
+                              onMouseEnter={(e) => {
+                                e.stopPropagation();
+                                setActiveHotspot(spot.id);
+                              }}
+                              onMouseLeave={(e) => {
+                                e.stopPropagation();
+                                setActiveHotspot(null);
+                              }}
+                            >
+                              {/* Glowing Pulsing Hotspot Dot */}
+                              <div className="relative w-6 h-6 flex items-center justify-center cursor-pointer">
+                                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#C9973A] opacity-60" />
+                                <span className="relative inline-flex rounded-full h-3.5 w-3.5 bg-[#C9973A] border-2 border-white shadow-sm" />
+                              </div>
+
+                              {/* Tooltip Card with SVG Connector */}
+                              <AnimatePresence>
+                                {isActive && (
+                                  <motion.div
+                                    initial={{ opacity: 0, scale: 0.9, y: 4 }}
+                                    animate={{ opacity: 1, scale: 1, y: 0 }}
+                                    exit={{ opacity: 0, scale: 0.9, y: 4 }}
+                                    transition={{ duration: 0.2 }}
+                                    className={`absolute top-1/2 -translate-y-1/2 pointer-events-none z-40 whitespace-nowrap p-3 rounded-2xl bg-[#FDF6EC]/96 backdrop-blur-md border border-[#C9973A]/40 shadow-botanical ${
+                                      spot.tooltipAlign === 'right'
+                                        ? 'left-8 text-left'
+                                        : 'right-8 text-right'
+                                    }`}
+                                  >
+                                    <div className="flex items-center gap-1.5 text-xs font-bold font-serif text-[#2F5D3A]">
+                                      <Sparkles className="w-3 h-3 text-[#C9973A]" />
+                                      <span>{spot.title}</span>
+                                    </div>
+                                    <div className="text-[10px] text-[#2B1D0E]/75 font-light mt-0.5">
+                                      {spot.detail}
+                                    </div>
+                                  </motion.div>
+                                )}
+                              </AnimatePresence>
                             </div>
+                          );
+                        })}
 
-                            {/* Tooltip Card with SVG Connector */}
-                            <AnimatePresence>
-                              {isActive && (
-                                <motion.div
-                                  initial={{ opacity: 0, scale: 0.9, y: 4 }}
-                                  animate={{ opacity: 1, scale: 1, y: 0 }}
-                                  exit={{ opacity: 0, scale: 0.9, y: 4 }}
-                                  transition={{ duration: 0.2 }}
-                                  className={`absolute top-1/2 -translate-y-1/2 pointer-events-none z-40 whitespace-nowrap p-3 rounded-2xl bg-[#FDF6EC]/96 backdrop-blur-md border border-[#C9973A]/40 shadow-botanical ${
-                                    spot.tooltipAlign === 'right'
-                                      ? 'left-8 text-left'
-                                      : 'right-8 text-right'
-                                  }`}
-                                >
-                                  <div className="flex items-center gap-1.5 text-xs font-bold font-serif text-[#2F5D3A]">
-                                    <Sparkles className="w-3 h-3 text-[#C9973A]" />
-                                    <span>{spot.title}</span>
-                                  </div>
-                                  <div className="text-[10px] text-[#2B1D0E]/75 font-light mt-0.5">
-                                    {spot.detail}
-                                  </div>
-                                </motion.div>
-                              )}
-                            </AnimatePresence>
-                          </div>
-                        );
-                      })}
+                      {/* "Pour a Drop" Animation */}
+                      <AnimatePresence>
+                        {isPouring && (
+                          <>
+                            {/* Falling Golden Drop */}
+                            <motion.div
+                              initial={{ top: '12%', opacity: 1, scale: 0.8 }}
+                              animate={{ top: '96%', opacity: [1, 1, 0], scale: [0.8, 1.2, 0.4] }}
+                              transition={{ duration: 0.65, ease: 'easeIn' }}
+                              className="absolute left-1/2 -translate-x-1/2 w-3.5 h-4.5 rounded-full bg-gradient-to-b from-[#C9973A] to-[#E5C07B] shadow-md z-40 pointer-events-none"
+                            />
 
-                    {/* "Pour a Drop" Animation */}
-                    <AnimatePresence>
-                      {isPouring && (
-                        <>
-                          {/* Falling Golden Drop */}
-                          <motion.div
-                            initial={{ top: '14%', opacity: 1, scale: 0.8 }}
-                            animate={{ top: '92%', opacity: [1, 1, 0], scale: [0.8, 1.2, 0.4] }}
-                            transition={{ duration: 0.65, ease: 'easeIn' }}
-                            className="absolute left-1/2 -translate-x-1/2 w-3.5 h-4.5 rounded-full bg-gradient-to-b from-[#C9973A] to-[#E5C07B] shadow-md z-40 pointer-events-none"
-                          />
-
-                          {/* Concentric Gold Ripples on Podium */}
-                          <motion.div
-                            initial={{ scale: 0, opacity: 0 }}
-                            animate={{ scale: [0, 2.2, 3.2], opacity: [0, 0.85, 0] }}
-                            transition={{ delay: 0.6, duration: 0.6, ease: 'easeOut' }}
-                            className="absolute bottom-2 left-1/2 -translate-x-1/2 w-16 h-8 rounded-[50%] border-2 border-[#C9973A] z-20 pointer-events-none"
-                          />
-                        </>
-                      )}
-                    </AnimatePresence>
+                            {/* Concentric Gold Ripples on Podium */}
+                            <motion.div
+                              initial={{ scale: 0, opacity: 0 }}
+                              animate={{ scale: [0, 2.2, 3.2], opacity: [0, 0.85, 0] }}
+                              transition={{ delay: 0.6, duration: 0.6, ease: 'easeOut' }}
+                              className="absolute -bottom-3 left-1/2 -translate-x-1/2 w-20 h-10 rounded-[50%] border-2 border-[#C9973A] z-20 pointer-events-none"
+                            />
+                          </>
+                        )}
+                      </AnimatePresence>
+                    </motion.div>
                   </motion.div>
-
-                  {/* Soft Contact Shadow directly on the podium top */}
-                  <div className="w-24 sm:w-32 lg:w-40 h-3 rounded-full bg-[#2B1D0E]/30 blur-[3px] -mt-1.5 z-0" />
-                </motion.div>
+                </div>
 
                 {/* "100% Pure Neem Infusion" Sparkle Toast */}
                 <AnimatePresence>
@@ -513,29 +524,34 @@ export default function HeroSection() {
         </Container>
 
         {/* Bottom Curved Wave Trust Strip (Deep Forest #16301F) */}
-        <div className="relative w-full bg-[#16301F] text-[#FDF6EC] pt-4 sm:pt-6 pb-4 sm:pb-5 z-20 border-t border-[#C9973A]/30 compact-on-short-screens">
+        <div
+          id="hero-trust-strip"
+          className="relative w-full bg-[#16301F] text-[#FDF6EC] pt-3.5 sm:pt-4 pb-4 sm:pb-4 pb-[calc(1rem+env(safe-area-inset-bottom,0px))] z-20 border-t border-[#C9973A]/30 compact-on-short-screens"
+        >
           <Container>
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6 items-center">
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4 lg:gap-6 items-center">
               {[
                 { icon: Leaf, label: '100% Pure', desc: 'Zero chemicals, zero preservatives' },
                 { icon: Hand, label: 'Handmade', desc: 'Made by hand in Kerala' },
-                { icon: Droplets, label: 'Small Batches', desc: 'Small batch artisan care' },
+                { icon: Droplets, label: 'Small Batches', desc: 'Fresh botanical small batches' },
                 { icon: Award, label: 'Premium Quality', desc: 'Virgin coconut oil & fresh neem' },
               ].map((item, idx) => {
                 const IconComponent = item.icon;
                 return (
                   <div
                     key={idx}
-                    className="flex items-center gap-3 sm:gap-3.5 border-l border-[#C9973A]/25 pl-3 sm:pl-5"
+                    className="flex items-center gap-2.5 sm:gap-3.5 border-l border-[#C9973A]/25 pl-2.5 sm:pl-4"
                   >
                     <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-xl bg-[#E8EFE3]/10 flex items-center justify-center text-[#E0B35C] border border-[#C9973A]/30 shrink-0">
                       <IconComponent className="w-4 h-4 sm:w-5 sm:h-5" />
                     </div>
                     <div>
-                      <h2 className="font-serif font-bold text-xs sm:text-sm lg:text-base text-[#FDF6EC] leading-tight">
+                      <h2 className="font-serif font-bold text-xs sm:text-sm lg:text-base text-[#FDF6EC] leading-tight line-clamp-none">
                         {item.label}
                       </h2>
-                      <p className="text-[10px] sm:text-[11px] text-[#E8EFE3]/75 mt-0.5">{item.desc}</p>
+                      <p className="text-[11px] sm:text-xs text-[#E8EFE3]/80 mt-0.5 line-clamp-none leading-normal">
+                        {item.desc}
+                      </p>
                     </div>
                   </div>
                 );
@@ -543,7 +559,7 @@ export default function HeroSection() {
             </div>
 
             {/* Scroll Mouse Hint (Hidden on short screens to save space) */}
-            <div className="hide-on-short-screens flex items-center justify-center gap-2 pt-3 sm:pt-4 text-[10px] uppercase tracking-widest text-[#E8EFE3]/60">
+            <div className="hide-on-short-screens flex items-center justify-center gap-2 pt-2.5 text-[10px] uppercase tracking-widest text-[#E8EFE3]/60">
               <span className="w-3.5 h-5 rounded-full border border-[#C9973A]/50 flex items-start justify-center p-0.5">
                 <span className="w-1 h-1 rounded-full bg-[#C9973A] animate-bounce" />
               </span>
