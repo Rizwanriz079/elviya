@@ -1,25 +1,33 @@
 'use client';
 
-import { useState, useRef, useEffect } from 'react';
+import { useState, useSyncExternalStore } from 'react';
 import { motion, useMotionValue, useSpring, useTransform, Variants } from 'framer-motion';
 import { Sparkles, Shield, Heart, Truck } from 'lucide-react';
-import { clipRevealLeft, scaleIn, rotateIn, cardStackIn, fadeUp } from '@/lib/motion';
+import { slideInLeft, scaleIn, rotateIn, cardStackIn, fadeUp } from '@/lib/motion';
 import Container from '@/components/ui/Container';
+import { usePerfMode } from '@/lib/perf';
+
+const subscribeResize = (callback: () => void) => {
+  window.addEventListener('resize', callback);
+  return () => window.removeEventListener('resize', callback);
+};
+const getDesktopWidth = () => window.innerWidth >= 1024;
+const getServerDesktopWidth = () => false;
 
 function TiltBentoCard({
   children,
   className = '',
   variants,
   custom,
+  isDesktop = false,
 }: {
   children: React.ReactNode;
   className?: string;
   variants?: Variants;
   custom?: number;
+  isDesktop?: boolean;
 }) {
-  const cardRef = useRef<HTMLDivElement>(null);
   const [mousePos, setMousePos] = useState({ x: -200, y: -200 });
-  const [isDesktop, setIsDesktop] = useState(false);
 
   const x = useMotionValue(0);
   const y = useMotionValue(0);
@@ -33,31 +41,21 @@ function TiltBentoCard({
     damping: 30,
   });
 
-  useEffect(() => {
-    const checkDesktop = () => {
-      setIsDesktop(window.innerWidth >= 1024 && window.matchMedia('(pointer: fine)').matches);
-    };
-    checkDesktop();
-    window.addEventListener('resize', checkDesktop);
-    return () => window.removeEventListener('resize', checkDesktop);
-  }, []);
-
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
-    if (!cardRef.current) return;
-    const rect = cardRef.current.getBoundingClientRect();
+    if (!isDesktop) return;
+    const rect = e.currentTarget.getBoundingClientRect();
     const mouseX = e.clientX - rect.left;
     const mouseY = e.clientY - rect.top;
     setMousePos({ x: mouseX, y: mouseY });
 
-    if (isDesktop) {
-      const normalizedX = mouseX / rect.width - 0.5;
-      const normalizedY = mouseY / rect.height - 0.5;
-      x.set(normalizedX);
-      y.set(normalizedY);
-    }
+    const normalizedX = mouseX / rect.width - 0.5;
+    const normalizedY = mouseY / rect.height - 0.5;
+    x.set(normalizedX);
+    y.set(normalizedY);
   };
 
   const handleMouseLeave = () => {
+    if (!isDesktop) return;
     setMousePos({ x: -200, y: -200 });
     x.set(0);
     y.set(0);
@@ -65,34 +63,43 @@ function TiltBentoCard({
 
   return (
     <motion.div
-      ref={cardRef}
       variants={variants}
       initial="hidden"
       whileInView="visible"
-      viewport={{ once: true, margin: '-60px' }}
+      viewport={{ once: true, amount: 0.15 }}
       custom={custom}
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
-      style={{
-        rotateX: isDesktop ? rotateX : 0,
-        rotateY: isDesktop ? rotateY : 0,
-        transformStyle: 'preserve-3d',
-      }}
+      style={
+        isDesktop
+          ? {
+              rotateX,
+              rotateY,
+              transformStyle: 'preserve-3d',
+            }
+          : undefined
+      }
       className={`relative overflow-hidden rounded-3xl transition-shadow duration-300 border border-[#C9973A]/25 group ${className}`}
     >
-      {/* Mouse Spotlight Glow */}
-      <div
-        className="pointer-events-none absolute -inset-px transition-opacity duration-300 opacity-0 group-hover:opacity-100 z-10"
-        style={{
-          background: `radial-gradient(400px circle at ${mousePos.x}px ${mousePos.y}px, rgba(201,151,58,0.18), transparent 70%)`,
-        }}
-      />
+      {/* Mouse Spotlight Glow - Desktop fine pointer only */}
+      {isDesktop && (
+        <div
+          className="pointer-events-none absolute -inset-px transition-opacity duration-300 opacity-0 group-hover:opacity-100 z-10"
+          style={{
+            background: `radial-gradient(400px circle at ${mousePos.x}px ${mousePos.y}px, rgba(201,151,58,0.18), transparent 70%)`,
+          }}
+        />
+      )}
       {children}
     </motion.div>
   );
 }
 
 export default function WhyChooseSection() {
+  const { isLite, isFinePointer, isReducedMotion } = usePerfMode();
+  const hasDesktopWidth = useSyncExternalStore(subscribeResize, getDesktopWidth, getServerDesktopWidth);
+  const isDesktop = !isLite && isFinePointer && !isReducedMotion && hasDesktopWidth;
+
   return (
     <section className="py-24 sm:py-32 relative overflow-hidden bg-[#E8EFE3] section-deferred">
       {/* Background Texture & Ambient Glow */}
@@ -137,10 +144,11 @@ export default function WhyChooseSection() {
 
         {/* Bento Grid: 1 Large + 3 Small Cards with distinct entrance animations */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {/* 1. Large Bento Card (Spans 2 columns on lg): clipRevealLeft */}
+          {/* 1. Large Bento Card (Spans 2 columns on lg): slideInLeft */}
           <TiltBentoCard
-            variants={clipRevealLeft}
+            variants={slideInLeft}
             custom={0}
+            isDesktop={isDesktop}
             className="lg:col-span-2 bg-[#FDF6EC] shadow-botanical p-8 sm:p-10 flex flex-col justify-between"
           >
             <div className="relative z-10">
@@ -157,7 +165,7 @@ export default function WhyChooseSection() {
               </h3>
 
               <p className="text-base text-[#2B1D0E]/80 max-w-xl leading-relaxed">
-                Made with pure virgin coconut oil and fresh neem. Traditionally used for healthy hair, a clean scalp and clear skin. No silicones, liquid paraffin, synthetic preservatives or artificial colorants.
+                Made with pure virgin coconut oil and fresh neem. Traditionally used for hair, scalp and skin care. No silicones, liquid paraffin, synthetic preservatives or artificial colorants.
               </p>
             </div>
 
@@ -177,6 +185,7 @@ export default function WhyChooseSection() {
           <TiltBentoCard
             variants={scaleIn}
             custom={1}
+            isDesktop={isDesktop}
             className="bg-[#FDF6EC] shadow-botanical p-8 flex flex-col justify-between"
           >
             <div className="relative z-10">
@@ -208,6 +217,7 @@ export default function WhyChooseSection() {
           <TiltBentoCard
             variants={rotateIn}
             custom={2}
+            isDesktop={isDesktop}
             className="bg-[#FDF6EC] shadow-botanical p-8 flex flex-col justify-between"
           >
             <div className="relative z-10">
@@ -238,6 +248,7 @@ export default function WhyChooseSection() {
           <TiltBentoCard
             variants={cardStackIn}
             custom={3}
+            isDesktop={isDesktop}
             className="lg:col-span-2 bg-[#FDF6EC] shadow-botanical p-8 sm:p-10 flex flex-col justify-between"
           >
             <div className="relative z-10">
