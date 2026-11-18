@@ -570,7 +570,7 @@ export default function HeroSection() {
                           isReducedMotion
                             ? {}
                             : isHeroReady
-                            ? {
+                              ? {
                                 y: [0, -8, 0],
                                 transition: {
                                   delay: 0.85,
@@ -579,7 +579,7 @@ export default function HeroSection() {
                                   ease: 'easeInOut',
                                 },
                               }
-                            : {}
+                              : {}
                         }
                         className="relative w-full h-full"
                       >
@@ -624,11 +624,10 @@ export default function HeroSection() {
                                       animate={{ opacity: 1, scale: 1, y: 0 }}
                                       exit={{ opacity: 0, scale: 0.9, y: 4 }}
                                       transition={{ duration: 0.2 }}
-                                      className={`absolute top-1/2 -translate-y-1/2 pointer-events-none z-40 whitespace-nowrap p-3 rounded-2xl bg-[#FDF6EC]/96 backdrop-blur-md border border-[#C9973A]/40 shadow-botanical ${
-                                        spot.tooltipAlign === 'right'
-                                          ? 'left-8 text-left'
-                                          : 'right-8 text-right'
-                                      }`}
+                                      className={`absolute top-1/2 -translate-y-1/2 pointer-events-none z-40 whitespace-nowrap p-3 rounded-2xl bg-[#FDF6EC]/96 backdrop-blur-md border border-[#C9973A]/40 shadow-botanical ${spot.tooltipAlign === 'right'
+                                        ? 'left-8 text-left'
+                                        : 'right-8 text-right'
+                                        }`}
                                     >
                                       <div className="flex items-center gap-1.5 text-xs font-bold font-serif text-[#2F5D3A]">
                                         <Sparkles className="w-3 h-3 text-[#C9973A]" />

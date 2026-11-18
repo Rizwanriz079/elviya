@@ -204,9 +204,8 @@ h1, h2, h3, h4, h5, h6 {
   /* content-visibility omitted to prevent dynamic height jumps during pinned sticky scroll */
 }
 
-/* Lite Mode & Reduced Motion Overrides */
-.lite-mode * {
-  animation-duration: 0.2s !important;
+/* Lite Mode Overrides (do not accelerate infinite marquee loops) */
+.lite-mode *:not(.animate-marquee-left):not(.animate-marquee-right) {
   transition-duration: 0.2s !important;
 }
 
@@ -374,11 +373,11 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .animate-marquee-left {
-  animation: marqueeLeft 30s linear infinite;
+  animation: marqueeLeft 38s linear infinite !important;
 }
 
 .animate-marquee-right {
-  animation: marqueeRight 34s linear infinite;
+  animation: marqueeRight 42s linear infinite !important;
 }
 
 .shimmer-sweep {
@@ -396,5 +395,9 @@ h1, h2, h3, h4, h5, h6 {
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
     scroll-behavior: auto !important;
+  }
+  .animate-marquee-left,
+  .animate-marquee-right {
+    animation: none !important;
   }
 }
